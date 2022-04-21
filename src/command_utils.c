@@ -9,7 +9,7 @@ char	*find_path(char *cmd)
 
 	paths = ft_split(getenv("PATH"), ':');
 	i = 0;
-    while (paths[i])
+	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
@@ -28,12 +28,12 @@ char	*find_path(char *cmd)
 
 void	command(char *envp, char *ptr)
 {
-    char *path;
-    char **cmd;
+	char *path;
+	char **cmd;
 
 	cmd = ft_split(ptr, ' ');
 	path = find_path(cmd[0]);
-    if (!path)
+	if (!path)
 	{
 		free_matriz(&cmd);
 		ft_putstr_fd("command not found\n", 2);
