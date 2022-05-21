@@ -35,8 +35,9 @@ void	command(char *envp, char *ptr)
 	path = find_path(cmd[0]);
 	if (!path)
 	{
+		ft_putstr_fd(cmd[0], 2);
 		free_matriz(&cmd);
-		ft_putstr_fd("command not found\n", 2);
+		ft_putstr_fd(" command not found\n", 2);
 		exit(127);
 	}
 	if (execve(path, cmd, NULL) == -1)

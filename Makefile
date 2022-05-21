@@ -14,14 +14,14 @@ INCLUDE		:=	$(foreach directory, $(HEADER_DIR), -I $(directory))
 
 SRC_DIR		:= ./src/
 
-SRC_FILE	:=  minishell.c command_utils.c
+SRC_FILE	:=  parsing.c
 
 SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(SRC)
-	@$(CC) -g $(SRC) -o $@ $(INCLUDE) -lreadline $(LIBFT_FLAGS)
+	@$(CC) -g $(SRC) -o $@ $(INCLUDE) $(LIBFT_FLAGS) -lreadline
 	@echo "\033[0;32m Minishell (>‿◠)\033[0m"
 
 $(LIBFT):
