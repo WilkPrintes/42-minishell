@@ -34,6 +34,7 @@ void	error(void);
 void var_func(char *ptr, t_data_var *data;);
 int find_caracter(char *ptr, char caracter);
 void echo (char *ptr, t_data_var *data);
+void unset(char *ptr, t_data_var *data);
 
 //Mudanças lucas
 char	**built_in_functions(void);

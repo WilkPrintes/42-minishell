@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/28 16:15:27 by wprintes          #+#    #+#             */
+/*   Updated: 2022/05/28 16:15:27 by wprintes         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <signal.h>
 
@@ -23,6 +35,8 @@ void func_doida(char **inate, t_data_var *data)
 		var_func(ito.ptr, data);
 	else if (ft_strncmp(ito.ptr, "echo", 4) == 0)
 		echo(ito.ptr, data);
+	else if (ft_strncmp(ito.ptr, "unset", 5) == 0)
+		unset(ito.ptr, data);
 	else if (*ito.ptr)
 	{
 		pid = fork();
