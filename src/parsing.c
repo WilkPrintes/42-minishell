@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include <signal.h>
 
-t_teste ito;
+t_test ito;
 
 void	free_this(char **str)
 {
