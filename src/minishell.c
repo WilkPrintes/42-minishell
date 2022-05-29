@@ -92,8 +92,8 @@ int	main(void)
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 	data.count_var = 0;
-	data.names = malloc(sizeof(char));
-	data.contents = malloc(sizeof(char));
+	data.names = malloc(sizeof(char *) * 1024); //temporário, só pra dizer que funciona :D
+	data.contents = malloc(sizeof(char *) * 1024);
 	while (1)
 		func_doida(inate, &data);
 }

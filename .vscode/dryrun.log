@@ -1,4 +1,4 @@
-make.exe --dry-run --always-make --keep-going --print-directory
+make.exe --dry-run --keep-going --print-directory
 '\\wsl.localhost\Ubuntu\home\wprintes-42\42-minishell'
 CMD.EXE foi iniciado tendo o caminho acima como pasta atual.
 N�o h� suporte para caminhos UNC. Padronizando para pasta do Windows.
