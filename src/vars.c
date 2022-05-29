@@ -89,7 +89,6 @@ void unset(char *ptr, t_data_var *data)
     {
         while (exists < data->count_var - 1)
         {
-            printf("%s\n", data->names[exists + 1]);
             name_temp = ft_strdup(data->names[exists + 1]);
             content_temp = ft_strdup(data->contents[exists + 1]);
             data->names[exists] = ft_strdup(name_temp);
@@ -97,7 +96,8 @@ void unset(char *ptr, t_data_var *data)
             free(name_temp);
             free(content_temp);
             exists++;
-        } 
+        }
+        data->count_var--;
     }
 }
 
