@@ -16,7 +16,6 @@
 void set_dir(char **cd, char *pwd);
 void remove_dir(char **pwd);
 int equalexist(char *ptr);
-void set_dir(char **cd, char *pwd);
 void remove_dir(char **pwd);
 
 t_main	ito;
@@ -24,8 +23,12 @@ t_main	ito;
 void func_doida(char **inate, t_data_var *data)
 {
 	int		pid;
-	
-	ito.ptr = readline("minishell: "); // scanf diferenciado
+	char	*dir;
+	char	pwd[256];
+
+	getcwd(pwd, sizeof(pwd));
+	set_dir(&dir, pwd);
+	ito.ptr = readline(dir); // scanf diferenciado
 	if (ito.ptr == NULL)
 		close_shell(ito.ptr);
 	add_history(ito.ptr);
@@ -83,13 +86,11 @@ void handi(int signum)
 
 int	main(void)
 {
-	char teste[256];
 	char **inate; //NOVO
 	struct sigaction sa;
 	t_data_var data;
 
 	sa.sa_handler = handi;
-	getcwd(teste, sizeof(teste)); // Pega atual diretório e coloca no buffer
 	inate = built_in_functions(); //NOVO
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
