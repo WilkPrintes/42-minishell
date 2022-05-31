@@ -14,7 +14,7 @@ INCLUDE		:=	$(foreach directory, $(HEADER_DIR), -I $(directory))
 
 SRC_DIR		:= ./src/
 
-SRC_FILE	:=	command_utils.c lucas_utils.c minishell.c vars.c
+SRC_FILE	:=	command_utils.c lucas_utils.c minishell.c vars.c command.c
 
 SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))
 

@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-int var_exists(t_data_var *data, char *name);
-int find_content(t_data_var *data, char *ptr, int i);
-
 void var_func(char *ptr, t_data_var *data) //coloca as varíaveis no data_vars
 {
     int p;
@@ -42,23 +39,6 @@ void var_func(char *ptr, t_data_var *data) //coloca as varíaveis no data_vars
     free(name);
 }
 
-void echo (char *ptr,  t_data_var *data)
-{
-    int len;
-    int i;
-
-    len = ft_strlen(ptr);
-    i = 5;
-    while (i < len)
-    {
-        if (ptr[i] != '$')
-            printf("%c", ptr[i]);
-        else
-            i = i + find_content(data, ptr, i);
-        i++;
-    }
-    printf("\n");
-}
 
 int find_content(t_data_var *data, char *ptr, int i)
 {
@@ -77,31 +57,6 @@ int find_content(t_data_var *data, char *ptr, int i)
     len = ft_strlen(name);
     free(name);
     return (len);
-}
-
-void unset(char *ptr, t_data_var *data)
-{
-    int     exists;
-    char    *name_temp;
-    char    *content_temp;
-    
-    int     i;
-    
-    exists = var_exists(data, ptr+6);
-    if (exists != -1)
-    {
-        while (exists < data->count_var - 1)
-        {
-            name_temp = ft_strdup(data->names[exists + 1]);
-            content_temp = ft_strdup(data->contents[exists + 1]);
-            data->names[exists] = ft_strdup(name_temp);
-            data->contents[exists] = ft_strdup(content_temp);
-            free(name_temp);
-            free(content_temp);
-            exists++;
-        }
-        data->count_var--;
-    }
 }
 
 int var_exists(t_data_var *data, char *name)
