@@ -107,7 +107,7 @@ void set_dir(char **cd, char *pwd)
     char *temp;
     char *color;
 
-    minishell = ft_strdup("\033[1;32mminishell\e[0m:\033[0;36m");
+    minishell = ft_strdup("\033[1;32mminishell@42\e[0m:\033[0;36m");
     if (ft_strncmp(pwd, "/home/", 6) == 0)
         remove_dir(&pwd);
     free(cd[0]);

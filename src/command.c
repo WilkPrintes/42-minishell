@@ -19,16 +19,19 @@ void echo (char *ptr,  t_data_var *data)
     int flag;
 
     len = ft_strlen(ptr);
-    i = 5;
-    flag = 0;
+    if (ft_strncmp(ptr, "echo -n", 7) == 0)
+    {
+        flag = 1;
+        i = 8;
+    }
+    else
+    {
+        flag = 0;
+        i = 5;
+    }
     while (i < len)
     {
-        if (ptr[i] == '-' && ptr[i + 1] == 'n')
-        {
-            i = i + 2;
-            flag = 1;
-        }
-        else if (ptr[i] != '$')
+        if (ptr[i] != '$')
             printf("%c", ptr[i]);   
         else
             i = i + find_content(data, ptr, i);
