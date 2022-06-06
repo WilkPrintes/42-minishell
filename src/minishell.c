@@ -27,8 +27,8 @@ void	func_doida(char **inate, t_data_var *data)
 	char	pwd[256];
 
 	getcwd(pwd, sizeof(pwd));
-//	set_dir(&dir, pwd);
-	ito.ptr = readline("teste: "); // scanf diferenciado
+	set_dir(&dir, pwd);
+	ito.ptr = readline(dir); // scanf diferenciado
 	if (ito.ptr == NULL)
 		close_shell(ito.ptr);
 	add_history(ito.ptr);
