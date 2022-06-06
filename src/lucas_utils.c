@@ -50,3 +50,77 @@ int	exec_built_in(char *ptr) //NOVO
 	}
 	return (0);
 }
+
+void	free_this(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (str == 0)
+		return ;
+	while (str[i])
+		free(str[i++]);
+	free(str);
+}
+
+int	have_quotes(char *ptr)
+{
+	int	val;
+	int	i;
+
+	val = 0;
+	i = 0;
+	while (ptr[i] != '\0')
+	{
+		if (ptr[i] == 34 || ptr[i] == 39)
+			val++;
+		i++;
+	}
+	if (val % 2 != 0)
+		return (-1);
+	else if (val == 0)
+		return (0);
+	return (1);
+}
+
+void	fix_quotes(char **ptr)
+{
+	int	i;
+	int	trigger;
+
+	i = 0;
+	trigger = 0;
+	while (ptr[0][i] != '\0')
+	{
+		if (ptr[0][i] == 34 && trigger == 0)
+			trigger = 34;
+		else if (ptr[0][i] == 39 && trigger == 0)
+			trigger = 39;
+		else if (trigger != 0 && ptr[0][i] == 32)
+			ptr[0][i] = 7;
+		else if (ptr[0][i] == trigger)
+			trigger = 0;
+		i++;
+	}
+}
+
+void	refix_quotes(char **ptr)
+{
+	int	i;
+	int	trigger;
+
+	i = 0;
+	trigger = 0;
+	while (ptr[0][i] != '\0')
+	{
+		if (ptr[0][i] == 34 && trigger == 0)
+			trigger = 34;
+		else if (ptr[0][i] == 39 && trigger == 0)
+			trigger = 39;
+		else if (trigger != 0 && ptr[0][i] == 7)
+			ptr[0][i] = ' ';
+		else if (ptr[0][i] == trigger)
+			trigger = 0;
+		i++;
+	}
+}

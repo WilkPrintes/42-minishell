@@ -1,18 +1,18 @@
 #ifndef MINISHEL_H
 # define MINISHEL_H
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/wait.h>
-# include <sys/ioctl.h>
-# include "libft.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include "libft.h"
 
 typedef struct s_test {
 	char	**pars;
-	int		*metod;
 }				t_test;
 
 typedef struct s_main {
