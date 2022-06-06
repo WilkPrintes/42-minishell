@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
+/*   Updated: 2022/06/06 19:48:33 by lucferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <signal.h>
 
-t_test ito;
+t_test	ito;
 
 void	free_this(char **str)
 {
@@ -33,48 +45,6 @@ int	have_quotes(char *ptr)
 	else if (val == 0)
 		return (0);
 	return (1);
-}
-
-void	fix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 32)
-			ptr[i] = 7;
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
-}
-
-void	refix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 7)
-			ptr[i] = ' ';
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
 }
 
 void redirect(char **pars)
@@ -126,7 +96,6 @@ int parsing(char *ptr)
 	redirect(ito.pars);
 	return (0);
 }
-// Até aqui funciona como planejado
 
 int	main(void)
 {

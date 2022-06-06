@@ -13,14 +13,14 @@
 #include "minishell.h"
 #include <signal.h>
 
-void set_dir(char **cd, char *pwd);
-void remove_dir(char **pwd);
-int equalexist(char *ptr);
-void remove_dir(char **pwd);
+void	set_dir(char **cd, char *pwd);
+void	remove_dir(char **pwd);
+int		equalexist(char *ptr);
+void 	emove_dir(char **pwd);
 
 t_main	ito;
 
-void func_doida(char **inate, t_data_var *data)
+void	func_doida(char **inate, t_data_var *data)
 {
 	int		pid;
 	char	*dir;
@@ -34,7 +34,7 @@ void func_doida(char **inate, t_data_var *data)
 	add_history(ito.ptr);
 	if (is_built_in(inate, ito.ptr) == 1) //NOVO
 		exec_built_in(ito.ptr);
-	else if(ft_strncmp(ito.ptr, "clear", 5) == 0)
+	else if (ft_strncmp(ito.ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ito.ptr) != -1)
 		var_func(ito.ptr, data);
@@ -53,30 +53,30 @@ void func_doida(char **inate, t_data_var *data)
 	free(ito.ptr);
 }
 
-int equalexist(char *ptr)
+int	equalexist(char *ptr)
 {
 	if (find_caracter(ptr, ' ') != -1)
 		return (-1);
 	return (find_caracter(ptr, '='));
 }
 
-int find_caracter(char *ptr, char caracter) // procura um caractere em uma string e retorna a posiçaõ dela (-1 para caso não ache)
+int	find_caracter(char *ptr, char caracter) // procura um caractere em uma string e retorna a posiçaõ dela (-1 para caso não ache)
 {
-	int ptr_len;
-	int i;
+	int	ptr_len;
+	int	i;
 
 	ptr_len = ft_strlen(ptr);
 	i = 0;
 	while (i < ptr_len)
 	{
 		if (ptr[i] == caracter)
-			return(i);
+			return (i);
 		i++;
 	}
 	return (-1);
 }
 
-void handi(int signum)
+void	handi(int signum)
 {
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
@@ -86,12 +86,12 @@ void handi(int signum)
 
 int	main(void)
 {
-	char **inate; //NOVO
-	struct sigaction sa;
-	t_data_var data;
+	char				**inate;
+	struct sigaction	sa;
+	t_data_var			data;
 
 	sa.sa_handler = handi;
-	inate = built_in_functions(); //NOVO
+	inate = built_in_functions();
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 	data.count_var = 0;
@@ -103,41 +103,41 @@ int	main(void)
 
 void set_dir(char **cd, char *pwd)
 {
-    char *minishell;
-    char *temp;
-    char *color;
+	char *minishell;
+	char *temp;
+	char *color;
 
-    minishell = ft_strdup("\033[1;32mminishell@42\e[0m:\033[0;36m");
-    if (ft_strncmp(pwd, "/home/", 6) == 0)
-        remove_dir(&pwd);
-    free(cd[0]);
-    color = ft_strjoin(pwd, "\e[0m");
-    temp = ft_strjoin(minishell, color);
-    cd[0] = ft_strjoin(temp, "$ ");
-    free(temp);
-    free(color);
+	minishell = ft_strdup("\033[1;32mminishell@42\e[0m:\033[0;36m");
+	if (ft_strncmp(pwd, "/home/", 6) == 0)
+		remove_dir(&pwd);
+	free(cd[0]);
+	color = ft_strjoin(pwd, "\e[0m");
+	temp = ft_strjoin(minishell, color);
+	cd[0] = ft_strjoin(temp, "$ ");
+	free(temp);
+	free(color);
 }
 
 void remove_dir(char **pwd)
 {
-    int i;
-    int len;
-    int count;
-    char *temp;
-    char *result;
+	int		i;
+	int		len;
+	int		count;
+	char	*temp;
+	char	*result;
 
-    temp = getenv("PWD");
-    i = 0;
-    count = 0;
-    len = ft_strlen(temp);
-    while(i < len - 1)
-    {
-        if (temp[i] == '/')
-            count++;
-        if (count == 3)
-            break ;       
-        i++;
-    }
-    result = ft_substr(pwd[0], i, ft_strlen(pwd[0]));
-    pwd[0] = ft_strjoin("~", result);
+	temp = getenv("PWD");
+	i = 0;
+	count = 0;
+	len = ft_strlen(temp);
+	while(i < len - 1)
+	{
+		if (temp[i] == '/')
+			count++;
+		if (count == 3)
+			break ;
+		i++;
+	}
+	result = ft_substr(pwd[0], i, ft_strlen(pwd[0]));
+	pwd[0] = ft_strjoin("~", result);
 }

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lucas_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
+/*   Updated: 2022/06/06 19:48:47 by lucferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	**built_in_functions(void) //NOVO
+char	**built_in_functions(void)
 {
-	char **ptr;
+	char	**ptr;
 
 	ptr = malloc(3 * sizeof(char *));
 	ptr[0] = ft_strdup("cd");
@@ -11,7 +23,7 @@ char	**built_in_functions(void) //NOVO
 	return (ptr);
 }
 
-int	is_built_in(char **fts, char *str) //NOVO
+int	is_built_in(char **fts, char *str)
 {
 	int	i;
 
@@ -25,16 +37,16 @@ int	is_built_in(char **fts, char *str) //NOVO
 	return (0);
 }
 
-void close_shell(char *ptr) //NOVO
+void	close_shell(char *ptr)
 {
 	free(ptr);
 	printf("exit\n");
 	exit(EXIT_SUCCESS);
 }
 
-int	exec_built_in(char *ptr) //NOVO
+int	exec_built_in(char *ptr)
 {
-	char teste[256];
+	char	teste[256];
 
 	if (ft_strncmp(ptr, "exit", 4) == 0)
 			close_shell(ptr);
@@ -83,43 +95,43 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
-void	fix_quotes(char **ptr)
+void	fix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
 
 	i = 0;
 	trigger = 0;
-	while (ptr[0][i] != '\0')
+	while (ptr[i] != '\0')
 	{
-		if (ptr[0][i] == 34 && trigger == 0)
+		if (ptr[i] == 34 && trigger == 0)
 			trigger = 34;
-		else if (ptr[0][i] == 39 && trigger == 0)
+		else if (ptr[i] == 39 && trigger == 0)
 			trigger = 39;
-		else if (trigger != 0 && ptr[0][i] == 32)
-			ptr[0][i] = 7;
-		else if (ptr[0][i] == trigger)
+		else if (trigger != 0 && ptr[i] == 32)
+			ptr[i] = 7;
+		else if (ptr[i] == trigger)
 			trigger = 0;
 		i++;
 	}
 }
 
-void	refix_quotes(char **ptr)
+void	refix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
 
 	i = 0;
 	trigger = 0;
-	while (ptr[0][i] != '\0')
+	while (ptr[i] != '\0')
 	{
-		if (ptr[0][i] == 34 && trigger == 0)
+		if (ptr[i] == 34 && trigger == 0)
 			trigger = 34;
-		else if (ptr[0][i] == 39 && trigger == 0)
+		else if (ptr[i] == 39 && trigger == 0)
 			trigger = 39;
-		else if (trigger != 0 && ptr[0][i] == 7)
-			ptr[0][i] = ' ';
-		else if (ptr[0][i] == trigger)
+		else if (trigger != 0 && ptr[i] == 7)
+			ptr[i] = ' ';
+		else if (ptr[i] == trigger)
 			trigger = 0;
 		i++;
 	}
