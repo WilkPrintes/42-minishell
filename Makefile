@@ -14,7 +14,7 @@ INCLUDE		:=	$(foreach directory, $(HEADER_DIR), -I $(directory))
 
 SRC_DIR		:= ./src/
 
-SRC_FILE	:=  parsing.c command_utils.c
+SRC_FILE	:=	command_utils.c lucas_utils.c minishell.c vars.c command.c
 
 SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))
 
@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(SRC)
 	@$(CC) -g $(SRC) -o $@ $(INCLUDE) $(LIBFT_FLAGS) -lreadline
-	@echo "\033[0;32m Minishell (>‿◠)\033[0m"
+	@echo "\033[0;32mMinishell (>‿◠)\033[0m"
 
 $(LIBFT):
 	@make -C $(LIBFT_PATH)
@@ -30,7 +30,7 @@ $(LIBFT):
 fclean: clean
 	@rm -rf $(NAME)
 	@make fclean -C $(LIBFT_PATH)
-	@echo "\033[0;31m Minishell deleted (ㆆ_ㆆ)\033[0m"
+	@echo "\033[0;31mMinishell deleted (ㆆ_ㆆ)\033[0m"
 
 clean:
 	@make clean -C $(LIBFT_PATH)
