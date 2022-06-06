@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include <signal.h>
 
-t_teste ito;
+t_test ito;
 
 void	free_this(char **str)
 {
@@ -35,114 +35,114 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
-int	full_size(char *ptr)
+void	fix_quotes(char *ptr)
 {
 	int	i;
-	int	size;
 	int	trigger;
 
 	i = 0;
-	size = 0;
 	trigger = 0;
 	while (ptr[i] != '\0')
 	{
-		if (ptr[i] == 34 || ptr[i] == 39)
-		{
-			size++;
-			i++;
-			while (ptr[i] != 34 && ptr[i] != 39)
-				i++;
-		}
-		else if (ptr[i] == ' ')
-			size++;
+		if (ptr[i] == 34 && trigger == 0)
+			trigger = 34;
+		else if (ptr[i] == 39 && trigger == 0)
+			trigger = 39;
+		else if (trigger != 0 && ptr[i] == 32)
+			ptr[i] = 7;
+		else if (ptr[i] == trigger)
+			trigger = 0;
 		i++;
 	}
-	return (size);
 }
 
-void	how_to_parse(char *ptr, int size)
+void	refix_quotes(char *ptr)
 {
 	int	i;
-	int	j;
+	int	trigger;
 
 	i = 0;
-	j = 0;
-	ito.metod = malloc(size * sizeof(int));
+	trigger = 0;
 	while (ptr[i] != '\0')
 	{
-		if (ptr[i] == 34 || ptr[i] == 39)
-		{
-			ito.metod[j++] = 1;
-			i++;
-			while (ptr[i] != 34 && ptr[i] != 39)
-				i++;
-		}
-		else if (ptr[i] == ' ')
-			ito.metod[j++] = 0;
+		if (ptr[i] == 34 && trigger == 0)
+			trigger = 34;
+		else if (ptr[i] == 39 && trigger == 0)
+			trigger = 39;
+		else if (trigger != 0 && ptr[i] == 7)
+			ptr[i] = ' ';
+		else if (ptr[i] == trigger)
+			trigger = 0;
 		i++;
 	}
 }
 
-// Até aqui funciona como planejado
-
-char *do_parse(char **ptr, int mode)
+void redirect(char **pars)
 {
-
-	if (mode == 0)
-	{
-
-		*ptr = ft_strdup(ft_strchr(*ptr, 34));
-	}
-	else if (mode == 1)
-	{
-
-		*ptr = ft_strdup(ft_strchr(*ptr, 34));
-	}
-
-}
-
-char	**slow_parsing(char *ptr, int size)
-{
-	int		i;
-	int		j;
-	char	**parsed;
+	int	i;
 
 	i = 0;
-	j = 0;
-	how_to_parse(ptr, size);
-	while (size != 0)
+	while (pars[i] != NULL)
 	{
-		parsed[j] = do_parse(&ptr, ito.metod[j]);
-		j++;
-		size--;
+		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
+		{
+			if (pars[i + 1] != NULL)
+				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+		}
+		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
+		{
+			if (pars[i + 1] != NULL)
+				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+		}
+		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
+		{
+			if (pars[i + 1] != NULL)
+				dup2(open(pars[i + 1], O_RDONLY, 0777), 0);
+		}
+		i++;
 	}
-	return (parsed);
 }
 
+int parsing(char *ptr)
+{
+	int	i;
+	int	quotes;
+
+	i = 0;
+	quotes = have_quotes(ptr);
+	if (quotes == -1)
+		return (write(2, "error\n", 6));
+	else if (quotes == 1)
+		fix_quotes(ptr);
+	ito.pars = ft_split(ptr, ' ');
+	while (1)
+	{
+		if (ito.pars[i] == NULL)
+			break;
+		if (ft_strchr(ito.pars[i], 7) != NULL)
+			refix_quotes(ito.pars[i]);
+		i++;
+	}
+	redirect(ito.pars);
+	return (0);
+}
+// Até aqui funciona como planejado
 
 int	main(void)
 {
 	int		i;
+	int		pid;
 	int		size;
 	char	*ptr;
 
+	i = 0;
 	ptr = readline("teste: ");
-	if (have_quotes(ptr) == -1)
-	{ write(2, "error\n", 6); return (1);}
-	else if (have_quotes(ptr) == 1)
-	{
-		size = full_size(ptr);
-		ito.pars = malloc ((size + 1) * sizeof(char *));
-		ito.pars = slow_parsing(ptr, size);
-	}
+	parsing(ptr);
+	pid = fork();
+	if (pid == 0)
+		command(getenv("PATH"), ito.pars[0]);
 	else
-		ito.pars = ft_split(ptr, ' ');
-	for (i=0; i != -1; i++)
-	{
-		if (ito.pars[i] == NULL)
-			break;
-		printf("%s\n", ito.pars[i]);
-	}
+		waitpid(pid, NULL, 0);
 	free_this(ito.pars);
 	free(ptr);
 	return (0);

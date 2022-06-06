@@ -14,7 +14,7 @@ INCLUDE		:=	$(foreach directory, $(HEADER_DIR), -I $(directory))
 
 SRC_DIR		:= ./src/
 
-SRC_FILE	:=  parsing.c
+SRC_FILE	:=  parsing.c command_utils.c
 
 SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))
 

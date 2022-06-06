@@ -8,11 +8,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/ioctl.h>
+#include <fcntl.h>
 #include "libft.h"
 
 typedef struct s_test {
 	char	**pars;
-	int		*metod;
 }				t_test;
 
 char	*find_path(char *cmd);
