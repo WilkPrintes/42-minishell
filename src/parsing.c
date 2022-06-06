@@ -1,21 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
+/*   Updated: 2022/06/07 00:53:58 by lucferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <signal.h>
 
-t_test ito;
-
-void	free_this(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (str == 0)
-		return ;
-	while (str[i])
-		free(str[i++]);
-	free(str);
-}
-
-int	have_quotes(char *ptr)
+static int	have_quotes(char *ptr)
 {
 	int	val;
 	int	i;
@@ -35,7 +33,7 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
-void	fix_quotes(char *ptr)
+static void	fix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
@@ -56,7 +54,7 @@ void	fix_quotes(char *ptr)
 	}
 }
 
-void	refix_quotes(char *ptr)
+static void	refix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
@@ -77,7 +75,7 @@ void	refix_quotes(char *ptr)
 	}
 }
 
-void redirect(char **pars)
+void	redirect(char **pars)
 {
 	int	i;
 
@@ -87,23 +85,24 @@ void redirect(char **pars)
 		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+				open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
 		}
 		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+				open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
 		}
 		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDONLY, 0777), 0);
+				open(pars[i + 1], O_RDONLY, 0777);
 		}
 		i++;
 	}
 }
 
-int parsing(char *ptr)
+
+int	parse(char *ptr, char **pars)
 {
 	int	i;
 	int	quotes;
@@ -114,36 +113,16 @@ int parsing(char *ptr)
 		return (write(2, "error\n", 6));
 	else if (quotes == 1)
 		fix_quotes(ptr);
-	ito.pars = ft_split(ptr, ' ');
+	pars = ft_split(ptr, ' ');
 	while (1)
 	{
-		if (ito.pars[i] == NULL)
+		if (pars[i] == NULL)
 			break;
-		if (ft_strchr(ito.pars[i], 7) != NULL)
-			refix_quotes(ito.pars[i]);
+		if (ft_strchr(pars[i], 7) != NULL)
+			refix_quotes(pars[i]);
 		i++;
 	}
-	redirect(ito.pars);
-	return (0);
-}
-// Até aqui funciona como planejado
-
-int	main(void)
-{
-	int		i;
-	int		pid;
-	int		size;
-	char	*ptr;
-
-	i = 0;
-	ptr = readline("teste: ");
-	parsing(ptr);
-	pid = fork();
-	if (pid == 0)
-		command(getenv("PATH"), ito.pars[0]);
-	else
-		waitpid(pid, NULL, 0);
-	free_this(ito.pars);
-	free(ptr);
+	refix_quotes(ptr);
+	redirect(pars);
 	return (0);
 }
