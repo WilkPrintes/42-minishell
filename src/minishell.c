@@ -27,11 +27,12 @@ void	func_doida(char **inate, t_data_var *data)
 	char	pwd[256];
 
 	getcwd(pwd, sizeof(pwd));
-	set_dir(&dir, pwd);
-	ito.ptr = readline(dir); // scanf diferenciado
+//	set_dir(&dir, pwd);
+	ito.ptr = readline("teste: "); // scanf diferenciado
 	if (ito.ptr == NULL)
 		close_shell(ito.ptr);
 	add_history(ito.ptr);
+	parse(ito.ptr, ito.pars);
 	if (is_built_in(inate, ito.ptr) == 1) //NOVO
 		exec_built_in(ito.ptr);
 	else if (ft_strncmp(ito.ptr, "clear", 5) == 0)
@@ -50,6 +51,7 @@ void	func_doida(char **inate, t_data_var *data)
 		else
 			waitpid(pid, NULL, 0);
 	}
+	free_this(ito.pars);
 	free(ito.ptr);
 }
 
@@ -101,7 +103,7 @@ int	main(void)
 		func_doida(inate, &data);
 }
 
-void set_dir(char **cd, char *pwd)
+void	set_dir(char **cd, char *pwd)
 {
 	char *minishell;
 	char *temp;
@@ -118,7 +120,7 @@ void set_dir(char **cd, char *pwd)
 	free(color);
 }
 
-void remove_dir(char **pwd)
+void	remove_dir(char **pwd)
 {
 	int		i;
 	int		len;

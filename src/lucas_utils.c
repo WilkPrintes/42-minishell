@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/06 19:48:47 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/06 21:26:14 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,66 +73,4 @@ void	free_this(char **str)
 	while (str[i])
 		free(str[i++]);
 	free(str);
-}
-
-int	have_quotes(char *ptr)
-{
-	int	val;
-	int	i;
-
-	val = 0;
-	i = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 || ptr[i] == 39)
-			val++;
-		i++;
-	}
-	if (val % 2 != 0)
-		return (-1);
-	else if (val == 0)
-		return (0);
-	return (1);
-}
-
-void	fix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 32)
-			ptr[i] = 7;
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
-}
-
-void	refix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 7)
-			ptr[i] = ' ';
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
 }
