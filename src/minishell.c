@@ -22,37 +22,39 @@ t_main	ito;
 
 void	func_doida(char **inate, t_data_var *data)
 {
+	char	*ptr;
 	int		pid;
 	char	*dir;
 	char	pwd[256];
 
 	getcwd(pwd, sizeof(pwd));
 	set_dir(&dir, pwd);
-	ito.ptr = readline(dir); // scanf diferenciado
-	if (ito.ptr == NULL)
-		close_shell(ito.ptr);
-	add_history(ito.ptr);
-	parse(ito.ptr, ito.pars);
-	if (is_built_in(inate, ito.ptr) == 1) //NOVO
-		exec_built_in(ito.ptr);
-	else if (ft_strncmp(ito.ptr, "clear", 5) == 0)
+	ptr = readline(dir); // scanf diferenciado
+	if (ptr == NULL)
+		close_shell(ptr);
+	add_history(ptr);
+	parse(ptr, &ito);
+	if (is_built_in(inate, ptr) == 1) //NOVO
+		exec_built_in(ptr);
+	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
-	else if (equalexist(ito.ptr) != -1)
-		var_func(ito.ptr, data);
-	else if (ft_strncmp(ito.ptr, "echo", 4) == 0)
-		echo(ito.ptr, data);
-	else if (ft_strncmp(ito.ptr, "unset", 5) == 0)
-		unset(ito.ptr, data);
-	else if (*ito.ptr)
+	else if (equalexist(ptr) != -1)
+		var_func(ptr, data);
+	else if (ft_strncmp(ptr, "echo", 4) == 0)
+		echo(ptr, data);
+	else if (ft_strncmp(ptr, "unset", 5) == 0)
+		unset(ptr, data);
+	else if (*ptr)
 	{
 		pid = fork();
 		if (pid == 0)
-			command(getenv("PATH"), ito.ptr);
+			command(getenv("PATH"), ptr);
 		else
 			waitpid(pid, NULL, 0);
 	}
-	free_this(ito.pars);
-	free(ito.ptr);
+	free_this(ito.cmds);
+	free_this(ito.resto);
+	free(ptr);
 }
 
 int	equalexist(char *ptr)
