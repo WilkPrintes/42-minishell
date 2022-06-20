@@ -12,8 +12,9 @@
 #include "libft.h"
 
 typedef struct s_main {
-	char	*ptr;
-	char	**pars;
+	char	**cmds;
+	char	**resto;
+	char	***tudo;
 }				t_main;
 
 typedef struct s_data_var{
@@ -41,7 +42,7 @@ int		is_built_in(char **fts, char *str);
 void	close_shell(char *ptr);
 int		exec_built_in(char *ptr);
 void	set_dir(char **cd, char *pwd);
-int		parse(char *ptr, char **pars);
+int		parse(char *ptr, t_main *bingo);
 void	redirect(char **pars);
 void	free_this(char **str);
 

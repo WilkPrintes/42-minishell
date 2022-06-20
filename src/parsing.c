@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/07 00:53:58 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/20 20:34:10 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,99 @@ void	redirect(char **pars)
 	}
 }
 
+int		number_of_commands(char *ptr)
+{
+	int	i;
+	int	count;
 
+	i = 0;
+	count = 1;
+	while (ptr[i] != '\0')
+	{
+		if (ptr[i] == '|')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int		cmd_malloc(char *ptr, int cmd_nb)
+{
+	int	i;
+	int	size;
+	int	trigger;
+
+	i = 0;
+	size = 0;
+	trigger = 1;
+	while (cmd_nb != 0)
+	{
+		if (ptr[i] == '|')
+			cmd_nb--;
+		i++;
+	}
+	while (ptr[i] != '\0' && ptr[i] != '|')
+	{
+		if (ptr[i] == ' ' && trigger == 1)
+			trigger = 0;
+		else if (ptr[i] == '-' && ft_isalpha(ptr[i + 1]))
+			trigger = 1;
+		if (trigger == 1)
+			size++;
+		i++;
+	}
+	return (size);
+}
+
+char	*cpy_cmd(char *ptr, int cmd_nb)
+{
+	int		i;
+	int		j;
+	char	*new;
+
+	i = 0;
+	j = 0;
+	new = calloc(cmd_malloc(ptr, cmd_nb), sizeof(char));
+	while (ptr[i] != '\0' && cmd_nb != 0)
+	{
+		if (ptr[i++] == '|')
+			cmd_nb--;
+	}
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+		new[j++] = ptr[i++];
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
+	{
+		if (ptr[i] == '-')
+		{
+			new[j++] = ' ';
+			while (ptr[i] != ' ' && ptr[i] != '\0' && ptr[i] != '|')
+				new[j++] = ptr[i++];
+		}
+		i++;
+	}
+	return (new);
+}
+
+int	parse(char *ptr, t_main *bingo)
+{
+	int	pipe;
+	int	i;
+
+	i = 0;
+	pipe = number_of_commands(ptr);
+	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
+	while (i != pipe)
+	{
+		bingo->cmds[i] = cpy_cmd(ptr, i);
+		i++;
+	}
+	bingo->cmds[pipe] = NULL;
+	bingo->tudo = malloc(3 * sizeof(char **));
+	bingo->tudo[0] = bingo->cmds;
+	bingo->tudo[2] = NULL;
+}
+
+/* Parse antigo pra não ter perigo de tudo dar errado
 int	parse(char *ptr, char **pars)
 {
 	int	i;
@@ -125,4 +217,4 @@ int	parse(char *ptr, char **pars)
 	refix_quotes(ptr);
 	redirect(pars);
 	return (0);
-}
+}*/
