@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/14 22:56:07 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/20 20:34:10 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ char	*cpy_cmd(char *ptr, int cmd_nb)
 
 	i = 0;
 	j = 0;
-	new = calloc(13, sizeof(char));
+	new = calloc(cmd_malloc(ptr, cmd_nb), sizeof(char));
 	while (ptr[i] != '\0' && cmd_nb != 0)
 	{
 		if (ptr[i++] == '|')
@@ -191,7 +191,6 @@ int	parse(char *ptr, t_main *bingo)
 	bingo->tudo = malloc(3 * sizeof(char **));
 	bingo->tudo[0] = bingo->cmds;
 	bingo->tudo[2] = NULL;
-
 }
 
 /* Parse antigo pra não ter perigo de tudo dar errado
