@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/20 20:34:10 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/20 20:57:54 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,21 +117,30 @@ int		number_of_commands(char *ptr)
 	return (count);
 }
 
+int		move_to_cmd(char *ptr, int cmd_nb)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i] != '\0' && cmd_nb != 0)
+	{
+		if (ptr[i++] == '|')
+			cmd_nb--;
+	}
+	while (!ft_isalpha(ptr[i]))
+		i++;
+	return (i);
+}
+
 int		cmd_malloc(char *ptr, int cmd_nb)
 {
 	int	i;
 	int	size;
 	int	trigger;
 
-	i = 0;
+	i = move_to_cmd(ptr, cmd_nb);
 	size = 0;
 	trigger = 1;
-	while (cmd_nb != 0)
-	{
-		if (ptr[i] == '|')
-			cmd_nb--;
-		i++;
-	}
 	while (ptr[i] != '\0' && ptr[i] != '|')
 	{
 		if (ptr[i] == ' ' && trigger == 1)
@@ -151,14 +160,10 @@ char	*cpy_cmd(char *ptr, int cmd_nb)
 	int		j;
 	char	*new;
 
-	i = 0;
+	i = move_to_cmd(ptr, cmd_nb);
 	j = 0;
 	new = calloc(cmd_malloc(ptr, cmd_nb), sizeof(char));
-	while (ptr[i] != '\0' && cmd_nb != 0)
-	{
-		if (ptr[i++] == '|')
-			cmd_nb--;
-	}
+	printf("%d\n", i);
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
 		new[j++] = ptr[i++];
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
@@ -186,6 +191,10 @@ int	parse(char *ptr, t_main *bingo)
 	{
 		bingo->cmds[i] = cpy_cmd(ptr, i);
 		i++;
+	}
+	for (i=0; i<2;i++)
+	{
+		printf("%s\n", bingo->cmds[i]);
 	}
 	bingo->cmds[pipe] = NULL;
 	bingo->tudo = malloc(3 * sizeof(char **));
