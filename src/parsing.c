@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
 /*   Updated: 2022/06/24 22:30:39 by lucferna         ###   ########.fr       */
@@ -227,5 +227,8 @@ int	parse(char *ptr, t_main *bingo)
 		printf("%s\n", bingo->cmds[i]);
 		i++;
 	}
-	bingo->cmds[pipe] = NULL ;
+	bingo->cmds[pipe] = NULL;
+	bingo->tudo = malloc(3 * sizeof(char **));
+	bingo->tudo[0] = bingo->cmds;
+	bingo->tudo[2] = NULL;
 }
