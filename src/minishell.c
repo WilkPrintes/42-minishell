@@ -17,6 +17,7 @@ void	set_dir(char **cd, char *pwd);
 void	remove_dir(char **pwd);
 int		equalexist(char *ptr);
 void 	emove_dir(char **pwd);
+int		find_pipes(char *ptr);
 
 t_main	ito;
 
@@ -34,7 +35,15 @@ void	func_doida(char **inate, t_data_var *data)
 		close_shell(ptr);
 	add_history(ptr);
 	parse(ptr, &ito);
-	if (is_built_in(inate, ptr) == 1) //NOVO
+	if (find_pipes(ptr) == 1)
+	{
+		pid = fork();
+		if (pid == 0)
+			pipex(ito.cmds);
+		else
+			waitpid(pid, NULL, 0);
+	}
+	else if (is_built_in(inate, ptr) == 1) //NOVO
 		exec_built_in(ptr);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
@@ -55,6 +64,21 @@ void	func_doida(char **inate, t_data_var *data)
 	free_this(ito.cmds);
 	free_this(ito.resto);
 	free(ptr);
+}
+
+int find_pipes(char *ptr)
+{
+	int len;
+
+	len = 0;
+
+	while(ptr[len] != '\0')
+	{
+		if (ptr[len] == '|')
+			return (1);
+		len++;
+	}
+	return (0);
 }
 
 int	equalexist(char *ptr)

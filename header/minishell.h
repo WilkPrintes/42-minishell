@@ -23,10 +23,19 @@ typedef struct s_data_var{
 	int		count_var;
 }				t_data_var;
 
+typedef struct s_data
+{
+	pid_t		pid1;
+	int			fd[2];
+	char		**cmd;
+	char		*path;
+}t_data;
+
 char	*find_path(char *cmd);
 void	command(char *envp, char *ptr);
 void	free_matriz(char ***buffer);
 void	error(void);
+int		pipex(char *argv[]);
 
 //Mudanças Wilk
 void var_func(char *ptr, t_data_var *data;);
@@ -35,6 +44,7 @@ void echo (char *ptr, t_data_var *data);
 void unset(char *ptr, t_data_var *data);
 int var_exists(t_data_var *data, char *name);
 int find_content(t_data_var *data, char *ptr, int i);
+int		equalexist(char *ptr);
 
 //Mudanças lucas
 char	**built_in_functions(void);

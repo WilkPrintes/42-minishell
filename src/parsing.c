@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/20 20:57:54 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/21 13:06:18 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ char	*cpy_cmd(char *ptr, int cmd_nb)
 	i = move_to_cmd(ptr, cmd_nb);
 	j = 0;
 	new = calloc(cmd_malloc(ptr, cmd_nb), sizeof(char));
-	printf("%d\n", i);
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
 		new[j++] = ptr[i++];
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
@@ -191,10 +190,6 @@ int	parse(char *ptr, t_main *bingo)
 	{
 		bingo->cmds[i] = cpy_cmd(ptr, i);
 		i++;
-	}
-	for (i=0; i<2;i++)
-	{
-		printf("%s\n", bingo->cmds[i]);
 	}
 	bingo->cmds[pipe] = NULL;
 	bingo->tudo = malloc(3 * sizeof(char **));
