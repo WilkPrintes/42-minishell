@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/21 13:06:18 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/06/24 22:30:39 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	redirect(char **pars)
 	}
 }
 
-int		number_of_commands(char *ptr)
+int	number_of_commands(char *ptr)
 {
 	int	i;
 	int	count;
@@ -117,7 +117,7 @@ int		number_of_commands(char *ptr)
 	return (count);
 }
 
-int		move_to_cmd(char *ptr, int cmd_nb)
+int	move_to_cmd(char *ptr, int cmd_nb)
 {
 	int	i;
 
@@ -132,26 +132,56 @@ int		move_to_cmd(char *ptr, int cmd_nb)
 	return (i);
 }
 
-int		cmd_malloc(char *ptr, int cmd_nb)
+int	full_size(char *args, int cmd_nb)
 {
 	int	i;
 	int	size;
-	int	trigger;
 
-	i = move_to_cmd(ptr, cmd_nb);
+	i = move_to_cmd(args, cmd_nb);
 	size = 0;
-	trigger = 1;
-	while (ptr[i] != '\0' && ptr[i] != '|')
+	while (args[i] != '\0' && args[i] != '|' && args[i++] != ' ')
+		size++;
+	while (args[i] != '\0' && args[i] != '|')
 	{
-		if (ptr[i] == ' ' && trigger == 1)
-			trigger = 0;
-		else if (ptr[i] == '-' && ft_isalpha(ptr[i + 1]))
-			trigger = 1;
-		if (trigger == 1)
+		if ((ft_isalnum(args[i]) || args[i] == '-') && args[i - 1] == ' ')
+		{
 			size++;
+			while (args[i] != '\0' && args[i] != '|' && args[i] != ' ')
+			{
+				i++;
+				size++;
+			}
+		}
+		if (args[i] == '|' || args[i] == '\0')
+			break ;
 		i++;
 	}
-	return (size);
+	return (size + 1);
+}
+
+void	add_args(char *cmd, char *ptr, int cmd_nb)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = move_to_cmd(ptr, cmd_nb);
+	while (cmd[j] != '\0')
+		j++;
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+		i++;
+	while (ptr[i] != '\0' && ptr[i] != '|')
+	{
+		if (ft_isalnum(ptr[i]) && ptr[i - 1] == ' ')
+		{
+			cmd[j++] = ' ';
+			while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+				cmd[j++] = ptr[i++];
+		}
+		if (ptr[i] == '|' || ptr[i] == '\0')
+			break ;
+		i++;
+	}
 }
 
 char	*cpy_cmd(char *ptr, int cmd_nb)
@@ -162,7 +192,7 @@ char	*cpy_cmd(char *ptr, int cmd_nb)
 
 	i = move_to_cmd(ptr, cmd_nb);
 	j = 0;
-	new = calloc(cmd_malloc(ptr, cmd_nb), sizeof(char));
+	new = calloc(full_size(ptr, cmd_nb), sizeof(char));
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
 		new[j++] = ptr[i++];
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
@@ -175,6 +205,7 @@ char	*cpy_cmd(char *ptr, int cmd_nb)
 		}
 		i++;
 	}
+	add_args(new, ptr, cmd_nb);
 	return (new);
 }
 
@@ -183,12 +214,17 @@ int	parse(char *ptr, t_main *bingo)
 	int	pipe;
 	int	i;
 
+	if (have_quotes(ptr) == -1)
+		return (write(2, "error\n", 6));
+	fix_quotes(ptr);
 	i = 0;
 	pipe = number_of_commands(ptr);
 	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{
 		bingo->cmds[i] = cpy_cmd(ptr, i);
+		refix_quotes(bingo->cmds[i]);
+		printf("%s\n", bingo->cmds[i]);
 		i++;
 	}
 	bingo->cmds[pipe] = NULL;
@@ -196,29 +232,3 @@ int	parse(char *ptr, t_main *bingo)
 	bingo->tudo[0] = bingo->cmds;
 	bingo->tudo[2] = NULL;
 }
-
-/* Parse antigo pra não ter perigo de tudo dar errado
-int	parse(char *ptr, char **pars)
-{
-	int	i;
-	int	quotes;
-
-	i = 0;
-	quotes = have_quotes(ptr);
-	if (quotes == -1)
-		return (write(2, "error\n", 6));
-	else if (quotes == 1)
-		fix_quotes(ptr);
-	pars = ft_split(ptr, ' ');
-	while (1)
-	{
-		if (pars[i] == NULL)
-			break;
-		if (ft_strchr(pars[i], 7) != NULL)
-			refix_quotes(pars[i]);
-		i++;
-	}
-	refix_quotes(ptr);
-	redirect(pars);
-	return (0);
-}*/

@@ -13,8 +13,6 @@
 
 typedef struct s_main {
 	char	**cmds;
-	char	**resto;
-	char	***tudo;
 }				t_main;
 
 typedef struct s_data_var{

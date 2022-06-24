@@ -53,16 +53,15 @@ void	func_doida(char **inate, t_data_var *data)
 		echo(ptr, data);
 	else if (ft_strncmp(ptr, "unset", 5) == 0)
 		unset(ptr, data);
-	else if (*ptr)
+/* 	else if (*ptr)
 	{
 		pid = fork();
 		if (pid == 0)
 			command(getenv("PATH"), ptr);
 		else
 			waitpid(pid, NULL, 0);
-	}
+	} */
 	free_this(ito.cmds);
-	free_this(ito.resto);
 	free(ptr);
 }
 
