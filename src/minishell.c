@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 void	set_dir(char **cd, char *pwd);
 void	remove_dir(char **pwd);
 int		equalexist(char *ptr);
 void 	emove_dir(char **pwd);
 int		find_pipes(char *ptr);
+int		init_vars(t_data_var *data, char *envp[]);
 
 t_main	ito;
 
@@ -53,14 +53,14 @@ void	func_doida(char **inate, t_data_var *data)
 		echo(ptr, data);
 	else if (ft_strncmp(ptr, "unset", 5) == 0)
 		unset(ptr, data);
-/* 	else if (*ptr)
+ 	else if (*ptr) //caso não seja nenhuma das funções criadas (como cat)
 	{
 		pid = fork();
 		if (pid == 0)
 			command(getenv("PATH"), ptr);
 		else
 			waitpid(pid, NULL, 0);
-	} */
+	}
 	free_this(ito.cmds);
 	free(ptr);
 }
@@ -111,7 +111,7 @@ void	handi(int signum)
 	return ;
 }
 
-int	main(void)
+int	main(int argc, char **argv, char *envp[])
 {
 	char				**inate;
 	struct sigaction	sa;
@@ -121,11 +121,30 @@ int	main(void)
 	inate = built_in_functions();
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
-	data.count_var = 0;
 	data.names = malloc(sizeof(char *) * 1024); //temporário, só pra dizer que funciona :D
 	data.contents = malloc(sizeof(char *) * 1024);
+	data.count_var = init_vars(&data, envp);
 	while (1)
 		func_doida(inate, &data);
+}
+
+int init_vars(t_data_var *data, char *envp[])
+{
+	int len;
+	int char_p;
+	int envp_len;
+
+	len = 0;
+	char_p = 0;
+	while (envp[len] != NULL)
+	{
+		char_p = find_caracter(envp[len], '=');
+		envp_len = strlen(envp[len]);
+		data->names[len] = ft_substr(envp[len], 0, char_p);
+		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
+		len++;
+	}
+	return (len);
 }
 
 void	set_dir(char **cd, char *pwd)

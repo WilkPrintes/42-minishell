@@ -10,6 +10,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include "libft.h"
+#include <signal.h>
 
 typedef struct s_main {
 	char	**cmds;
