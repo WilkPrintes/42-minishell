@@ -34,6 +34,7 @@ void	var_func(char *ptr, t_data_var *data) //coloca as varíaveis no data_vars
 	{
 		data->names[i] = ft_strdup(name);
 		data->contents[i] = ft_substr(ptr, p + 1, len);
+		data->global[i] = 0;
 		data->count_var++;
 	}
 	free(name);
@@ -57,6 +58,24 @@ int find_content(t_data_var *data, char *ptr, int i)
 	len = ft_strlen(name);
 	free(name);
 	return (len);
+}
+
+int find_index(t_data_var *data, char *ptr)
+{
+	int i;
+	char *temp;
+	int	len;
+
+	i = 0;	
+	while(i < data->count_var)
+	{
+		temp = ft_strdup(data->names[i]);
+		len = ft_strlen(data->names[i]);
+		if (ft_strncmp(data->names[i], ptr, len) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 int var_exists(t_data_var *data, char *name)

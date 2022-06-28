@@ -57,11 +57,15 @@ void	func_doida(char **inate, t_data_var *data)
 		echo(ptr, data);
 	else if (ft_strncmp(ptr, "unset", 5) == 0)
 		unset(ptr, data);
+	else if (ft_strncmp(ptr, "env", 3) == 0)
+		env(data);
+	else if (ft_strncmp(ptr, "export", 6) == 0)
+		ft_export(data, ptr);
  	else if (*ptr) //caso não seja nenhuma das funções criadas (como cat)
 	{
 		pid = fork();
 		if (pid == 0)
-			command(getenv("PATH"), ptr);
+			command(data->contents[find_index(data, "PATH")], ptr);
 		else
 			waitpid(pid, &status, 0);
 	}
@@ -128,6 +132,7 @@ int	main(int argc, char **argv, char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	data.names = malloc(sizeof(char *) * 1024); //temporário, só pra dizer que funciona :D
 	data.contents = malloc(sizeof(char *) * 1024);
+	data.global = malloc(sizeof(int *) * 1024);
 	data.count_var = init_vars(&data, envp);
 	data.i_status = data.count_var - 1;
 	while (1)
@@ -148,10 +153,12 @@ int init_vars(t_data_var *data, char *envp[])
 		envp_len = strlen(envp[len]);
 		data->names[len] = ft_substr(envp[len], 0, char_p);
 		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
+		data->global[len] = 1;
 		len++;
 	}
 	data->names[len] = "?";
 	data->contents[len] = "0";
+	data->global[len] = 0;
 	len++;
 	return (len);
 }

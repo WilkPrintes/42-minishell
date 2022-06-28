@@ -9,8 +9,8 @@
 #include <sys/wait.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
-#include "libft.h"
 #include <signal.h>
+#include "libft.h"
 
 typedef struct s_main {
 	char	**cmds;
@@ -21,6 +21,7 @@ typedef struct s_data_var{
 	char	**contents;
 	int		count_var;
 	int		i_status;
+	int		*global;
 }				t_data_var;
 
 typedef struct s_data
@@ -31,7 +32,7 @@ typedef struct s_data
 	char		*path;
 }t_data;
 
-char	*find_path(char *cmd);
+char	*find_path(char *cmd, char *envp);
 void	command(char *envp, char *ptr);
 void	free_matriz(char ***buffer);
 void	error(void);
@@ -45,6 +46,9 @@ void unset(char *ptr, t_data_var *data);
 int var_exists(t_data_var *data, char *name);
 int find_content(t_data_var *data, char *ptr, int i);
 int		equalexist(char *ptr);
+int find_index(t_data_var *data, char *ptr);
+void env(t_data_var *data);
+void ft_export(t_data_var *data, char *name);
 
 //Mudanças lucas
 char	**built_in_functions(void);

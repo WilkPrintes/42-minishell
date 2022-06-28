@@ -12,14 +12,16 @@
 
 #include "minishell.h"
 
-char	*find_path(char *cmd)
+char	*find_path(char *cmd, char *envp)
 {
 	char	**paths;
 	char	*path;
 	int		i;
 	char	*part_path;
 
-	paths = ft_split(getenv("PATH"), ':');
+	if (!envp)
+		return (NULL);
+	paths = ft_split(envp, ':');
 	i = 0;
 	while (paths[i])
 	{
@@ -44,7 +46,7 @@ void	command(char *envp, char *ptr)
 	char **cmd;
 
 	cmd = ft_split(ptr, ' ');
-	path = find_path(cmd[0]);
+	path = find_path(cmd[0], envp);
 	if (!path)
 	{
 		ft_putstr_fd(cmd[0], 2);

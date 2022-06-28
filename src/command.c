@@ -16,19 +16,19 @@ void	echo (char *ptr, t_data_var *data)
 {
 	int	len;
 	int	i;
-	int	flag;
+	int	path;
 
+	path = find_index(data, "PATH");
+	if (!data->contents[path])
+	{
+		printf("echo: command not found\n");
+		return ;
+	}
 	len = ft_strlen(ptr);
 	if (ft_strncmp(ptr, "echo -n", 7) == 0)
-	{
-		flag = 1;
 		i = 8;
-	}
 	else
-	{
-		flag = 0;
 		i = 5;
-	}
 	while (i < len)
 	{
 		if (ptr[i] != '$')
@@ -37,29 +37,48 @@ void	echo (char *ptr, t_data_var *data)
 			i = i + find_content(data, ptr, i);
 		i++;
 	}
-	if (flag == 0)
+	if (ft_strncmp(ptr+5, "-n", 2) != 0)
 		printf("\n");
 }
 
 void	unset(char *ptr, t_data_var *data)
 {
-	int		exists;
-	char	*name_temp;
-	char	*content_temp;
+	int index;
 
-	exists = var_exists(data, ptr+6);
-	if (exists != -1)
+	index = find_index(data, ptr+6);
+	if (index != -1)
+		data->contents[index] = NULL;
+}
+
+void env(t_data_var *data)
+{
+	int i;
+	int path;
+
+	path = find_index(data, "PATH");
+	if (!data->contents[path])
 	{
-		while (exists < data->count_var - 1)
-		{
-			name_temp = ft_strdup(data->names[exists + 1]);
-			content_temp = ft_strdup(data->contents[exists + 1]);
-			data->names[exists] = ft_strdup(name_temp);
-			data->contents[exists] = ft_strdup(content_temp);
-			free(name_temp);
-			free(content_temp);
-			exists++;
-		}
-		data->count_var--;
+		printf("env: command not found\n");
+		return ;
 	}
+	while (i < data->count_var)
+	{
+		if (data->global[i] == 1)
+		{
+			printf("%s=", data->names[i]);
+			printf("%s\n", data->contents[i]);
+		}
+		i++;
+	}
+}
+
+void ft_export(t_data_var *data, char *name)
+{
+	char *temp;
+	int	index;
+
+	temp = ft_substr(name, 7, ft_strlen(name));
+	index = find_index(data, temp);
+	if (index != -1)
+		data->global[index] = 1;
 }
