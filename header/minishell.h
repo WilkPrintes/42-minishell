@@ -20,6 +20,7 @@ typedef struct s_data_var{
 	char	**names;
 	char	**contents;
 	int		count_var;
+	int		i_status;
 }				t_data_var;
 
 typedef struct s_data

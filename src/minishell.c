@@ -27,7 +27,11 @@ void	func_doida(char **inate, t_data_var *data)
 	int		pid;
 	char	*dir;
 	char	pwd[256];
+	int		i_status;
+	int		status;
 
+	i_status = data->i_status;
+	status = 0;
 	getcwd(pwd, sizeof(pwd));
 	set_dir(&dir, pwd);
 	ptr = readline(dir); // scanf diferenciado
@@ -41,7 +45,7 @@ void	func_doida(char **inate, t_data_var *data)
 		if (pid == 0)
 			pipex(ito.cmds);
 		else
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &status, 0);
 	}
 	else if (is_built_in(inate, ptr) == 1) //NOVO
 		exec_built_in(ptr);
@@ -59,8 +63,9 @@ void	func_doida(char **inate, t_data_var *data)
 		if (pid == 0)
 			command(getenv("PATH"), ptr);
 		else
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &status, 0);
 	}
+	data->contents[i_status] = ft_itoa(status);
 	free_this(ito.cmds);
 	free(ptr);
 }
@@ -124,6 +129,7 @@ int	main(int argc, char **argv, char *envp[])
 	data.names = malloc(sizeof(char *) * 1024); //temporário, só pra dizer que funciona :D
 	data.contents = malloc(sizeof(char *) * 1024);
 	data.count_var = init_vars(&data, envp);
+	data.i_status = data.count_var - 1;
 	while (1)
 		func_doida(inate, &data);
 }
@@ -144,6 +150,9 @@ int init_vars(t_data_var *data, char *envp[])
 		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
 		len++;
 	}
+	data->names[len] = "?";
+	data->contents[len] = "0";
+	len++;
 	return (len);
 }
 
