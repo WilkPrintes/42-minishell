@@ -36,7 +36,7 @@ void	error(void);
 int		pipex(char *argv[]);
 
 //Mudanças Wilk
-void var_func(char *ptr, t_data_var *data;);
+void var_func(char *ptr, t_data_var *data);
 int find_caracter(char *ptr, char caracter);
 void echo (char *ptr, t_data_var *data);
 void unset(char *ptr, t_data_var *data);
@@ -45,13 +45,20 @@ int find_content(t_data_var *data, char *ptr, int i);
 int		equalexist(char *ptr);
 
 //Mudanças lucas
-char	**built_in_functions(void);
-int		is_built_in(char **fts, char *str);
+/* char	**built_in_functions(void); */
+/* int		is_built_in(char **fts, char *str); */
 void	close_shell(char *ptr);
-int		exec_built_in(char *ptr);
-void	set_dir(char **cd, char *pwd);
+/* int		exec_built_in(char *ptr); */
+/* void	set_dir(char **cd, char *pwd); */
 int		parse(char *ptr, t_main *bingo);
 void	redirect(char **pars);
 void	free_this(char **str);
+
+int	ft_isargument(int c);
+int	move_to_cmd(char *ptr, int cmd_nb);
+int	number_of_commands(char *ptr);
+int		have_quotes(char *ptr);
+void	fix_quotes(char *ptr);
+void	refix_quotes(char *ptr);
 
 #endif

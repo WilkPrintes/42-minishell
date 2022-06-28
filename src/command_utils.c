@@ -28,10 +28,14 @@ char	*find_path(char *cmd)
 
 void	command(char *envp, char *ptr)
 {
-	char *path;
-	char **cmd;
+	int		i;
+	char	*path;
+	char	**cmd;
 
+	i = 0;
 	cmd = ft_split(ptr, ' ');
+	while (cmd[i] != NULL)
+		refix_quotes(cmd[i++]);
 	path = find_path(cmd[0]);
 	if (!path)
 	{
@@ -65,4 +69,19 @@ void	error(void)
 {
 	perror("Error");
 	exit (EXIT_FAILURE);
+}
+
+int	move_to_cmd(char *ptr, int cmd_nb)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i] != '\0' && cmd_nb != 0)
+	{
+		if (ptr[i++] == '|')
+			cmd_nb--;
+	}
+	while (!ft_isargument(ptr[i]))
+		i++;
+	return (i);
 }

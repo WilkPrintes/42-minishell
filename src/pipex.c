@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:53:45 by wprintes          #+#    #+#             */
-/*   Updated: 2022/06/23 12:47:58 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/06/28 23:08:05 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	pipex(char *argv[])
 	}
 	return (0);
 }
-
 
 void	first_command(char **argv, t_data *data)
 {
