@@ -54,9 +54,10 @@ int		parse(char *ptr, t_main *bingo);
 void	redirect(char **pars);
 void	free_this(char **str);
 
-int	ft_isargument(int c);
-int	move_to_cmd(char *ptr, int cmd_nb);
-int	number_of_commands(char *ptr);
+char	*remove_quotes(char *ptr, int quote);
+int		ft_isargument(int c);
+int		move_to_cmd(char *ptr, int cmd_nb);
+int		number_of_commands(char *ptr);
 int		have_quotes(char *ptr);
 void	fix_quotes(char *ptr);
 void	refix_quotes(char *ptr);

@@ -29,13 +29,18 @@ char	*find_path(char *cmd)
 void	command(char *envp, char *ptr)
 {
 	int		i;
+	int	j;
 	char	*path;
 	char	**cmd;
 
 	i = 0;
 	cmd = ft_split(ptr, ' ');
 	while (cmd[i] != NULL)
+	{
+		if (have_quotes(cmd[i]) == 1)
+			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
 		refix_quotes(cmd[i++]);
+	}
 	path = find_path(cmd[0]);
 	if (!path)
 	{

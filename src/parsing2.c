@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/28 22:55:40 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/06/29 17:22:09 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,12 @@ void	fix_quotes(char *ptr)
 void	refix_quotes(char *ptr)
 {
 	int	i;
-	int	trigger;
 
 	i = 0;
-	trigger = 0;
 	while (ptr[i] != '\0')
 	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 7)
+		if (ptr[i] == 7)
 			ptr[i] = ' ';
-		else if (ptr[i] == trigger)
-			trigger = 0;
 		i++;
 	}
 }
