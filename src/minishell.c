@@ -11,31 +11,34 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 int		equalexist(char *ptr);
 int		find_pipes(char *ptr);
 
-t_main	ito;
+t_main	g_ito;
 
 void	func_doida(t_data_var *data)
 {
 	char	*ptr;
 	int		pid;
 	char	pwd[256];
+	int		i_status;
+	int		status;
 
+	i_status = data->i_status;
+	status = 0;
 	ptr = readline("minishell: ");
 	if (ptr == NULL)
 		close_shell(ptr);
 	add_history(ptr);
-	parse(ptr, &ito);
+	parse(ptr, &g_ito);
 	if (find_pipes(ptr) == 1)
 	{
 		pid = fork();
 		if (pid == 0)
-			pipex(ito.cmds);
+			pipex(g_ito.cmds);
 		else
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &status, 0);
 	}
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
@@ -45,16 +48,29 @@ void	func_doida(t_data_var *data)
 		echo(ptr, data);
 	else if (ft_strncmp(ptr, "unset", 5) == 0)
 		unset(ptr, data);
-	free_this(ito.cmds);
+	else if (ft_strncmp(ptr, "env", 3) == 0)
+		env(data);
+	else if (ft_strncmp(ptr, "export", 6) == 0)
+		ft_export(data, ptr);
+	else if (*ptr)
+	{
+		pid = fork();
+		if (pid == 0)
+			command(data->contents[find_index(data, "PATH")], ptr);
+		else
+			waitpid(pid, &status, 0);
+	}
+	data->contents[i_status] = ft_itoa(status);
+	free_this(g_ito.cmds);
 	free(ptr);
 }
 
-int find_pipes(char *ptr)
+int	find_pipes(char *ptr)
 {
-	int len;
+	int	len;
 
 	len = 0;
-	while(ptr[len] != '\0')
+	while (ptr[len] != '\0')
 	{
 		if (ptr[len] == '|')
 			return (1);
@@ -94,16 +110,25 @@ void	handi(int signum)
 	return ;
 }
 
-int	main(void)
+int	main(int argc, char **argv, char *envp[])
 {
 	t_data_var			data;
 
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
+<<<<<<< HEAD
 	data.count_var = 0;
+=======
+>>>>>>> master
 	data.names = malloc(sizeof(char *) * 1024);
 	data.contents = malloc(sizeof(char *) * 1024);
+	data.global = malloc(sizeof(int *) * 1024);
+	data.count_var = init_vars(&data, envp);
+	data.i_status = data.count_var - 1;
 	while (1)
 		func_doida(&data);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master

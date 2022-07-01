@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
+/*   Updated: 2022/07/01 18:57:31 by lucferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	*find_path(char *cmd)
+char	*find_path(char *cmd, char *envp)
 {
 	char	**paths;
 	char	*path;
 	int		i;
 	char	*part_path;
 
-	paths = ft_split(getenv("PATH"), ':');
+	if (!envp)
+		return (NULL);
+	paths = ft_split(envp, ':');
 	i = 0;
 	while (paths[i])
 	{
@@ -46,7 +60,7 @@ void	command(char *envp, char *ptr)
 	{
 		ft_putstr_fd(cmd[0], 2);
 		free_matriz(&cmd);
-		ft_putstr_fd(" command not found\n", 2);
+		ft_putstr_fd(": command not found\n", 2);
 		exit(127);
 	}
 	if (execve(path, cmd, NULL) == -1)
