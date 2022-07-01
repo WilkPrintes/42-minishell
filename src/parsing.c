@@ -3,135 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/25 12:00:35 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/01 19:01:56 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	have_quotes(char *ptr)
-{
-	int	val;
-	int	i;
 
-	val = 0;
-	i = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 || ptr[i] == 39)
-			val++;
-		i++;
-	}
-	if (val % 2 != 0)
-		return (-1);
-	else if (val == 0)
+int	ft_isargument(int c)
+{
+	if (ft_isalnum(c) == 1)
+		return (1);
+	else if (c == 39 || c == 34)
+		return (1);
+	else
 		return (0);
-	return (1);
 }
 
-static void	fix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 32)
-			ptr[i] = 7;
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
-}
-
-static void	refix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 7)
-			ptr[i] = ' ';
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
-}
-
-void	redirect(char **pars)
-{
-	int	i;
-
-	i = 0;
-	while (pars[i] != NULL)
-	{
-		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
-		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
-		}
-		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
-		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
-		}
-		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
-		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDONLY, 0777);
-		}
-		i++;
-	}
-}
-
-int	number_of_commands(char *ptr)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 1;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == '|')
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-int	move_to_cmd(char *ptr, int cmd_nb)
-{
-	int	i;
-
-	i = 0;
-	while (ptr[i] != '\0' && cmd_nb != 0)
-	{
-		if (ptr[i++] == '|')
-			cmd_nb--;
-	}
-	while (!ft_isalpha(ptr[i]))
-		i++;
-	return (i);
-}
-
-int	full_size(char *args, int cmd_nb)
+static int	full_size(char *args, int cmd_nb)
 {
 	int	i;
 	int	size;
@@ -142,7 +34,7 @@ int	full_size(char *args, int cmd_nb)
 		size++;
 	while (args[i] != '\0' && args[i] != '|')
 	{
-		if ((ft_isalnum(args[i]) || args[i] == '-') && args[i - 1] == ' ')
+		if ((ft_isargument(args[i]) || args[i] == '-') && args[i - 1] == ' ')
 		{
 			size++;
 			while (args[i] != '\0' && args[i] != '|' && args[i] != ' ')
@@ -158,7 +50,7 @@ int	full_size(char *args, int cmd_nb)
 	return (size + 1);
 }
 
-void	add_args(char *cmd, char *ptr, int cmd_nb)
+static void	add_args(char *cmd, char *ptr, int cmd_nb)
 {
 	int	i;
 	int	j;
@@ -171,7 +63,7 @@ void	add_args(char *cmd, char *ptr, int cmd_nb)
 		i++;
 	while (ptr[i] != '\0' && ptr[i] != '|')
 	{
-		if (ft_isalnum(ptr[i]) && ptr[i - 1] == ' ')
+		if (ft_isargument(ptr[i]) && ptr[i - 1] == ' ')
 		{
 			cmd[j++] = ' ';
 			while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
@@ -183,7 +75,7 @@ void	add_args(char *cmd, char *ptr, int cmd_nb)
 	}
 }
 
-char	*cpy_cmd(char *ptr, int cmd_nb)
+static char	*cpy_cmd(char *ptr, int cmd_nb)
 {
 	int		i;
 	int		j;
@@ -214,7 +106,7 @@ int	parse(char *ptr, t_main *bingo)
 	int	i;
 
 	if (have_quotes(ptr) == -1)
-		return (write(2, "error\n", 6));
+		return (write(2, "Error\n", 6));
 	fix_quotes(ptr);
 	i = 0;
 	pipe = number_of_commands(ptr);
@@ -222,8 +114,8 @@ int	parse(char *ptr, t_main *bingo)
 	while (i != pipe)
 	{
 		bingo->cmds[i] = cpy_cmd(ptr, i);
-		refix_quotes(bingo->cmds[i]);
 		i++;
 	}
 	bingo->cmds[pipe] = NULL;
+	return (1);
 }
