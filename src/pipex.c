@@ -34,7 +34,6 @@ int	pipex(char *argv[])
 	return (0);
 }
 
-
 void	first_command(char **argv, t_data *data)
 {
 	dup2(data->fd[1], STDOUT_FILENO);

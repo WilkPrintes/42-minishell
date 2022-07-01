@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	echo (char *ptr, t_data_var *data)
+void	echo(char *ptr, t_data_var *data)
 {
 	int	len;
 	int	i;
@@ -37,23 +37,23 @@ void	echo (char *ptr, t_data_var *data)
 			i = i + find_content(data, ptr, i);
 		i++;
 	}
-	if (ft_strncmp(ptr+5, "-n", 2) != 0)
+	if (ft_strncmp(ptr + 5, "-n", 2) != 0)
 		printf("\n");
 }
 
 void	unset(char *ptr, t_data_var *data)
 {
-	int index;
+	int	index;
 
-	index = find_index(data, ptr+6);
+	index = find_index(data, ptr + 6);
 	if (index != -1)
 		data->contents[index] = NULL;
 }
 
-void env(t_data_var *data)
+void	env(t_data_var *data)
 {
-	int i;
-	int path;
+	int	i;
+	int	path;
 
 	path = find_index(data, "PATH");
 	if (!data->contents[path])
@@ -72,10 +72,10 @@ void env(t_data_var *data)
 	}
 }
 
-void ft_export(t_data_var *data, char *name)
+void	ft_export(t_data_var *data, char *name)
 {
-	char *temp;
-	int	index;
+	char	*temp;
+	int		index;
 
 	temp = ft_substr(name, 7, ft_strlen(name));
 	index = find_index(data, temp);

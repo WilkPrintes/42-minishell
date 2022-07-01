@@ -42,8 +42,8 @@ char	*find_path(char *cmd, char *envp)
 
 void	command(char *envp, char *ptr)
 {
-	char *path;
-	char **cmd;
+	char	*path;
+	char	**cmd;
 
 	cmd = ft_split(ptr, ' ');
 	path = find_path(cmd[0], envp);
