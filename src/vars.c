@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	var_func(char *ptr, t_data_var *data) //coloca as varíaveis no data_vars
+void	var_func(char *ptr, t_data_var *data)
 {
 	int		p;
 	int		i;
@@ -25,7 +25,7 @@ void	var_func(char *ptr, t_data_var *data) //coloca as varíaveis no data_vars
 	len = ft_strlen(ptr);
 	name = ft_substr(ptr, 0, p);
 	exists = var_exists(data, name);
-	if (i > 0 && exists != -1) //verifica se a varíavel já existe
+	if (i > 0 && exists != -1)
 	{
 		free(data->contents[exists]);
 		data->contents[exists] = ft_substr(ptr, p + 1, len);

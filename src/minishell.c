@@ -18,7 +18,7 @@ int		find_pipes(char *ptr);
 
 t_main	ito;
 
-void	func_doida(/* char **inate,  */t_data_var *data)
+void	func_doida(t_data_var *data)
 {
 	char	*ptr;
 	int		pid;
@@ -37,8 +37,6 @@ void	func_doida(/* char **inate,  */t_data_var *data)
 		else
 			waitpid(pid, NULL, 0);
 	}
-/* 	else if (is_built_in(inate, ptr) == 1)
-		exec_built_in(ptr); */
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
@@ -98,18 +96,14 @@ void	handi(int signum)
 
 int	main(void)
 {
-/* 	char				**inate;
-	struct sigaction	sa; */
 	t_data_var			data;
 
-/* 	sa.sa_handler = handi;
-	inate = built_in_functions(); */
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
 	data.count_var = 0;
 	data.names = malloc(sizeof(char *) * 1024);
 	data.contents = malloc(sizeof(char *) * 1024);
 	while (1)
-		func_doida(/* inate,  */&data);
+		func_doida(&data);
 }
 
