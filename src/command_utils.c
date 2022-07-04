@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/01 18:57:31 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:23:53 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*find_path(char *cmd, char *envp)
 void	command(char *envp, char *ptr)
 {
 	int		i;
-	int	j;
 	char	*path;
 	char	**cmd;
 
@@ -55,7 +54,8 @@ void	command(char *envp, char *ptr)
 			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
 		refix_quotes(cmd[i++]);
 	}
-	path = find_path(cmd[0]);
+	redirect(cmd);
+	path = find_path(cmd[0], envp);
 	if (!path)
 	{
 		ft_putstr_fd(cmd[0], 2);

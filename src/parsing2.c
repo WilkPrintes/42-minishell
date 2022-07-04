@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/29 17:22:09 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:28:47 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,17 @@ void	redirect(char **pars)
 		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
 		}
 		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
+				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
 		}
 		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDONLY, 0777);
+				dup2(open(pars[i + 1], O_RDONLY, 0777), 0);
 		}
 		i++;
 	}

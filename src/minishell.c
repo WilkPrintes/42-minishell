@@ -86,49 +86,26 @@ int	equalexist(char *ptr)
 	return (find_caracter(ptr, '='));
 }
 
-int	find_caracter(char *ptr, char caracter)
-{
-	int	ptr_len;
-	int	i;
-
-	ptr_len = ft_strlen(ptr);
-	i = 0;
-	while (i < ptr_len)
-	{
-		if (ptr[i] == caracter)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 void	handi(int signum)
 {
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
-	return ;
 }
 
 int	main(int argc, char **argv, char *envp[])
 {
 	t_data_var			data;
 
-	signal(SIGINT, handi);
+	signal(SIGINT, &handi);
 	signal(SIGQUIT, SIG_IGN);
-<<<<<<< HEAD
 	data.count_var = 0;
-=======
->>>>>>> master
 	data.names = malloc(sizeof(char *) * 1024);
 	data.contents = malloc(sizeof(char *) * 1024);
 	data.global = malloc(sizeof(int *) * 1024);
 	data.count_var = init_vars(&data, envp);
 	data.i_status = data.count_var - 1;
+	int pid;
 	while (1)
 		func_doida(&data);
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
