@@ -1,21 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
+/*   Updated: 2022/06/25 12:00:35 by wprintes         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <signal.h>
 
-t_test ito;
-
-void	free_this(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (str == 0)
-		return ;
-	while (str[i])
-		free(str[i++]);
-	free(str);
-}
-
-int	have_quotes(char *ptr)
+static int	have_quotes(char *ptr)
 {
 	int	val;
 	int	i;
@@ -35,7 +32,7 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
-void	fix_quotes(char *ptr)
+static void	fix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
@@ -56,7 +53,7 @@ void	fix_quotes(char *ptr)
 	}
 }
 
-void	refix_quotes(char *ptr)
+static void	refix_quotes(char *ptr)
 {
 	int	i;
 	int	trigger;
@@ -77,7 +74,7 @@ void	refix_quotes(char *ptr)
 	}
 }
 
-void redirect(char **pars)
+void	redirect(char **pars)
 {
 	int	i;
 
@@ -87,63 +84,146 @@ void redirect(char **pars)
 		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+				open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
 		}
 		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+				open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
 		}
 		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
 		{
 			if (pars[i + 1] != NULL)
-				dup2(open(pars[i + 1], O_RDONLY, 0777), 0);
+				open(pars[i + 1], O_RDONLY, 0777);
 		}
 		i++;
 	}
 }
 
-int parsing(char *ptr)
+int	number_of_commands(char *ptr)
 {
 	int	i;
-	int	quotes;
+	int	count;
 
 	i = 0;
-	quotes = have_quotes(ptr);
-	if (quotes == -1)
-		return (write(2, "error\n", 6));
-	else if (quotes == 1)
-		fix_quotes(ptr);
-	ito.pars = ft_split(ptr, ' ');
-	while (1)
+	count = 1;
+	while (ptr[i] != '\0')
 	{
-		if (ito.pars[i] == NULL)
-			break;
-		if (ft_strchr(ito.pars[i], 7) != NULL)
-			refix_quotes(ito.pars[i]);
+		if (ptr[i] == '|')
+			count++;
 		i++;
 	}
-	redirect(ito.pars);
-	return (0);
+	return (count);
 }
-// Até aqui funciona como planejado
 
-int	main(void)
+int	move_to_cmd(char *ptr, int cmd_nb)
 {
-	int		i;
-	int		pid;
-	int		size;
-	char	*ptr;
+	int	i;
 
 	i = 0;
-	ptr = readline("teste: ");
-	parsing(ptr);
-	pid = fork();
-	if (pid == 0)
-		command(getenv("PATH"), ito.pars[0]);
-	else
-		waitpid(pid, NULL, 0);
-	free_this(ito.pars);
-	free(ptr);
-	return (0);
+	while (ptr[i] != '\0' && cmd_nb != 0)
+	{
+		if (ptr[i++] == '|')
+			cmd_nb--;
+	}
+	while (!ft_isalpha(ptr[i]))
+		i++;
+	return (i);
+}
+
+int	full_size(char *args, int cmd_nb)
+{
+	int	i;
+	int	size;
+
+	i = move_to_cmd(args, cmd_nb);
+	size = 0;
+	while (args[i] != '\0' && args[i] != '|' && args[i++] != ' ')
+		size++;
+	while (args[i] != '\0' && args[i] != '|')
+	{
+		if ((ft_isalnum(args[i]) || args[i] == '-') && args[i - 1] == ' ')
+		{
+			size++;
+			while (args[i] != '\0' && args[i] != '|' && args[i] != ' ')
+			{
+				i++;
+				size++;
+			}
+		}
+		if (args[i] == '|' || args[i] == '\0')
+			break ;
+		i++;
+	}
+	return (size + 1);
+}
+
+void	add_args(char *cmd, char *ptr, int cmd_nb)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = move_to_cmd(ptr, cmd_nb);
+	while (cmd[j] != '\0')
+		j++;
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+		i++;
+	while (ptr[i] != '\0' && ptr[i] != '|')
+	{
+		if (ft_isalnum(ptr[i]) && ptr[i - 1] == ' ')
+		{
+			cmd[j++] = ' ';
+			while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+				cmd[j++] = ptr[i++];
+		}
+		if (ptr[i] == '|' || ptr[i] == '\0')
+			break ;
+		i++;
+	}
+}
+
+char	*cpy_cmd(char *ptr, int cmd_nb)
+{
+	int		i;
+	int		j;
+	char	*new;
+
+	i = move_to_cmd(ptr, cmd_nb);
+	j = 0;
+	new = calloc(full_size(ptr, cmd_nb), sizeof(char));
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+		new[j++] = ptr[i++];
+	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
+	{
+		if (ptr[i] == '-')
+		{
+			new[j++] = ' ';
+			while (ptr[i] != ' ' && ptr[i] != '\0' && ptr[i] != '|')
+				new[j++] = ptr[i++];
+		}
+		i++;
+	}
+	add_args(new, ptr, cmd_nb);
+	return (new);
+}
+
+int	parse(char *ptr, t_main *bingo)
+{
+	int	pipe;
+	int	i;
+
+	if (have_quotes(ptr) == -1)
+		return (write(2, "error\n", 6));
+	fix_quotes(ptr);
+	i = 0;
+	pipe = number_of_commands(ptr);
+	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
+	while (i != pipe)
+	{
+		bingo->cmds[i] = cpy_cmd(ptr, i);
+		refix_quotes(bingo->cmds[i]);
+		i++;
+	}
+	bingo->cmds[pipe] = NULL;
 }
