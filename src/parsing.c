@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 int	ft_isargument(int c)
 {
 	if (ft_isalnum(c) == 1)
@@ -104,18 +103,19 @@ int	parse(char *ptr, t_main *bingo)
 {
 	int	pipe;
 	int	i;
+	int	count;
 
 	if (have_quotes(ptr) == -1)
 		return (write(2, "Error\n", 6));
 	fix_quotes(ptr);
 	i = 0;
-	pipe = number_of_commands(ptr);
-	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
-	while (i != pipe)
+	count = 1;
+	while (ptr[i] != '\0')
 	{
-		bingo->cmds[i] = cpy_cmd(ptr, i);
+		if (ptr[i] == '|')
+			count++;
 		i++;
 	}
-	bingo->cmds[pipe] = NULL;
-	return (1);
+	return (count);
 }
+

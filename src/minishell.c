@@ -17,7 +17,7 @@ int		find_pipes(char *ptr);
 
 t_main	g_ito;
 
-void	func_doida(t_data_var *data)
+void	func_doida(char **inate, t_data_var *data)
 {
 	char	*ptr;
 	int		pid;
@@ -27,7 +27,9 @@ void	func_doida(t_data_var *data)
 
 	i_status = data->i_status;
 	status = 0;
-	ptr = readline("minishell: ");
+	getcwd(pwd, sizeof(pwd));
+	set_dir(&dir, pwd);
+	ptr = readline(dir);
 	if (ptr == NULL)
 		close_shell(ptr);
 	add_history(ptr);
@@ -40,6 +42,8 @@ void	func_doida(t_data_var *data)
 		else
 			waitpid(pid, &status, 0);
 	}
+	else if (is_built_in(inate, ptr) == 1)
+		exec_built_in(ptr);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
@@ -89,17 +93,23 @@ int	equalexist(char *ptr)
 int	find_caracter(char *ptr, char caracter)
 {
 	int	ptr_len;
-	int	i;
-
-	ptr_len = ft_strlen(ptr);
-	i = 0;
-	while (i < ptr_len)
+	int	len;
+  
+	len = 0;
+	while (ptr[len] != '\0')
 	{
-		if (ptr[i] == caracter)
-			return (i);
-		i++;
+		if (ptr[len] == '|')
+			return (1);
+		len++;
 	}
-	return (-1);
+	return (0);
+}
+
+int	equalexist(char *ptr)
+{
+	if (find_caracter(ptr, ' ') != -1)
+		return (-1);
+	return (find_caracter(ptr, '='));
 }
 
 void	handi(int signum)
@@ -112,23 +122,22 @@ void	handi(int signum)
 
 int	main(int argc, char **argv, char *envp[])
 {
+	char				**inate;
+	struct sigaction	sa;
 	t_data_var			data;
+
+	sa.sa_handler = handi;
+	inate = built_in_functions();
+	sigaction(SIGINT, &sa, NULL);
 
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
-<<<<<<< HEAD
 	data.count_var = 0;
-=======
->>>>>>> master
 	data.names = malloc(sizeof(char *) * 1024);
 	data.contents = malloc(sizeof(char *) * 1024);
 	data.global = malloc(sizeof(int *) * 1024);
 	data.count_var = init_vars(&data, envp);
 	data.i_status = data.count_var - 1;
 	while (1)
-		func_doida(&data);
-}
-<<<<<<< HEAD
+		func_doida(inate, &data);
 
-=======
->>>>>>> master

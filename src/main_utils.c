@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/01 16:25:14 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/01 20:43:05 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	set_dir(char **cd, char *pwd)
 		remove_dir(&pwd);
 	color = ft_strjoin(pwd, "\e[0m");
 	temp = ft_strjoin(minishell, color);
+	cd[0] = ft_strdup("");
 	cd[0] = ft_strjoin(temp, "$ ");
 	free(temp);
 	free(color);
@@ -90,4 +91,5 @@ void	remove_dir(char **pwd)
 	}
 	result = ft_substr(pwd[0], i, ft_strlen(pwd[0]));
 	pwd[0] = ft_strjoin("~", result);
+	free(result);
 }

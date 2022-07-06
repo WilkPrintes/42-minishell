@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lucas_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/06/28 23:09:06 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/01 20:44:28 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_built_in(char *ptr)
 	char	teste[256];
 
 	if (ft_strncmp(ptr, "exit", 4) == 0)
-			close_shell(ptr);
+		close_shell(ptr);
 	else if (ft_strncmp(ptr, "pwd", 3) == 0)
 	{
 		getcwd(teste, sizeof(teste));

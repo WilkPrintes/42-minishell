@@ -56,6 +56,7 @@ void	env(t_data_var *data)
 	int	path;
 
 	path = find_index(data, "PATH");
+	i = 0;
 	if (!data->contents[path])
 	{
 		printf("env: command not found\n");
@@ -79,6 +80,7 @@ void	ft_export(t_data_var *data, char *name)
 
 	temp = ft_substr(name, 7, ft_strlen(name));
 	index = find_index(data, temp);
+	free(temp);
 	if (index != -1)
 		data->global[index] = 1;
 }

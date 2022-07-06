@@ -66,6 +66,7 @@ int	find_index(t_data_var *data, char *ptr)
 	int		len;
 
 	i = 0;
+	temp = ft_strdup("");
 	while (i < data->count_var)
 	{
 		temp = ft_strdup(data->names[i]);
@@ -74,6 +75,7 @@ int	find_index(t_data_var *data, char *ptr)
 			return (i);
 		i++;
 	}
+	free(temp);
 	return (-1);
 }
 
