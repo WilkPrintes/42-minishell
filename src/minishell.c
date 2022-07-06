@@ -13,7 +13,6 @@
 #include "minishell.h"
 
 int		equalexist(char *ptr);
-void	emove_dir(char **pwd);
 int		find_pipes(char *ptr);
 
 t_main	g_ito;
@@ -22,7 +21,6 @@ void	func_doida(char **inate, t_data_var *data)
 {
 	char	*ptr;
 	int		pid;
-	char	*dir;
 	char	pwd[256];
 	int		i_status;
 	int		status;
@@ -92,6 +90,28 @@ int	equalexist(char *ptr)
 	return (find_caracter(ptr, '='));
 }
 
+int	find_caracter(char *ptr, char caracter)
+{
+	int	ptr_len;
+	int	len;
+  
+	len = 0;
+	while (ptr[len] != '\0')
+	{
+		if (ptr[len] == '|')
+			return (1);
+		len++;
+	}
+	return (0);
+}
+
+int	equalexist(char *ptr)
+{
+	if (find_caracter(ptr, ' ') != -1)
+		return (-1);
+	return (find_caracter(ptr, '='));
+}
+
 void	handi(int signum)
 {
 	write(STDERR_FILENO, "\n", 1);
@@ -109,7 +129,10 @@ int	main(int argc, char **argv, char *envp[])
 	sa.sa_handler = handi;
 	inate = built_in_functions();
 	sigaction(SIGINT, &sa, NULL);
+
+	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
+	data.count_var = 0;
 	data.names = malloc(sizeof(char *) * 1024);
 	data.contents = malloc(sizeof(char *) * 1024);
 	data.global = malloc(sizeof(int *) * 1024);
@@ -117,4 +140,4 @@ int	main(int argc, char **argv, char *envp[])
 	data.i_status = data.count_var - 1;
 	while (1)
 		func_doida(inate, &data);
-}
+

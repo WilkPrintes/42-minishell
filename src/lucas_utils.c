@@ -29,7 +29,7 @@ int	is_built_in(char **fts, char *str)
 
 	i = 0;
 	while (i < 3)
-	{//Mudar strlen para tamanho certo após parsing
+	{
 		if (ft_strncmp(fts[i], str, ft_strlen(fts[i])) == 0)
 			return (1);
 		i++;
@@ -52,13 +52,13 @@ int	exec_built_in(char *ptr)
 		close_shell(ptr);
 	else if (ft_strncmp(ptr, "pwd", 3) == 0)
 	{
-		getcwd(teste, sizeof(teste)); // Pega atual diretório e coloca no buffer
-		printf("%s\n", teste);
+		getcwd(teste, sizeof(teste));
+			printf("%s\n", teste);
 	}
 	else if (ft_strncmp(ptr, "cd", 2) == 0)
 	{
 		chdir(ptr + 3);
-		getcwd(teste, sizeof(teste)); // Pega atual diretório e coloca no buffer
+		getcwd(teste, sizeof(teste));
 	}
 	return (0);
 }

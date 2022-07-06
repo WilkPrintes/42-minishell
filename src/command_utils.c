@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/06/25 13:17:15 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:57:31 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,20 @@ char	*find_path(char *cmd, char *envp)
 
 void	command(char *envp, char *ptr)
 {
+	int		i;
+	int	j;
 	char	*path;
 	char	**cmd;
 
+	i = 0;
 	cmd = ft_split(ptr, ' ');
-	path = find_path(cmd[0], envp);
+	while (cmd[i] != NULL)
+	{
+		if (have_quotes(cmd[i]) == 1)
+			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
+		refix_quotes(cmd[i++]);
+	}
+	path = find_path(cmd[0]);
 	if (!path)
 	{
 		ft_putstr_fd(cmd[0], 2);
@@ -79,4 +88,19 @@ void	error(void)
 {
 	perror("Error");
 	exit (EXIT_FAILURE);
+}
+
+int	move_to_cmd(char *ptr, int cmd_nb)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i] != '\0' && cmd_nb != 0)
+	{
+		if (ptr[i++] == '|')
+			cmd_nb--;
+	}
+	while (!ft_isargument(ptr[i]))
+		i++;
+	return (i);
 }
