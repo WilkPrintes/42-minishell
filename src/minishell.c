@@ -24,6 +24,7 @@ void	func_doida(char **inate, t_data_var *data)
 	char	pwd[256];
 	int		i_status;
 	int		status;
+	char	*dir;
 
 	i_status = data->i_status;
 	status = 0;
@@ -31,7 +32,7 @@ void	func_doida(char **inate, t_data_var *data)
 	set_dir(&dir, pwd);
 	ptr = readline(dir);
 	if (ptr == NULL)
-		close_shell(ptr);
+		close_shell(ptr, data);
 	add_history(ptr);
 	parse(ptr, &g_ito);
 	if (find_pipes(ptr) == 1)
@@ -42,12 +43,15 @@ void	func_doida(char **inate, t_data_var *data)
 		else
 			waitpid(pid, &status, 0);
 	}
+	else if (ft_strncmp(ptr, "exit", 4) == 0)
+	{
+		free(dir);
+		close_shell(ptr, data);
+	}
 	else if (is_built_in(inate, ptr) == 1)
-		exec_built_in(ptr);
+		exec_built_in(ptr, data);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
-	else if (equalexist(ptr) != -1)
-		var_func(ptr, data);
 	else if (ft_strncmp(ptr, "echo", 4) == 0)
 		echo(ptr, data);
 	else if (ft_strncmp(ptr, "unset", 5) == 0)
@@ -56,6 +60,8 @@ void	func_doida(char **inate, t_data_var *data)
 		env(data);
 	else if (ft_strncmp(ptr, "export", 6) == 0)
 		ft_export(data, ptr);
+	else if (equalexist(ptr) != -1)
+		var_func(ptr, data);
 	else if (*ptr)
 	{
 		pid = fork();
@@ -67,34 +73,13 @@ void	func_doida(char **inate, t_data_var *data)
 	data->contents[i_status] = ft_itoa(status);
 	free_this(g_ito.cmds);
 	free(ptr);
+	free(dir);
 }
 
 int	find_pipes(char *ptr)
 {
 	int	len;
 
-	len = 0;
-	while (ptr[len] != '\0')
-	{
-		if (ptr[len] == '|')
-			return (1);
-		len++;
-	}
-	return (0);
-}
-
-int	equalexist(char *ptr)
-{
-	if (find_caracter(ptr, ' ') != -1)
-		return (-1);
-	return (find_caracter(ptr, '='));
-}
-
-int	find_caracter(char *ptr, char caracter)
-{
-	int	ptr_len;
-	int	len;
-  
 	len = 0;
 	while (ptr[len] != '\0')
 	{
@@ -129,15 +114,14 @@ int	main(int argc, char **argv, char *envp[])
 	sa.sa_handler = handi;
 	inate = built_in_functions();
 	sigaction(SIGINT, &sa, NULL);
-
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
 	data.count_var = 0;
-	data.names = malloc(sizeof(char *) * 1024);
-	data.contents = malloc(sizeof(char *) * 1024);
-	data.global = malloc(sizeof(int *) * 1024);
+	data.names = ft_calloc(sizeof(char *), 1024);
+	data.contents = ft_calloc(sizeof(char *), 1024);
+	data.global = ft_calloc(sizeof(int), 1024);
 	data.count_var = init_vars(&data, envp);
 	data.i_status = data.count_var - 1;
 	while (1)
 		func_doida(inate, &data);
-
+}

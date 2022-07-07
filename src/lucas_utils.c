@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/01 20:44:28 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/06 19:55:01 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,33 @@ int	is_built_in(char **fts, char *str)
 	return (0);
 }
 
-void	close_shell(char *ptr)
+void	close_shell(char *ptr, t_data_var *data)
 {
+	int len;
+	
+	len = 0;
+	while (len < data->count_var + 1)
+	{
+		if ((data->names)[len])
+			free((data->names)[len]);
+		if ((data->contents)[len])
+			free((data->contents)[len]);
+		len++;
+	}
+	free(data->global);
 	free(ptr);
+	free(data->contents);
+	free(data->names);
 	printf("exit\n");
 	exit(EXIT_SUCCESS);
 }
 
-int	exec_built_in(char *ptr)
+int	exec_built_in(char *ptr, t_data_var *data)
 {
 	char	teste[256];
 
 	if (ft_strncmp(ptr, "exit", 4) == 0)
-		close_shell(ptr);
+		close_shell(ptr, data);
 	else if (ft_strncmp(ptr, "pwd", 3) == 0)
 	{
 		getcwd(teste, sizeof(teste));

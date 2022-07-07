@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/01 19:01:56 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/06 20:12:05 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 int	ft_isargument(int c)
 {
@@ -62,6 +63,8 @@ static void	add_args(char *cmd, char *ptr, int cmd_nb)
 		i++;
 	while (ptr[i] != '\0' && ptr[i] != '|')
 	{
+		if (ptr[i] == '<' || ptr[i] == '>')
+			break ;
 		if (ft_isargument(ptr[i]) && ptr[i - 1] == ' ')
 		{
 			cmd[j++] = ' ';
@@ -103,19 +106,18 @@ int	parse(char *ptr, t_main *bingo)
 {
 	int	pipe;
 	int	i;
-	int	count;
 
 	if (have_quotes(ptr) == -1)
 		return (write(2, "Error\n", 6));
 	fix_quotes(ptr);
 	i = 0;
-	count = 1;
-	while (ptr[i] != '\0')
+	pipe = number_of_commands(ptr);
+	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
+	while (i != pipe)
 	{
-		if (ptr[i] == '|')
-			count++;
+		bingo->cmds[i] = cpy_cmd(ptr, i);
 		i++;
 	}
-	return (count);
+	bingo->cmds[pipe] = NULL;
+	return (1);
 }
-
