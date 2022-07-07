@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/01 20:43:05 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/06 16:56:54 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	init_vars(t_data_var *data, char *envp[])
 		data->global[len] = 1;
 		len++;
 	}
-	data->names[len] = "?";
-	data->contents[len] = "0";
+	data->names[len] = ft_strdup("?");
+	data->contents[len] = ft_strdup("0");
 	data->global[len] = 0;
 	len++;
 	return (len);
@@ -57,15 +57,18 @@ void	set_dir(char **cd, char *pwd)
 	char	*minishell;
 	char	*temp;
 	char	*color;
-
+	char	*pwd_temp;
+	
+	pwd_temp = pwd;
 	minishell = ft_strdup("\033[1;32mminishell@42\e[0m:\033[0;36m");
 	if (ft_strncmp(pwd, "/home/", 6) == 0)
-		remove_dir(&pwd);
-	color = ft_strjoin(pwd, "\e[0m");
+		remove_dir(&pwd_temp);
+	color = ft_strjoin(pwd_temp, "\e[0m");
 	temp = ft_strjoin(minishell, color);
-	cd[0] = ft_strdup("");
 	cd[0] = ft_strjoin(temp, "$ ");
+	free(minishell);
 	free(temp);
+	free(pwd_temp);
 	free(color);
 }
 
@@ -77,6 +80,7 @@ void	remove_dir(char **pwd)
 	char	*temp;
 	char	*result;
 
+	// temp = ft_strdup(getenv("PWD"));
 	temp = getenv("PWD");
 	i = 0;
 	count = 0;

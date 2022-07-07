@@ -29,10 +29,14 @@ void	echo(char *ptr, t_data_var *data)
 		i = 8;
 	else
 		i = 5;
+	printf("%s\n", ptr);
 	while (i < len)
 	{
 		if (ptr[i] != '$')
-			printf("%c", ptr[i]);
+		{
+			if (ptr[i] != 39 && ptr[i] != 34)
+				printf("%c", ptr[i]);
+		}
 		else
 			i = i + find_content(data, ptr, i);
 		i++;

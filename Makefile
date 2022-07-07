@@ -45,4 +45,7 @@ $(OBJ_DIR):
 norma:
 	@norminette ./
 
+leaks:
+	@valgrind --leak-check=full --track-origins=yes --suppressions=readline.supp ./minishell
+
 .PHONY: all fclean re
