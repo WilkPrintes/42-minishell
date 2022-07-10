@@ -32,6 +32,11 @@ void	echo(char *ptr, t_data_var *data)
 	while (i < len)
 	{
 		if (ptr[i] != '$')
+		{
+			if (ptr[i] != 39 && ptr[i] != 34)
+				printf("%c", ptr[i]);
+		}
+		else if (ptr[i - 1] == 39)
 			printf("%c", ptr[i]);
 		else
 			i = i + find_content(data, ptr, i);
@@ -39,6 +44,39 @@ void	echo(char *ptr, t_data_var *data)
 	}
 	if (ft_strncmp(ptr + 5, "-n", 2) != 0)
 		printf("\n");
+}
+
+void	echo2(char *ptr, t_data_var *data)
+{
+	int	i;
+	int	path;
+	char	**cmd;
+
+	i = 0;
+	path = find_index(data, "PATH");
+	if (!data->contents[path])
+	{
+		printf("echo: command not found\n");
+		return ;
+	}
+	cmd = ft_split(ptr, ' ');
+	while (cmd[i] != NULL)
+	{
+		if (have_quotes(cmd[i]) == 1)
+			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
+		refix_quotes(cmd[i++]);
+	}
+	i = 1;
+	if (ft_strncmp(cmd[1], "-n", 2) == 0)
+		i++;
+	while (cmd[i] != NULL)
+	{
+		printf("%s", cmd[i++]);
+		printf(" ");
+	}
+	if (ft_strncmp(cmd[1], "-n", 2) != 0)
+		printf("\n");
+	free_this(cmd);
 }
 
 void	unset(char *ptr, t_data_var *data)
@@ -56,6 +94,7 @@ void	env(t_data_var *data)
 	int	path;
 
 	path = find_index(data, "PATH");
+	i = 0;
 	if (!data->contents[path])
 	{
 		printf("env: command not found\n");
@@ -79,6 +118,7 @@ void	ft_export(t_data_var *data, char *name)
 
 	temp = ft_substr(name, 7, ft_strlen(name));
 	index = find_index(data, temp);
+	free(temp);
 	if (index != -1)
 		data->global[index] = 1;
 }

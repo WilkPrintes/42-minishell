@@ -49,6 +49,8 @@ int	find_content(t_data_var *data, char *ptr, int i)
 	len = find_caracter(ptr + i, ' ');
 	if (len == -1)
 		len = ft_strlen(ptr) - i;
+	while (ptr[len] == 34)
+		len--;
 	len = len - 1;
 	name = ft_substr(ptr, i + 1, len);
 	exists = var_exists(data, name);
@@ -66,6 +68,7 @@ int	find_index(t_data_var *data, char *ptr)
 	int		len;
 
 	i = 0;
+	temp = ft_strdup("");
 	while (i < data->count_var)
 	{
 		temp = ft_strdup(data->names[i]);
@@ -74,6 +77,7 @@ int	find_index(t_data_var *data, char *ptr)
 			return (i);
 		i++;
 	}
+	free(temp);
 	return (-1);
 }
 

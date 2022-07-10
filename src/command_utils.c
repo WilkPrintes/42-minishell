@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/04 20:23:53 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/06 13:43:39 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*find_path(char *cmd, char *envp)
 void	command(char *envp, char *ptr)
 {
 	int		i;
+	int	j;
 	char	*path;
 	char	**cmd;
 
@@ -54,7 +55,6 @@ void	command(char *envp, char *ptr)
 			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
 		refix_quotes(cmd[i++]);
 	}
-	redirect(cmd);
 	path = find_path(cmd[0], envp);
 	if (!path)
 	{
