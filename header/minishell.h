@@ -78,7 +78,7 @@ char	**parse(char *ptr);
 void	redirect(char **pars);
 void	free_this(char **str);
 
-char	*remove_quotes(char *ptr, int quote);
+char	*remove_quotes(char *ptr);
 int		ft_isargument(int c);
 int		move_to_cmd(char *ptr, int cmd_nb);
 int		number_of_commands(char *ptr);
