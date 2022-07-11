@@ -23,6 +23,7 @@ void	func_doida(char **built_in, t_data_var *data)
 	int		pid;
 	int		i_status;
 	int		status;
+	char	*dir;
 
 	i_status = data->i_status;
 	status = 0;
