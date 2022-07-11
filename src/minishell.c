@@ -23,12 +23,11 @@ void	func_doida(char **built_in, t_data_var *data)
 	int		pid;
 	int		i_status;
 	int		status;
-	char	*dir;
 
 	i_status = data->i_status;
 	status = 0;
 	ptr = readline("minishell_teste: ");
-	parse(ptr, cmds);
+	cmds = parse(ptr);
 	if (ptr == NULL)
 		close_shell(cmds, ptr, data);
 	add_history(ptr);
@@ -42,7 +41,7 @@ void	func_doida(char **built_in, t_data_var *data)
 	}
 	else if (is_built_in(built_in, cmds) == 1)
 		exec_built_in(cmds, ptr, data);
-	else if (ft_strncmp(ptr, "clear", 5) == 0) 🥵
+	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
 		var_func(ptr, data);
@@ -50,14 +49,13 @@ void	func_doida(char **built_in, t_data_var *data)
 	{
 		pid = fork();
 		if (pid == 0)
-			command(data->contents[find_index(data, "PATH")], cmds[0] 🥵);
+			command(data->contents[find_index(data, "PATH")], cmds[0]);
 		else
 			waitpid(pid, &status, 0);
 	}
 	data->contents[i_status] = ft_itoa(status);
 	free_this(cmds);
 	free(ptr);
-	free(dir);
 }
 
 int	find_pipes(char *ptr)
@@ -85,7 +83,7 @@ void	handi(int signum)
 {
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
-/* 	rl_replace_line("minishell: ", 1); */
+ 	rl_replace_line("", 1);
 	rl_redisplay();
 	return ;
 }
