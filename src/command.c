@@ -52,6 +52,7 @@ void	echo2(char *ptr, t_data_var *data)
 {
 	int	i;
 	int	path;
+	int index;
 	char	**cmd;
 
 	i = 0;
@@ -62,12 +63,12 @@ void	echo2(char *ptr, t_data_var *data)
 		return ;
 	}
 	cmd = ft_split(ptr, ' ');
-	while (cmd[i] != NULL)
-	{
-		if (have_quotes(cmd[i]) == 1)
-			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
-		refix_quotes(cmd[i++]);
-	}
+	// while (cmd[i] != NULL)
+	// {
+	// 	if (have_quotes(cmd[i]) == 1)
+	// 		cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
+	// 	refix_quotes(cmd[i++]);
+	// }
 	i = 1;
 	if (ft_strncmp(cmd[1], "-n", 2) == 0)
 		i++;
@@ -87,7 +88,11 @@ void	unset(char *ptr, t_data_var *data)
 
 	index = find_index(data, ptr + 6);
 	if (index != -1)
+	{
 		data->contents[index] = NULL;
+		data->global[index] = 0;
+	}
+
 }
 
 void	env(t_data_var *data)

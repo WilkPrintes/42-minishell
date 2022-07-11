@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/10 15:40:03 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:19:18 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	is_built_in(char **built_in, char **cmds)
 			}
 			i++;
 		}
+		n_cmds++;
 		free_this(hold);
 	}
 	return (0);
@@ -88,11 +89,11 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
 		chdir(hold[1]);
 	else if (ft_strncmp(hold[0], "echo", ft_strlen(hold[0])) == 0)
-		echo2(cmds[0], data);
+		echo(ptr, data);
 	else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
-		ft_export(data, 🥵name);
+		ft_export(data, ptr);
 	else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)
-		unset(cmds[0]🥵, data);
+		unset(ptr, data);
 	else if (ft_strncmp(hold[0], "env", ft_strlen(hold[0])) == 0)
 		env(data);
 	free_this(hold);
