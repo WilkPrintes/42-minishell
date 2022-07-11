@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/06 20:12:05 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/10 14:59:42 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 	return (new);
 }
 
-int	parse(char *ptr, t_main *bingo)
+int	parse(char *ptr, char **cmds)
 {
 	int	pipe;
 	int	i;
@@ -112,12 +112,12 @@ int	parse(char *ptr, t_main *bingo)
 	fix_quotes(ptr);
 	i = 0;
 	pipe = number_of_commands(ptr);
-	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
+	cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{
-		bingo->cmds[i] = cpy_cmd(ptr, i);
+		cmds[i] = cpy_cmd(ptr, i);
 		i++;
 	}
-	bingo->cmds[pipe] = NULL;
+	cmds[pipe] = NULL;
 	return (1);
 }

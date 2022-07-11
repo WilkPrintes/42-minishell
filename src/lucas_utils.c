@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/06 19:55:01 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/10 15:40:03 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,47 @@ char	**built_in_functions(void)
 {
 	char	**ptr;
 
-	ptr = malloc(3 * sizeof(char *));
+	ptr = malloc(8 * sizeof(char *));
 	ptr[0] = ft_strdup("cd");
 	ptr[1] = ft_strdup("pwd");
 	ptr[2] = ft_strdup("exit");
+	ptr[3] = ft_strdup("echo");
+	ptr[4] = ft_strdup("export");
+	ptr[5] = ft_strdup("unset");
+	ptr[6] = ft_strdup("env");
+	ptr[7] = NULL;
 	return (ptr);
 }
 
-int	is_built_in(char **fts, char *str)
+int	is_built_in(char **built_in, char **cmds)
 {
-	int	i;
+	int		i;
+	int		n_cmds;
+	char	**hold;
 
-	i = 0;
-	while (i < 3)
+	n_cmds = 0;
+	while (cmds[n_cmds] != NULL)
 	{
-		if (ft_strncmp(fts[i], str, ft_strlen(fts[i])) == 0)
-			return (1);
-		i++;
+		i = 0;
+		hold = ft_split(cmds[n_cmds], ' ');
+		while (i < 7)
+		{
+			if (ft_strncmp(built_in[i], hold[0], ft_strlen(hold[0])) == 0)
+			{
+				free_this(hold);
+				return (1);
+			}
+			i++;
+		}
+		free_this(hold);
 	}
 	return (0);
 }
 
-void	close_shell(char *ptr, t_data_var *data)
+void	close_shell(char **cmds, char *ptr, t_data_var *data)
 {
 	int len;
-	
+
 	len = 0;
 	while (len < data->count_var + 1)
 	{
@@ -51,29 +67,35 @@ void	close_shell(char *ptr, t_data_var *data)
 		len++;
 	}
 	free(data->global);
-	free(ptr);
 	free(data->contents);
 	free(data->names);
+	free(ptr);
+	free_this(cmds);
 	printf("exit\n");
 	exit(EXIT_SUCCESS);
 }
 
-int	exec_built_in(char *ptr, t_data_var *data)
+int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 {
 	char	teste[256];
+	char	**hold;
 
-	if (ft_strncmp(ptr, "exit", 4) == 0)
-		close_shell(ptr, data);
-	else if (ft_strncmp(ptr, "pwd", 3) == 0)
-	{
-		getcwd(teste, sizeof(teste));
-			printf("%s\n", teste);
-	}
-	else if (ft_strncmp(ptr, "cd", 2) == 0)
-	{
-		chdir(ptr + 3);
-		getcwd(teste, sizeof(teste));
-	}
+	hold = ft_split(cmds[0], ' ');
+	if (ft_strncmp(hold[0], "exit", ft_strlen(hold[0])) == 0)
+		close_shell(cmds, ptr, data);
+	else if (ft_strncmp(hold[0], "pwd", ft_strlen(hold[0])) == 0)
+		printf("%s\n", getcwd(teste, sizeof(teste)));
+	else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
+		chdir(hold[1]);
+	else if (ft_strncmp(hold[0], "echo", ft_strlen(hold[0])) == 0)
+		echo2(cmds[0], data);
+	else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
+		ft_export(data, 🥵name);
+	else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)
+		unset(cmds[0]🥵, data);
+	else if (ft_strncmp(hold[0], "env", ft_strlen(hold[0])) == 0)
+		env(data);
+	free_this(hold);
 	return (0);
 }
 

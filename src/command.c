@@ -48,6 +48,39 @@ void	echo(char *ptr, t_data_var *data)
 		printf("\n");
 }
 
+void	echo2(char *ptr, t_data_var *data)
+{
+	int	i;
+	int	path;
+	char	**cmd;
+
+	i = 0;
+	path = find_index(data, "PATH");
+	if (!data->contents[path])
+	{
+		printf("echo: command not found\n");
+		return ;
+	}
+	cmd = ft_split(ptr, ' ');
+	while (cmd[i] != NULL)
+	{
+		if (have_quotes(cmd[i]) == 1)
+			cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
+		refix_quotes(cmd[i++]);
+	}
+	i = 1;
+	if (ft_strncmp(cmd[1], "-n", 2) == 0)
+		i++;
+	while (cmd[i] != NULL)
+	{
+		printf("%s", cmd[i++]);
+		printf(" ");
+	}
+	if (ft_strncmp(cmd[1], "-n", 2) != 0)
+		printf("\n");
+	free_this(cmd);
+}
+
 void	unset(char *ptr, t_data_var *data)
 {
 	int	index;

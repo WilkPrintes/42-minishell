@@ -54,6 +54,9 @@ int		pipex(char *argv[]);
 void	var_func(char *ptr, t_data_var *data);
 int		find_caracter(char *ptr, char caracter);
 void	echo(char *ptr, t_data_var *data);
+
+void	echo2(char *ptr, t_data_var *data);
+
 void	unset(char *ptr, t_data_var *data);
 int		var_exists(t_data_var *data, char *name);
 int		find_content(t_data_var *data, char *ptr, int i);
@@ -67,11 +70,11 @@ int		init_vars(t_data_var *data, char *envp[]);
 
 //Mudanças lucas
 char	**built_in_functions(void);
-int		is_built_in(char **fts, char *str);
-void	close_shell(char *ptr, t_data_var *data);
-int		exec_built_in(char *ptr, t_data_var *data);
+int		is_built_in(char **built_in, char **cmds);
+void	close_shell(char **cmds, char *ptr, t_data_var *data);
+int		exec_built_in(char **cmds, char *ptr, t_data_var *data);
 void	set_dir(char **cd, char *pwd);
-int		parse(char *ptr, t_main *bingo);
+int		parse(char *ptr, char **cmds);
 void	redirect(char **pars);
 void	free_this(char **str);
 
