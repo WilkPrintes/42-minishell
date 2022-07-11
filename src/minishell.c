@@ -21,16 +21,12 @@ void	func_doida(char **built_in, t_data_var *data)
 	char	**cmds;
 	char	*ptr;
 	int		pid;
-	char	pwd[256];
 	int		i_status;
 	int		status;
-	char	*dir;
 
 	i_status = data->i_status;
 	status = 0;
-	getcwd(pwd, sizeof(pwd));
-	set_dir(&dir, pwd);
-	ptr = readline(dir);
+	ptr = readline("minishell_teste: ");
 	parse(ptr, cmds);
 	if (ptr == NULL)
 		close_shell(cmds, ptr, data);
@@ -49,11 +45,11 @@ void	func_doida(char **built_in, t_data_var *data)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
 		var_func(ptr, data);
-	else if (*ptr)
+	else
 	{
 		pid = fork();
 		if (pid == 0)
-			command(data->contents[find_index(data, "PATH")], ptr);
+			command(data->contents[find_index(data, "PATH")], cmds[0] 🥵);
 		else
 			waitpid(pid, &status, 0);
 	}
