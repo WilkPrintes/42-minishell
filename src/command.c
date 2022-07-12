@@ -63,12 +63,12 @@ void	echo2(char *ptr, t_data_var *data)
 		return ;
 	}
 	cmd = ft_split(ptr, ' ');
-	// while (cmd[i] != NULL)
-	// {
-	// 	if (have_quotes(cmd[i]) == 1)
-	// 		cmd[i] = remove_quotes(cmd[i], cmd[i][0]);
-	// 	refix_quotes(cmd[i++]);
-	// }
+	while (cmd[i] != NULL)
+	{
+		if (have_quotes(cmd[i]) == 1)
+			cmd[i] = remove_quotes(cmd[i]);
+		refix_quotes(cmd[i++]);
+	}
 	i = 1;
 	if (ft_strncmp(cmd[1], "-n", 2) == 0)
 		i++;
