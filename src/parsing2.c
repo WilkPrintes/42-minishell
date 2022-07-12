@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/07 21:42:17 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/12 21:21:58 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,28 +92,45 @@ void	refix_quotes(char *ptr)
 	}
 }
 
-void	redirect(char **pars)
+static void	redirections(char **ptr)
 {
 	int	i;
+	int	len;
 
 	i = 0;
-	while (pars[i] != NULL)
+	while (ptr[i] != NULL)
 	{
-		if (ft_strncmp(pars[i], ">", ft_strlen(pars[i])) == 0)
+		len = ft_strlen(ptr[i]);
+		if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
+			open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
+			open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
+		else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
+			open(ptr[i + 1], O_RDONLY, 0777);
+		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
 		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
-		}
-		else if (ft_strncmp(pars[i], ">>", ft_strlen(pars[i])) == 0)
-		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
-		}
-		else if (ft_strncmp(pars[i], "<", ft_strlen(pars[i])) == 0)
-		{
-			if (pars[i + 1] != NULL)
-				open(pars[i + 1], O_RDONLY, 0777);
+			read(0, ttyname(0), 200);
 		}
 		i++;
 	}
 }
+
+void	redirect(char *ptr)
+{
+	int		i;
+	char	**hold;
+
+	if (ptr[0] == '\0')
+		return ;
+	i = 0;
+	hold = ft_split(ptr, ' ');
+	while (hold[i] != NULL)
+	{
+		if (have_quotes(hold[i]) == 1)
+			hold[i] = remove_quotes(hold[i]);
+		refix_quotes(hold[i++]);
+	}
+	redirections(hold);
+	free_this(hold);
+}
+

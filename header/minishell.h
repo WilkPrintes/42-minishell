@@ -75,7 +75,7 @@ void	close_shell(char **cmds, char *ptr, t_data_var *data);
 int		exec_built_in(char **cmds, char *ptr, t_data_var *data);
 void	set_dir(char **cd, char *pwd);
 char	**parse(char *ptr);
-void	redirect(char **pars);
+void	redirect(char *ptr);
 void	free_this(char **str);
 
 char	*remove_quotes(char *ptr);
