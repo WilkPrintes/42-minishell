@@ -27,9 +27,12 @@ void	func_doida(char **built_in, t_data_var *data)
 	i_status = data->i_status;
 	status = 0;
 	ptr = readline("minishell_teste: ");
-	cmds = parse(ptr);
 	if (ptr == NULL)
-		close_shell(cmds, ptr, data);
+		close_shell(NULL, ptr, data);
+	cmds = parse(ptr);
+	if (cmds == NULL)
+		return ;
+	redirect(ptr);
 	add_history(ptr);
 	if (find_pipes(ptr) == 1)
 	{
@@ -93,6 +96,7 @@ int	main(int argc, char **argv, char *envp[])
 	char				**built_in;
 	t_data_var			data;
 
+	int fd = open("teste", O_RDWR | __O_TMPFILE, 0777);
 	built_in = built_in_functions();
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
