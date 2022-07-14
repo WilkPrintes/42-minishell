@@ -64,20 +64,16 @@ int	find_content(t_data_var *data, char *ptr, int i)
 int	find_index(t_data_var *data, char *ptr)
 {
 	int		i;
-	char	*temp;
 	int		len;
 
 	i = 0;
-	temp = ft_strdup("");
 	while (i < data->count_var)
 	{
-		temp = ft_strdup(data->names[i]);
 		len = ft_strlen(data->names[i]);
 		if (ft_strncmp(data->names[i], ptr, len) == 0)
 			return (i);
 		i++;
 	}
-	free(temp);
 	return (-1);
 }
 

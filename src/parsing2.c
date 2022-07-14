@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/14 20:44:54 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 01:14:15 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,27 +114,42 @@ static void	delimiter(char *limit)
 	unlink(".temp_file");
 }
 
-void	redirect(char *ptr)
+static void    redirections(char **ptr)
 {
-	int		i;
-	char	**hold;
+    int        i;
+    int        len;
 
-	if (ptr[0] == '\0')
-		return ;
-	i = 0;
-	while (ptr[i] != NULL)
-	{
-		len = ft_strlen(ptr[i]);
-		if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
-		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
-		else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
-		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
-			delimiter(ptr[i + 1]);
+    i = 0;
+    while (ptr[i] != NULL)
+    {
+        len = ft_strlen(ptr[i]);
+        if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+        else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+        else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
+        else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
+            delimiter(ptr[i + 1]);
 		i++;
-	}
-	redirections(hold);
-	free_this(hold);
+    }
+}
+
+void    redirect(char *ptr)
+{
+    int        i;
+    char    **hold;
+
+    if (ptr[0] == '\0')
+        return ;
+    i = 0;
+    hold = ft_split(ptr, ' ');
+    while (hold[i] != NULL)
+    {
+        if (have_quotes(hold[i]) == 1)
+            hold[i] = remove_quotes(hold[i]);
+        refix_quotes(hold[i++]);
+    }
+    redirections(hold);
+    free_this(hold);
 }

@@ -83,7 +83,7 @@ void	unset(char *ptr, t_data_var *data)
 {
 	int	index;
 
-	index = find_index(data, ptr + 6);
+	index = find_index(data, ptr);
 	if (index != -1)
 	{
 		data->contents[index] = NULL;
