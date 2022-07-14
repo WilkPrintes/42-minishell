@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/14 20:19:42 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:44:54 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,25 +92,26 @@ void	refix_quotes(char *ptr)
 	}
 }
 
-static void    redirections(char **ptr)
+static void	delimiter(char *limit)
 {
-    int        i;
-    int        len;
+	int		file;
+	char	*buffer;
 
-    i = 0;
-    while (ptr[i] != NULL)
-    {
-        len = ft_strlen(ptr[i]);
-        if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
-        else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
-        else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-            dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
-        // else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
-        //     delimiter(ptr[i + 1]);
-        i++;
-    }
+	file = open(".temp_file", O_CREAT | O_RDWR | O_TRUNC, 0777);
+	if (file < 0)
+		write(2, "Error with delimiter\n", 21);
+	while (1)
+	{
+		write(1, "> ", 2);
+		buffer = get_next_line(0);
+		ft_putstr_fd(buffer, file);
+		if (ft_strncmp(limit, buffer, ft_strlen(buffer) - 1) == 0)
+			break ;
+		free(buffer);
+	}
+	free(buffer);
+	close(file);
+	unlink(".temp_file");
 }
 
 void	redirect(char *ptr)
@@ -121,14 +122,19 @@ void	redirect(char *ptr)
 	if (ptr[0] == '\0')
 		return ;
 	i = 0;
-	hold = ft_split(ptr, ' ');
-	while (hold[i] != NULL)
+	while (ptr[i] != NULL)
 	{
-		if (have_quotes(hold[i]) == 1)
-			hold[i] = remove_quotes(hold[i]);
-		refix_quotes(hold[i++]);
+		len = ft_strlen(ptr[i]);
+		if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
+			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
+			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+		else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
+			dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
+		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
+			delimiter(ptr[i + 1]);
+		i++;
 	}
 	redirections(hold);
 	free_this(hold);
 }
-

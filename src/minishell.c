@@ -24,10 +24,10 @@ void	func_doida(char **built_in, t_data_var *data)
 	int		i_status;
 	int		status;
 
+	int	stdiiin = dup(STDIN_FILENO);
+	int	stdooout = dup(STDOUT_FILENO);
 	i_status = data->i_status;
 	status = 0;
-	data->temp_stdin = dup(STDIN_FILENO);
-	data->temp_stdout = dup(STDOUT_FILENO);
 	ptr = readline("minishell_teste: ");
 	if (ptr == NULL)
 		close_shell(NULL, ptr, data);
