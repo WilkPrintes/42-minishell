@@ -122,7 +122,6 @@ char	**parse(char *ptr)
 		cmds[i] = cpy_cmd(ptr, i);
 		i++;
 	}
-	printf("%s\n", cmds[0]);
 	cmds[pipe] = NULL;
 	return (cmds);
 }

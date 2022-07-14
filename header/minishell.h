@@ -34,6 +34,9 @@ typedef struct s_data_var{
 	int		count_var;
 	int		i_status;
 	int		*global;
+	int		pipes;
+	int		temp_stdin;
+	int		temp_stdout;
 }				t_data_var;
 
 typedef struct s_data
@@ -42,13 +45,14 @@ typedef struct s_data
 	int			fd[2];
 	char		**cmd;
 	char		*path;
+	int			temp_fd;
 }t_data;
 
 char	*find_path(char *cmd, char *envp);
-void	command(char *envp, char *ptr);
+void	command(char *envp, char *ptr, t_data_var *data);
 void	free_matriz(char ***buffer);
 void	error(void);
-int		pipex(char *argv[]);
+int		pipex(char *argv[], t_data_var *data);
 
 //Mudanças Wilk
 void	var_func(char *ptr, t_data_var *data);

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
 /*   Updated: 2022/07/14 20:44:54 by lucferna         ###   ########.fr       */
@@ -114,11 +114,13 @@ static void	delimiter(char *limit)
 	unlink(".temp_file");
 }
 
-static void	redirections(char **ptr)
+void	redirect(char *ptr)
 {
 	int		i;
-	int		len;
+	char	**hold;
 
+	if (ptr[0] == '\0')
+		return ;
 	i = 0;
 	while (ptr[i] != NULL)
 	{
@@ -133,24 +135,6 @@ static void	redirections(char **ptr)
 			delimiter(ptr[i + 1]);
 		i++;
 	}
-}
-
-void	redirect(char *ptr)
-{
-	int		i;
-	char	**hold;
-
-	if (ptr[0] == '\0')
-		return ;
-	i = 0;
-	hold = ft_split(ptr, ' ');
-	while (hold[i] != NULL)
-	{
-		if (have_quotes(hold[i]) == 1)
-			hold[i] = remove_quotes(hold[i]);
-		refix_quotes(hold[i++]);
-	}
 	redirections(hold);
 	free_this(hold);
 }
-
