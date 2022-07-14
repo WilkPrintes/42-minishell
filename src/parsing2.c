@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/14 04:50:10 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:44:54 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static void	delimiter(char *limit)
 	{
 		write(1, "> ", 2);
 		buffer = get_next_line(0);
-		write(file, buffer, ft_strlen(buffer));
+		ft_putstr_fd(buffer, file);
 		if (ft_strncmp(limit, buffer, ft_strlen(buffer) - 1) == 0)
 			break ;
 		free(buffer);

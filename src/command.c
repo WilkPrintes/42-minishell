@@ -48,12 +48,11 @@ void	echo(char *ptr, t_data_var *data)
 		printf("\n");
 }
 
-void	echo2(char *ptr, t_data_var *data)
+void	echo2(char **echo, t_data_var *data)
 {
 	int	i;
 	int	path;
 	int index;
-	char	**cmd;
 
 	i = 0;
 	path = find_index(data, "PATH");
@@ -62,24 +61,22 @@ void	echo2(char *ptr, t_data_var *data)
 		printf("echo: command not found\n");
 		return ;
 	}
-	cmd = ft_split(ptr, ' ');
-	while (cmd[i] != NULL)
+	while (echo[i] != NULL)
 	{
-		if (have_quotes(cmd[i]) == 1)
-			cmd[i] = remove_quotes(cmd[i]);
-		refix_quotes(cmd[i++]);
+		if (have_quotes(echo[i]) == 1)
+			echo[i] = remove_quotes(echo[i]);
+		refix_quotes(echo[i++]);
 	}
 	i = 1;
-	if (ft_strncmp(cmd[1], "-n", 2) == 0)
+	if (ft_strncmp(echo[i], "-n", 2) == 0)
 		i++;
-	while (cmd[i] != NULL)
+	while (echo[i] != NULL)
 	{
-		printf("%s", cmd[i++]);
+		printf("%s", echo[i++]);
 		printf(" ");
 	}
-	if (ft_strncmp(cmd[1], "-n", 2) != 0)
+	if (ft_strncmp(echo[1], "-n", 2) != 0)
 		printf("\n");
-	free_this(cmd);
 }
 
 void	unset(char *ptr, t_data_var *data)
@@ -118,14 +115,13 @@ void	env(t_data_var *data)
 	}
 }
 
-void	ft_export(t_data_var *data, char *name)
+void	ft_export(t_data_var *data, char **name)
 {
 	char	*temp;
 	int		index;
 
-	temp = ft_substr(name, 7, ft_strlen(name));
+	temp = name[1];
 	index = find_index(data, temp);
-	free(temp);
 	if (index != -1)
 		data->global[index] = 1;
 }
