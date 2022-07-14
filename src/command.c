@@ -50,9 +50,9 @@ void	echo(char *ptr, t_data_var *data)
 
 void	echo2(char *ptr, t_data_var *data)
 {
-	int	i;
-	int	path;
-	int index;
+	int		i;
+	int		path;
+	int		index;
 	char	**cmd;
 
 	i = 0;

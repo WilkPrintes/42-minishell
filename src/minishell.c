@@ -26,6 +26,8 @@ void	func_doida(char **built_in, t_data_var *data)
 
 	i_status = data->i_status;
 	status = 0;
+	data->temp_stdin = dup(STDIN_FILENO);
+	data->temp_stdout = dup(STDOUT_FILENO);
 	ptr = readline("minishell_teste: ");
 	if (ptr == NULL)
 		close_shell(NULL, ptr, data);
@@ -34,8 +36,9 @@ void	func_doida(char **built_in, t_data_var *data)
 		return ;
 	redirect(ptr);
 	add_history(ptr);
-	if (find_pipes(ptr) == 1)
+	if (find_pipes(ptr) > 0)
 	{
+		data->pipes = find_pipes(ptr);
 		pid = fork();
 		if (pid == 0)
 			pipex(cmds, data);
@@ -56,6 +59,8 @@ void	func_doida(char **built_in, t_data_var *data)
 		else
 			waitpid(pid, &status, 0);
 	}
+	dup2(data->temp_stdout, 1);
+	dup2(data->temp_stdin, 0);
 	data->contents[i_status] = ft_itoa(status);
 	free_this(cmds);
 	free(ptr);
@@ -64,15 +69,17 @@ void	func_doida(char **built_in, t_data_var *data)
 int	find_pipes(char *ptr)
 {
 	int	len;
+	int	result;
 
+	result = 0;
 	len = 0;
 	while (ptr[len] != '\0')
 	{
 		if (ptr[len] == '|')
-			return (1);
+			result++;
 		len++;
 	}
-	return (0);
+	return (result);
 }
 
 int	equalexist(char *ptr)

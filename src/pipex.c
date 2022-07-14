@@ -6,44 +6,52 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:53:45 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/13 17:27:00 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:33:53 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	first_command(char **argv, t_data *t_pipe, t_data_var *data);
-void	second_command(char **argv, t_data *t_pipe, t_data_var *data);
+void	first_command(char *argv, t_data *t_pipe, t_data_var *data);
+void	second_command(char *argv, t_data *t_pipe, t_data_var *data);
 
 int	pipex(char *argv[], t_data_var *data)
 {
 	t_data	t_pipe;
+	int		i;
 
-	if (pipe(t_pipe.fd) == -1)
-		error();
-	t_pipe.pid1 = fork();
-	if (t_pipe.pid1 == -1)
-		error();
-	if (t_pipe.pid1 == 0)
-		first_command(argv, &t_pipe, data);
-	else
+	i = 0;
+	t_pipe.temp_fd = STDIN_FILENO;
+	while (i < data->pipes)
 	{
+		if (pipe(t_pipe.fd) == -1)
+			error();
+		t_pipe.pid1 = fork();
+		if (t_pipe.pid1 == -1)
+			error();
+		if (t_pipe.pid1 == 0)
+			first_command(argv[i], &t_pipe, data);
 		waitpid(t_pipe.pid1, NULL, 0);
-		second_command(argv, &t_pipe, data);
+		t_pipe.temp_fd = t_pipe.fd[0];
+		i++;
 	}
+	second_command(argv[i], &t_pipe, data);
+	waitpid(t_pipe.pid1, NULL, 0);
 	return (0);
 }
 
-void	first_command(char **argv, t_data *t_pipe, t_data_var *data)
+void	first_command(char *argv, t_data *t_pipe, t_data_var *data)
 {
 	dup2(t_pipe->fd[1], STDOUT_FILENO);
+	dup2(t_pipe->temp_fd, STDIN_FILENO);
 	close(t_pipe->fd[0]);
-	command(getenv("PATH"), argv[0], data);
+	command(getenv("PATH"), argv, data);
 }
 
-void	second_command(char **argv, t_data *t_pipe, t_data_var *data)
+void	second_command(char *argv, t_data *t_pipe, t_data_var *data)
 {
-	dup2(t_pipe->fd[0], STDIN_FILENO);
+	dup2(t_pipe->temp_fd, STDIN_FILENO);
+	close(t_pipe->fd[0]);
 	close(t_pipe->fd[1]);
-	command(getenv("PATH"), argv[1], data);
+	command(getenv("PATH"), argv, data);
 }

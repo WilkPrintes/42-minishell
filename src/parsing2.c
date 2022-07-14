@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/12 21:21:58 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:19:42 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,27 +92,25 @@ void	refix_quotes(char *ptr)
 	}
 }
 
-static void	redirections(char **ptr)
+static void    redirections(char **ptr)
 {
-	int	i;
-	int	len;
+    int        i;
+    int        len;
 
-	i = 0;
-	while (ptr[i] != NULL)
-	{
-		len = ft_strlen(ptr[i]);
-		if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-			open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
-		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-			open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
-		else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-			open(ptr[i + 1], O_RDONLY, 0777);
-		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
-		{
-			read(0, ttyname(0), 200);
-		}
-		i++;
-	}
+    i = 0;
+    while (ptr[i] != NULL)
+    {
+        len = ft_strlen(ptr[i]);
+        if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
+        else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
+        else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
+            dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
+        // else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
+        //     delimiter(ptr[i + 1]);
+        i++;
+    }
 }
 
 void	redirect(char *ptr)
