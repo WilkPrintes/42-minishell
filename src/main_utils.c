@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/06 16:56:54 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/13 20:23:32 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	init_vars(t_data_var *data, char *envp[])
 		char_p = find_caracter(envp[len], '=');
 		envp_len = strlen(envp[len]);
 		data->names[len] = ft_substr(envp[len], 0, char_p);
-		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
+		data->contents[len] n_exit= ft_substr(envp[len], char_p + 1, envp_len);
 		data->global[len] = 1;
 		len++;
 	}

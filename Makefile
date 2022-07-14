@@ -1,6 +1,6 @@
 NAME		:= minishell
 
-CC			:= gcc
+CC			:= clang
 
 LIBFT		:= ./includes/libft/libft.a
 

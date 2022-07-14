@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/06 20:12:05 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/12 21:13:06 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 	new = calloc(full_size(ptr, cmd_nb), sizeof(char));
 	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
 		new[j++] = ptr[i++];
-	while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i - 1] != 0)
+	while (ptr[i - 1] != '\0' && ptr[i] != '|' && ptr[i] != 0)
 	{
 		if (ptr[i] == '-')
 		{
@@ -102,22 +102,28 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 	return (new);
 }
 
-int	parse(char *ptr, t_main *bingo)
+char	**parse(char *ptr)
 {
 	int	pipe;
 	int	i;
+	char **cmds;
 
+	if (ptr[0] == '\0')
+		return (NULL);
 	if (have_quotes(ptr) == -1)
-		return (write(2, "Error\n", 6));
+	{
+		ft_putstr_fd("Error! Quotes should be closed.\n", 2);
+		return(NULL);
+	}
 	fix_quotes(ptr);
 	i = 0;
 	pipe = number_of_commands(ptr);
-	bingo->cmds = malloc((pipe + 1) * sizeof(char *));
+	cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{
-		bingo->cmds[i] = cpy_cmd(ptr, i);
+		cmds[i] = cpy_cmd(ptr, i);
 		i++;
 	}
-	bingo->cmds[pipe] = NULL;
-	return (1);
+	cmds[pipe] = NULL;
+	return (cmds);
 }
