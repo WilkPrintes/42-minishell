@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes < wprintes@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 00:42:03 by wprintes          #+#    #+#             */
-/*   Updated: 2022/02/11 02:21:46 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/13 23:30:32 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 #  define IS_MACOS 1
 # else
 #  define IS_MACOS 0
+# endif
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
 # endif
 
 int		ft_isalnum(int c);
@@ -64,5 +68,7 @@ int		ft_putstr(char *s);
 int		ft_putchar(const int c);
 char	*ft_strchr(const char *str, int c);
 char	*ft_utoa(unsigned int n);
+char	*get_next_line(int fd);
+size_t	find_n(char *buffer);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lucas_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/11 21:19:18 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 00:50:31 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,25 +78,30 @@ void	close_shell(char **cmds, char *ptr, t_data_var *data)
 
 int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 {
+	int		i;
 	char	teste[256];
 	char	**hold;
 
-	hold = ft_split(cmds[0], ' ');
-	if (ft_strncmp(hold[0], "exit", ft_strlen(hold[0])) == 0)
-		close_shell(cmds, ptr, data);
-	else if (ft_strncmp(hold[0], "pwd", ft_strlen(hold[0])) == 0)
-		printf("%s\n", getcwd(teste, sizeof(teste)));
-	else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
-		chdir(hold[1]);
-	else if (ft_strncmp(hold[0], "echo", ft_strlen(hold[0])) == 0)
-		echo(ptr, data);
-	else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
-		ft_export(data, ptr);
-	else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)
-		unset(ptr, data);
-	else if (ft_strncmp(hold[0], "env", ft_strlen(hold[0])) == 0)
-		env(data);
-	free_this(hold);
+	i = -1;
+	while (cmds[++i] != NULL)
+	{
+		hold = ft_split(cmds[i], ' ');
+		if (ft_strncmp(hold[0], "exit", ft_strlen(hold[0])) == 0)
+			close_shell(cmds, ptr, data);
+		else if (ft_strncmp(hold[0], "pwd", ft_strlen(hold[0])) == 0)
+			printf("%s\n", getcwd(teste, sizeof(teste)));
+		else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
+			chdir(hold[1]);
+		else if (ft_strncmp(hold[0], "echo", ft_strlen(hold[0])) == 0)
+			echo2(hold, data);
+		else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
+			ft_export(data, hold);
+		else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)
+			unset(ptr, data);
+		else if (ft_strncmp(hold[0], "env", ft_strlen(hold[0])) == 0)
+			env(data);
+		free_this(hold);
+	}
 	return (0);
 }
 
