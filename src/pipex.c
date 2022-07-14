@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:53:45 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/14 20:33:53 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 00:38:53 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	second_command(char *argv, t_data *t_pipe, t_data_var *data);
 int	pipex(char *argv[], t_data_var *data)
 {
 	t_data	t_pipe;
-	int		i;
+	int i;
 
 	i = 0;
 	t_pipe.temp_fd = STDIN_FILENO;
@@ -31,12 +31,16 @@ int	pipex(char *argv[], t_data_var *data)
 			error();
 		if (t_pipe.pid1 == 0)
 			first_command(argv[i], &t_pipe, data);
-		waitpid(t_pipe.pid1, NULL, 0);
-		t_pipe.temp_fd = t_pipe.fd[0];
+		else
+		{
+			waitpid(t_pipe.pid1, NULL, 0);
+			close(t_pipe.fd[1]);
+			close(t_pipe.temp_fd);
+			t_pipe.temp_fd = dup(t_pipe.fd[0]);
+		}
 		i++;
 	}
 	second_command(argv[i], &t_pipe, data);
-	waitpid(t_pipe.pid1, NULL, 0);
 	return (0);
 }
 
@@ -51,6 +55,7 @@ void	first_command(char *argv, t_data *t_pipe, t_data_var *data)
 void	second_command(char *argv, t_data *t_pipe, t_data_var *data)
 {
 	dup2(t_pipe->temp_fd, STDIN_FILENO);
+	dup2(data->temp_stdout, STDOUT_FILENO);
 	close(t_pipe->fd[0]);
 	close(t_pipe->fd[1]);
 	command(getenv("PATH"), argv, data);
