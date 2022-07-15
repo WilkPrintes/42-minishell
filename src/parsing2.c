@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 04:06:13 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:07:31 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,23 @@ static void	redirections(char **ptr, t_data_var *data)
 	int		len;
 
 	i = 0;
-	data->fd_in = dup(STDIN_FILENO);
-	data->fd_out = dup(STDOUT_FILENO);
+	data->dif_fd[0] = dup(STDIN_FILENO);
+	data->dif_fd[1] = dup(STDOUT_FILENO);
 	while (ptr[i] != NULL)
 	{
 		len = ft_strlen(ptr[i]);
 		if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_in = open_close(data->fd_in, ptr[i + 1], 1);
+			data->dif_fd[0] = open_close(data->dif_fd[0], ptr[i + 1], 1);
 		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
 			data->here_doc = delimiter(ptr[i + 1]);
 		else if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_out = open_close(data->fd_out, ptr[i + 1], 2);
+			data->dif_fd[1] = open_close(data->dif_fd[1], ptr[i + 1], 2);
 		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_out = open_close(data->fd_out, ptr[i + 1], 3);
+			data->dif_fd[1] = open_close(data->dif_fd[1], ptr[i + 1], 3);
 		i++;
 	}
-	dup2(data->fd_in, STDIN_FILENO);
-	dup2(data->fd_out, STDOUT_FILENO);
+	dup2(data->dif_fd[0], STDIN_FILENO);
+	dup2(data->dif_fd[1], STDOUT_FILENO);
 }
 
 void	redirect(char *ptr, t_data_var *data)
