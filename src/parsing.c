@@ -6,12 +6,11 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 00:27:30 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:03:29 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	ft_isargument(int c)
 {
@@ -102,16 +101,16 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 
 char	**parse(char *ptr)
 {
-	int	pipe;
-	int	i;
-	char **cmds;
+	int		pipe;
+	int		i;
+	char	**cmds;
 
 	if (ptr[0] == '\0')
 		return (NULL);
 	if (have_quotes(ptr) == -1)
 	{
 		ft_putstr_fd("Error! Quotes should be closed.\n", 2);
-		return(NULL);
+		return (NULL);
 	}
 	fix_quotes(ptr);
 	i = 0;

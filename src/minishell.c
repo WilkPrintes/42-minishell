@@ -15,7 +15,6 @@
 int		equalexist(char *ptr);
 int		find_pipes(char *ptr);
 
-
 void	func_doida(char **built_in, t_data_var *data)
 {
 	char	**cmds;
@@ -32,7 +31,7 @@ void	func_doida(char **built_in, t_data_var *data)
 	cmds = parse(ptr);
 	if (cmds == NULL)
 		return ;
-	redirect(ptr);
+	redirect(ptr, data);
 	add_history(ptr);
 	if (find_pipes(ptr) > 0)
 	{
@@ -91,7 +90,7 @@ void	handi(int signum)
 {
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
- 	rl_replace_line("", 1);
+	rl_replace_line("", 1);
 	rl_redisplay();
 	return ;
 }
@@ -104,6 +103,7 @@ int	main(int argc, char **argv, char *envp[])
 	built_in = built_in_functions();
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
+	data.here_doc = -1;
 	data.count_var = 0;
 	data.names = ft_calloc(sizeof(char *), 1024);
 	data.contents = ft_calloc(sizeof(char *), 1024);
@@ -114,4 +114,9 @@ int	main(int argc, char **argv, char *envp[])
 		func_doida(built_in, &data);
 	free_this(built_in);
 	return (0);
+	if (data.here_doc != -1)
+	{
+		close(data.here_doc);
+		unlink(".temp_file");
+	}
 }
