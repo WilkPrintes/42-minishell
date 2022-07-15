@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:53:45 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 03:34:22 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 04:03:02 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	first_command(char *argv, t_data *t_pipe, t_data_var *data)
 void	second_command(char *argv, t_data *t_pipe, t_data_var *data)
 {
 	dup2(t_pipe->temp_fd, STDIN_FILENO);
-	// dup2(data->temp_stdout, STDOUT_FILENO);
+/* 	dup2(data->temp_fd, STDOUT_FILENO); */
 	close(t_pipe->fd[0]);
 	close(t_pipe->fd[1]);
 	command(getenv("PATH"), argv, data);
