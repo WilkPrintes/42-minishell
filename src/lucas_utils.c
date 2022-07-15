@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lucas_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
 /*   Updated: 2022/07/15 02:04:31 by lucferna         ###   ########.fr       */
@@ -97,7 +97,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
 			ft_export(data, hold);
 		else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)
-			unset(ptr, data);
+			unset(hold[1], data);
 		else if (ft_strncmp(hold[0], "env", ft_strlen(hold[0])) == 0)
 			env(data);
 		free_this(hold);

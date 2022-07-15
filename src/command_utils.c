@@ -40,19 +40,26 @@ char	*find_path(char *cmd, char *envp)
 	return (NULL);
 }
 
-void	command(char *envp, char *ptr)
+void	command(char *envp, char *ptr, t_data_var *data)
 {
 	int		i;
 	char	*path;
 	char	**cmd;
+	char 	**built;
 
 	i = 0;
+	built = built_in_functions();
 	cmd = ft_split(ptr, ' ');
 	while (cmd[i] != NULL)
 	{
 		if (have_quotes(cmd[i]) == 1)
 			cmd[i] = remove_quotes(cmd[i]);
 		refix_quotes(cmd[i++]);
+	}
+	if (is_built_in(built, cmd) == 1)
+	{
+		exec_built_in(cmd, ptr, data);
+		exit(0);
 	}
 	path = find_path(cmd[0], envp);
 	if (!path)
@@ -62,7 +69,7 @@ void	command(char *envp, char *ptr)
 		ft_putstr_fd(": command not found\n", 2);
 		exit(127);
 	}
-	if (execve(path, cmd, NULL) == -1)
+	else if (execve(path, cmd, NULL) == -1)
 	{
 		free_matriz(&cmd);
 		free(path);

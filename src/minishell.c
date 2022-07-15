@@ -33,16 +33,17 @@ void	func_doida(char **built_in, t_data_var *data)
 		return ;
 	redirect(ptr, data);
 	add_history(ptr);
-	if (find_pipes(ptr) == 1)
+	if (find_pipes(ptr) > 0)
 	{
+		data->pipes = find_pipes(ptr);
 		pid = fork();
 		if (pid == 0)
-			pipex(cmds);
+			pipex(cmds, data);
 		else
 			waitpid(pid, &status, 0);
 	}
 	else if (is_built_in(built_in, cmds) == 1)
-		exec_built_in(cmds, ptr, data);
+		status = exec_built_in(cmds, ptr, data);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
@@ -51,10 +52,12 @@ void	func_doida(char **built_in, t_data_var *data)
 	{
 		pid = fork();
 		if (pid == 0)
-			command(data->contents[find_index(data, "PATH")], cmds[0]);
+			command(data->contents[find_index(data, "PATH")], cmds[0], data);
 		else
 			waitpid(pid, &status, 0);
 	}
+	dup2(data->temp_stdout, 1);
+	dup2(data->temp_stdin, 0);
 	data->contents[i_status] = ft_itoa(status);
 	free_this(cmds);
 	free(ptr);
@@ -63,15 +66,17 @@ void	func_doida(char **built_in, t_data_var *data)
 int	find_pipes(char *ptr)
 {
 	int	len;
+	int	result;
 
+	result = 0;
 	len = 0;
 	while (ptr[len] != '\0')
 	{
 		if (ptr[len] == '|')
-			return (1);
+			result++;
 		len++;
 	}
-	return (0);
+	return (result);
 }
 
 int	equalexist(char *ptr)
