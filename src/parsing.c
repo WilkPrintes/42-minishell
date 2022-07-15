@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 15:46:27 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 22:23:14 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,24 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 	return (new);
 }
 
+int	go_to_command(char *ptr)
+{
+	int	i;
+	int	moves;
+
+	i = 0;
+	if (ptr[0] == '>' || ptr[0] == '<')
+	{
+		while (ptr[i] != '\0' && ptr[i] != ' ')
+			i++;
+		while (ptr[i] != '\0' && ptr[i] == ' ')
+			i++;
+		while (ptr[i] != '\0' && ptr[i] != ' ')
+			i++;
+	}
+	return (i);
+}
+
 char	**parse(char *ptr)
 {
 	int		pipe;
@@ -114,7 +132,10 @@ char	**parse(char *ptr)
 	}
 	fix_quotes(ptr);
 	i = 0;
+	ptr = ptr + go_to_command(ptr);
 	pipe = number_of_commands(ptr) + 1;
+	if (*ptr == '\0')
+		return (NULL);
 	cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{

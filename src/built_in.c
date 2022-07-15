@@ -16,7 +16,6 @@ void	echo(char **echo, t_data_var *data)
 {
 	int	i;
 	int	path;
-	int	index;
 
 	i = 0;
 	path = find_index(data, "PATH");
@@ -25,12 +24,7 @@ void	echo(char **echo, t_data_var *data)
 		printf("echo: command not found\n");
 		return ;
 	}
-	while (echo[i] != NULL)
-	{
-		if (have_quotes(echo[i]) == 1)
-			echo[i] = remove_quotes(echo[i]);
-		refix_quotes(echo[i++]);
-	}
+	remake_quoted(echo);
 	i = 1;
 	if (ft_strncmp(echo[i], "-n", 2) == 0)
 		i++;
@@ -89,17 +83,15 @@ void	ft_export(t_data_var *data, char **name)
 		data->global[index] = 1;
 }
 
-void	close_shell(char **cmds, char *ptr, t_data_var *data)
+void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
 {
 	int	len;
 
 	len = 0;
-	while ((data->names)[len])
+	while (len < 1024)
 	{
-		if ((data->names)[len])
-			free((data->names)[len]);
-		if ((data->contents)[len])
-			free((data->contents)[len]);
+		free((data->names)[len]);
+		free((data->contents)[len]);
 		len++;
 	}
 	free(data->global);
@@ -107,6 +99,7 @@ void	close_shell(char **cmds, char *ptr, t_data_var *data)
 	free(data->names);
 	free(ptr);
 	free_this(cmds);
+	free_this(extra);
 	printf("exit\n");
 	exit(EXIT_SUCCESS);
 }

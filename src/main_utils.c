@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 14:33:06 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 21:00:12 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,17 @@ int	init_vars(t_data_var *data, char *envp[])
 	data->global[len] = 0;
 	len++;
 	return (len);
+}
+
+void	remake_quoted(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i] != NULL)
+	{
+		if (have_quotes(ptr[i]) == 1)
+			ptr[i] = remove_quotes(ptr[i]);
+		refix_quotes(ptr[i++]);
+	}
 }

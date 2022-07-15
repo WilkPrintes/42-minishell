@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing2.c                                         :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 14:33:22 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 22:57:57 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ static int	delimiter(char *limit)
 	int		file;
 	char	*buffer;
 
-	file = open(".temp_file", O_CREAT | O_RDWR | O_TRUNC, 0777);
+	file = open(".temp_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (file < 0)
 		write(2, "Error with delimiter\n", 21);
 	while (1)
 	{
-		write(2, "> ", 2);
+		write(1, "> ", 2);
 		buffer = get_next_line(0);
 		ft_putstr_fd(buffer, file);
-		if (ft_strncmp(limit, buffer, ft_strlen(buffer) - 1) == 0)
+		if (ft_strncmp(limit, buffer, ft_strlen(limit)) == 0)
 			break ;
 		free(buffer);
 	}

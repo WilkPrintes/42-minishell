@@ -17,60 +17,33 @@ int	g_status;
 int		equalexist(char *ptr);
 int		find_pipes(char *ptr);
 
-void	set_original_fd(int *original_fd)
-{
-	original_fd[0] = dup(STDIN_FILENO);
-	original_fd[1] = dup(STDOUT_FILENO);
-}
-
-void	reset_original_fd(int *original_fd, int *dif_fd)
-{
-	if (dif_fd[0] != STDIN_FILENO)
-		close(dif_fd[0]);
-	if (dif_fd[1] != STDOUT_FILENO)
-		close(dif_fd[1]);
-	dup2(original_fd[0], STDIN_FILENO);
-	dup2(original_fd[1], STDOUT_FILENO);
-}
-
-char	*call_rl(t_data_var *data)
-{
-	char	*ptr;
-
-	ptr = readline("minishell: ");
-	if (ptr == NULL)
-		close_shell(NULL, ptr, data);
-	add_history(ptr);
-	return (ptr);
-}
-
-int	single_command(t_resources *resources, t_data_var *data)
+int	single_command(t_resources *re, t_data_var *data)
 {
 	int	pid;
 
 	pid = fork();
 	if (pid == 0)
-		command(data->contents[find_index(data, "PATH")], resources->cmds[0],
-				data);
+		command(data->contents[find_index(data, "PATH")], re->cmds[0], data,
+			re);
 	else
 		waitpid(pid, &g_status, 0);
 	return (g_status);
 }
 
-int	multiple_commands(t_data_var *data, char **cmds, int pipes)
+int	multiple_commands(t_data_var *data, t_resources *re, int pipes)
 {
 	int	pid;
 
 	data->pipes = pipes;
 	pid = fork();
 	if (pid == 0)
-		pipex(cmds, data);
+		pipex(re->cmds, data, re);
 	else
 		waitpid(pid, &g_status, 0);
 	return (g_status);
 }
 
-int	minishell(t_resources *resources, t_data_var *data)
+void	minishell(t_resources *re, t_data_var *data)
 {
 	int		i_status;
 	int		original_fd[2];
@@ -78,63 +51,30 @@ int	minishell(t_resources *resources, t_data_var *data)
 	set_original_fd(original_fd);
 	i_status = data->i_status;
 	g_status = 0;
-	resources->cmds = parse(resources->line);
-	if (resources->cmds == NULL)
-		return (0);
-	redirect(resources->line, data);
-	if (number_of_commands(resources->line) > 0)
-		multiple_commands(data, resources->cmds,
-			number_of_commands(resources->line));
-	else if (is_built_in(resources, resources->cmds) == 1)
-		exec_built_in(resources->cmds, resources->line, data);
-	else if (ft_strncmp(resources->line, "clear", 5) == 0)
+	re->cmds = parse(re->line);
+	if (re->cmds == NULL)
+		return (free(re->line));
+	redirect(re->line, data);
+	if (number_of_commands(re->line) > 0)
+		multiple_commands(data, re, number_of_commands(re->line));
+	else if (is_built_in(re, re->cmds) == 1)
+		exec_built_in(re->cmds, re->line, data);
+	else if (ft_strncmp(re->line, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
-	else if (equalexist(resources->line) != -1)
-		var_func(resources->line, data);
+	else if (equalexist(re->line) != -1)
+		var_func(re->line, data);
 	else
-		single_command(resources, data);
+		single_command(re, data);
+	free(data->contents[i_status]);
 	data->contents[i_status] = ft_itoa(g_status);
 	reset_original_fd(original_fd, data->dif_fd);
-	free_this(resources->cmds);
-	free(resources->line);
-	return (g_status);
-}
-
-int	find_pipes(char *ptr)
-{
-	int	len;
-	int	result;
-
-	result = 0;
-	len = 0;
-	while (ptr[len] != '\0')
-	{
-		if (ptr[len] == '|')
-			result++;
-		len++;
-	}
-	return (result);
-}
-
-int	equalexist(char *ptr)
-{
-	if (find_caracter(ptr, ' ') != -1)
-		return (-1);
-	return (find_caracter(ptr, '='));
-}
-
-void	handi(int signum)
-{
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-	return ;
+	free_this(re->cmds);
+	free(re->line);
 }
 
 void	init_args(t_data_var *data, char *envp[])
 {
-	signal(SIGINT, handi);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	data->here_doc = -1;
 	data->count_var = 0;
@@ -149,7 +89,6 @@ int	main(int argc, char **argv, char *envp[])
 {
 	t_data_var			data;
 	t_resources			resources;
-	int					status;
 	char				*ptr;
 
 	if (argc > 1)
@@ -161,12 +100,12 @@ int	main(int argc, char **argv, char *envp[])
 	while (1)
 	{
 		resources.line = call_rl(&data);
-		status = minishell(&resources, &data);
+		minishell(&resources, &data);
 	}
 	if (data.here_doc != -1)
 	{
 		close(data.here_doc);
 		unlink(".temp_file");
 	}
-	return (status);
+	return (g_status);
 }
