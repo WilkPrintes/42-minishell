@@ -42,7 +42,7 @@ char	*call_rl(t_data_var *data)
 	return (ptr);
 }
 
-int	single_command(t_data_var *data, char *cmd)
+void	single_command(t_data_var *data, char *cmd)
 {
 	int	pid;
 	int	status;
@@ -53,10 +53,9 @@ int	single_command(t_data_var *data, char *cmd)
 		command(data->contents[find_index(data, "PATH")], cmd, data);
 	else
 		waitpid(pid, &status, 0);
-	return (status);
 }
 
-int	multiple_commands(t_data_var *data, char **cmds, int pipes)
+void	multiple_commands(t_data_var *data, char **cmds, int pipes)
 {
 	int	pid;
 	int	status;
@@ -68,7 +67,6 @@ int	multiple_commands(t_data_var *data, char **cmds, int pipes)
 		pipex(cmds, data);
 	else
 		waitpid(pid, &status, 0);
-	return (status);
 }
 
 int	minishell(char **built_in, char *ptr, t_data_var *data)
@@ -85,16 +83,16 @@ int	minishell(char **built_in, char *ptr, t_data_var *data)
 	if (cmds == NULL)
 		return (0);
 	redirect(ptr, data);
-	if (find_pipes(ptr) > 0)
-		status = multiple_commands(data, cmds, number_of_commands(ptr));
+	if (number_of_commands(ptr) > 0)
+		multiple_commands(data, cmds, number_of_commands(ptr));
 	else if (is_built_in(built_in, cmds) == 1)
-		status = exec_built_in(cmds, ptr, data);
+		exec_built_in(cmds, ptr, data);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(ptr) != -1)
 		var_func(ptr, data);
 	else
-		status = single_command(data, cmds[0]);
+		single_command(data, cmds[0]);
 	data->contents[i_status] = ft_itoa(status);
 	reset_original_fd(original_fd, data->dif_fd);
 	free_this(cmds);
