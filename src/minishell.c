@@ -31,18 +31,49 @@ void	reset_original_fd(int *original_fd, int *dif_fd)
 	dup2(original_fd[1], STDOUT_FILENO);
 }
 
-char	*call_rl(void)
+char	*call_rl(t_data_var *data)
 {
-	char *ptr;
+	char	*ptr;
 
 	ptr = readline("minishell: ");
+	if (ptr == NULL)
+		close_shell(NULL, ptr, data);
 	add_history(ptr);
 	return (ptr);
 }
+
+int	single_command(t_data_var *data, char *cmd)
+{
+	int	pid;
+	int	status;
+
+	status = 0;
+	pid = fork();
+	if (pid == 0)
+		command(data->contents[find_index(data, "PATH")], cmd, data);
+	else
+		waitpid(pid, &status, 0);
+	return (status);
+}
+
+int	multiple_commands(t_data_var *data, char **cmds, int pipes)
+{
+	int	pid;
+	int	status;
+
+	status = 0;
+	data->pipes = pipes;
+	pid = fork();
+	if (pid == 0)
+		pipex(cmds, data);
+	else
+		waitpid(pid, &status, 0);
+	return (status);
+}
+
 int	minishell(char **built_in, char *ptr, t_data_var *data)
 {
 	char	**cmds;
-	int		pid;
 	int		i_status;
 	int		status;
 	int		original_fd[2];
@@ -50,21 +81,12 @@ int	minishell(char **built_in, char *ptr, t_data_var *data)
 	set_original_fd(original_fd);
 	i_status = data->i_status;
 	status = 0;
-	if (ptr == NULL)
-		close_shell(NULL, ptr, data);
 	cmds = parse(ptr);
 	if (cmds == NULL)
 		return (0);
 	redirect(ptr, data);
 	if (find_pipes(ptr) > 0)
-	{
-		data->pipes = find_pipes(ptr);
-		pid = fork();
-		if (pid == 0)
-			pipex(cmds, data);
-		else
-			waitpid(pid, &status, 0);
-	}
+		status = multiple_commands(data, cmds, number_of_commands(ptr));
 	else if (is_built_in(built_in, cmds) == 1)
 		status = exec_built_in(cmds, ptr, data);
 	else if (ft_strncmp(ptr, "clear", 5) == 0)
@@ -72,34 +94,12 @@ int	minishell(char **built_in, char *ptr, t_data_var *data)
 	else if (equalexist(ptr) != -1)
 		var_func(ptr, data);
 	else
-	{
-		pid = fork();
-		if (pid == 0)
-			command(data->contents[find_index(data, "PATH")], cmds[0], data);
-		else
-			waitpid(pid, &status, 0);
-	}
+		status = single_command(data, cmds[0]);
 	data->contents[i_status] = ft_itoa(status);
 	reset_original_fd(original_fd, data->dif_fd);
 	free_this(cmds);
 	free(ptr);
-	return (0);
-}
-
-int	find_pipes(char *ptr)
-{
-	int	len;
-	int	result;
-
-	result = 0;
-	len = 0;
-	while (ptr[len] != '\0')
-	{
-		if (ptr[len] == '|')
-			result++;
-		len++;
-	}
-	return (result);
+	return (status);
 }
 
 int	equalexist(char *ptr)
@@ -147,7 +147,7 @@ int	main(int argc, char **argv, char *envp[])
 	built_in = built_in_functions();
 	while (1)
 	{
-		ptr = call_rl();
+		ptr = call_rl(&data);
 		status = minishell(built_in, ptr, &data);
 	}
 	if (data.here_doc != -1)
