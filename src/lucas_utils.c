@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lucas_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 02:04:31 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 03:59:49 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
 			chdir(hold[1]);
 		else if (ft_strncmp(hold[0], "echo", ft_strlen(hold[0])) == 0)
-			echo2(hold, data);
+			echo(hold, data);
 		else if (ft_strncmp(hold[0], "export", ft_strlen(hold[0])) == 0)
 			ft_export(data, hold);
 		else if (ft_strncmp(hold[0], "unset", ft_strlen(hold[0])) == 0)

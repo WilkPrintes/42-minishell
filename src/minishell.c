@@ -56,8 +56,6 @@ void	func_doida(char **built_in, t_data_var *data)
 		else
 			waitpid(pid, &status, 0);
 	}
-	dup2(data->temp_stdout, 1);
-	dup2(data->temp_stdin, 0);
 	data->contents[i_status] = ft_itoa(status);
 	free_this(cmds);
 	free(ptr);

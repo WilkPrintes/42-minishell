@@ -34,6 +34,7 @@ typedef struct s_data_var{
 	int		count_var;
 	int		i_status;
 	int		*global;
+	int		pipes;
 	int		fd_in;
 	int		fd_out;
 	int		here_doc;

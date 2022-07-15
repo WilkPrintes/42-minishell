@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 16:55:59 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 01:56:30 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 04:04:28 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,20 @@ void	refix_quotes(char *ptr)
 			ptr[i] = ' ';
 		i++;
 	}
+}
+
+int	number_of_commands(char *ptr)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 1;
+	while (ptr[i] != '\0')
+	{
+		if (ptr[i] == '|')
+			count++;
+		i++;
+	}
+	return (count);
 }

@@ -3,31 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 01:59:13 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 04:06:13 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
-
-int	number_of_commands(char *ptr)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 1;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == '|')
-			count++;
-		i++;
-	}
-	return (count);
-}
 
 int	have_quotes(char *ptr)
 {
@@ -58,6 +42,16 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
+static int	open_close(int old_fd, char *name, int method)
+{
+	close(old_fd);
+	if (method == 1)
+		return (open(name, O_RDONLY, 0777));
+	else if (method == 2)
+		return (open(name, O_RDWR | O_CREAT | O_TRUNC, 0777));
+	else
+		return (open(name, O_RDWR | O_CREAT | O_APPEND, 0777));
+}
 static int	delimiter(char *limit)
 {
 	int		file;
@@ -91,13 +85,13 @@ static void	redirections(char **ptr, t_data_var *data)
 	{
 		len = ft_strlen(ptr[i]);
 		if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_in = open(ptr[i + 1], O_RDONLY, 0777);
+			data->fd_in = open_close(data->fd_in, ptr[i + 1], 1);
 		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
 			data->here_doc = delimiter(ptr[i + 1]);
 		else if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_out = open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+			data->fd_out = open_close(data->fd_out, ptr[i + 1], 2);
 		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-			data->fd_out = open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
+			data->fd_out = open_close(data->fd_out, ptr[i + 1], 3);
 		i++;
 	}
 	dup2(data->fd_in, STDIN_FILENO);
