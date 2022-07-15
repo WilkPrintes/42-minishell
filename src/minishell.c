@@ -23,6 +23,7 @@ void	func_doida(char **built_in, t_data_var *data)
 	int		i_status;
 	int		status;
 
+	int sla = dup(STDOUT_FILENO);
 	i_status = data->i_status;
 	status = 0;
 	ptr = readline("minishell_teste: ");
@@ -57,6 +58,7 @@ void	func_doida(char **built_in, t_data_var *data)
 			waitpid(pid, &status, 0);
 	}
 	data->contents[i_status] = ft_itoa(status);
+	dup2(sla, STDOUT_FILENO);
 	free_this(cmds);
 	free(ptr);
 }

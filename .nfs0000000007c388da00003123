@@ -1,0 +1,21 @@
+total 432
+drwxrwxr-x 7 coder coder  4096 Jul 15 04:31 .
+drwxr-xr-x 9 coder coder  4096 Jul 11 04:45 ..
+drwxrwxr-x 8 coder coder  4096 Jul 15 04:11 .git
+-rw-rw-r-- 1 coder coder    87 Jul 15 03:37 .gitignore
+-rwxrwxr-x 1 coder coder 52512 Jul 15 03:54 .nfs0000000007c3871200003119
+-rwxrwxr-x 1 coder coder     0 Jul 15 04:05 .nfs0000000007c3888600003120
+-rwxrwxr-x 1 coder coder 52584 Jul 15 04:04 .nfs0000000007c388c30000311a
+-rwxrwxr-x 1 coder coder  1068 Jul 15 04:07 .nfs0000000007c388ca0000311f
+-rwxrwxr-x 1 coder coder 52584 Jul 15 04:05 .nfs0000000007c388cc0000311b
+-rwxrwxr-x 1 coder coder 52592 Jul 15 04:06 .nfs0000000007c388cd0000311d
+-rwxrwxr-x 1 coder coder 52056 Jul 15 03:57 .nfs0000000007c388d4000030ff
+-rwxrwxr-x 1 coder coder 52584 Jul 15 04:07 .nfs0000000007c388d40000311e
+drwxrwxr-x 2 coder coder  4096 Jul 10 15:44 .vscode
+-rw-rw-r-- 1 coder coder  1018 Jul 15 03:37 Makefile
+drwxrwxr-x 2 coder coder  4096 Jul 15 03:57 header
+drwxrwxr-x 3 coder coder  4096 Jul 10 15:44 includes
+-rwxrwxr-x 1 coder coder 52552 Jul 15 04:31 minishell
+-rw-rw-r-- 1 coder coder   473 Jul 11 20:14 readline.supp
+drwxrwxr-x 2 coder coder  4096 Jul 15 03:57 src
+-rwxrwxr-x 1 coder coder     0 Jul 15 04:31 teste1
