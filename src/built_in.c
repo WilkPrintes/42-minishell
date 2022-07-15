@@ -94,7 +94,7 @@ void	close_shell(char **cmds, char *ptr, t_data_var *data)
 	int	len;
 
 	len = 0;
-	while (len < data->count_var + 1)
+	while ((data->names)[len])
 	{
 		if ((data->names)[len])
 			free((data->names)[len]);
