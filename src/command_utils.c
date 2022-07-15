@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 03:28:36 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 16:55:12 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	command(char *envp, char *ptr, t_data_var *data)
 	}
 	if (is_built_in(built, cmd) == 1)
 	{
+		free(built);
 		exec_built_in(cmd, ptr, data);
 		exit(0);
 	}
