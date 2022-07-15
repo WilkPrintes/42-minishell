@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 19:06:58 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 21:47:16 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,16 @@ char	*find_path(char *cmd, char *envp)
 	return (NULL);
 }
 
-void	command(char *envp, char *ptr, t_data_var *data)
+void	command(char *envp, char *ptr, t_data_var *data, t_resources *re)
 {
 	int		i;
 	char	*path;
 	char	**cmd;
-	char	**built;
 
 	i = 0;
-	built = built_in_functions();
 	cmd = ft_split(ptr, ' ');
-	while (cmd[i] != NULL)
-	{
-		if (have_quotes(cmd[i]) == 1)
-			cmd[i] = remove_quotes(cmd[i]);
-		refix_quotes(cmd[i++]);
-	}
-	if (is_built_in(built, cmd) == 1)
+	remake_quoted(cmd);
+	if (is_built_in(re, cmd) == 1)
 	{
 		exec_built_in(cmd, ptr, data);
 		exit(0);
@@ -70,11 +63,7 @@ void	command(char *envp, char *ptr, t_data_var *data)
 		exit(127);
 	}
 	else if (execve(path, cmd, NULL) == -1)
-	{
-		free_matriz(&cmd);
-		free(path);
-		error();
-	}
+		free_error(&cmd, &path);
 }
 
 void	free_matriz(char ***buffer)

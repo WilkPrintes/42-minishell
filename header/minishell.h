@@ -51,10 +51,10 @@ typedef struct s_data
 }t_data;
 
 char	*find_path(char *cmd, char *envp);
-void	command(char *envp, char *ptr, t_data_var *data);
+void	command(char *envp, char *ptr, t_data_var *data, t_resources *re);
 void	free_matriz(char ***buffer);
 void	error(void);
-int		pipex(char *argv[], t_data_var *data);
+int		pipex(char *argv[], t_data_var *data, t_resources *re);
 
 //Mudanças Wilk
 void	var_func(char *ptr, t_data_var *data);
@@ -76,7 +76,7 @@ int		init_vars(t_data_var *data, char *envp[]);
 //Mudanças lucas
 char	**built_in_functions(void);
 int		is_built_in(t_resources *resources, char **cmds);
-void	close_shell(char **cmds, char *ptr, t_data_var *data);
+void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data);
 int		exec_built_in(char **cmds, char *ptr, t_data_var *data);
 void	set_dir(char **cd, char *pwd);
 char	**parse(char *ptr);
@@ -90,5 +90,13 @@ int		number_of_commands(char *ptr);
 int		have_quotes(char *ptr);
 void	fix_quotes(char *ptr);
 void	refix_quotes(char *ptr);
+void	remake_quoted(char **ptr);
+char	*call_rl(t_data_var *data);
+int		single_command(t_resources *resources, t_data_var *data);
+int		multiple_commands(t_data_var *data, t_resources *re, int pipes);
+void	reset_original_fd(int *original_fd, int *dif_fd);
+void	set_original_fd(int *original_fd);
+void	handle_sigint(int signum);
+void	free_error(char ***ptr, char **path);
 
 #endif

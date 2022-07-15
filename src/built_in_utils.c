@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 19:31:43 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 21:02:33 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,24 @@ char	**built_in_functions(void)
 	return (ptr);
 }
 
-int	is_built_in(t_resources *resources, char **cmds)
+int	is_built_in(t_resources *re, char **cmds)
 {
 	int		i;
 	int		n_cmds;
 	char	**hold;
 
 	n_cmds = 0;
-	resources->built_in = built_in_functions();
+	re->built_in = built_in_functions();
 	while (cmds[n_cmds] != NULL)
 	{
 		i = 0;
 		hold = ft_split(cmds[n_cmds], ' ');
 		while (i < 7)
 		{
-			if (ft_strncmp(resources->built_in[i], hold[0],
-				ft_strlen(hold[0])) == 0)
+			if (ft_strncmp(re->built_in[i], hold[0], ft_strlen(hold[0])) == 0)
 			{
 				free_this(hold);
-				free_this(resources->built_in);
+				free_this(re->built_in);
 				return (1);
 			}
 			i++;
@@ -54,7 +53,7 @@ int	is_built_in(t_resources *resources, char **cmds)
 		n_cmds++;
 		free_this(hold);
 	}
-	free_this(resources->built_in);
+	free_this(re->built_in);
 	return (0);
 }
 
@@ -69,7 +68,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	{
 		hold = ft_split(cmds[i], ' ');
 		if (ft_strncmp(hold[0], "exit", ft_strlen(hold[0])) == 0)
-			close_shell(cmds, ptr, data);
+			close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", ft_strlen(hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", ft_strlen(hold[0])) == 0)
