@@ -6,41 +6,12 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 14:07:31 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:33:22 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
-
-int	have_quotes(char *ptr)
-{
-	int	i;
-	int	val;
-	int	quotes;
-
-	i = 0;
-	val = 0;
-	quotes = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 || ptr[i] == 39)
-		{
-			val++;
-			quotes = ptr[i++];
-			while (ptr[i] != '\0' && ptr[i] != quotes)
-				i++;
-			if (ptr[i] == quotes)
-				val++;
-		}
-		i++;
-	}
-	if (val % 2 != 0)
-		return (-1);
-	else if (val == 0)
-		return (0);
-	return (1);
-}
 
 static int	open_close(int old_fd, char *name, int method)
 {
@@ -52,6 +23,7 @@ static int	open_close(int old_fd, char *name, int method)
 	else
 		return (open(name, O_RDWR | O_CREAT | O_APPEND, 0777));
 }
+
 static int	delimiter(char *limit)
 {
 	int		file;

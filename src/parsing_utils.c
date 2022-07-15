@@ -1,17 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing3.c                                         :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 16:55:59 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 04:04:28 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:25:59 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
+
+int	have_quotes(char *ptr)
+{
+	int	i;
+	int	val;
+	int	quotes;
+
+	i = 0;
+	val = 0;
+	quotes = 0;
+	while (ptr[i] != '\0')
+	{
+		if (ptr[i] == 34 || ptr[i] == 39)
+		{
+			val++;
+			quotes = ptr[i++];
+			while (ptr[i] != '\0' && ptr[i] != quotes)
+				i++;
+			if (ptr[i] == quotes)
+				val++;
+		}
+		i++;
+	}
+	if (val % 2 != 0)
+		return (-1);
+	else if (val == 0)
+		return (0);
+	return (1);
+}
 
 char	*remove_quotes(char *ptr)
 {

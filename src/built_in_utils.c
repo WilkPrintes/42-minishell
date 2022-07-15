@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 03:59:49 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:28:30 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,6 @@ int	is_built_in(char **built_in, char **cmds)
 		free_this(hold);
 	}
 	return (0);
-}
-
-void	close_shell(char **cmds, char *ptr, t_data_var *data)
-{
-	int	len;
-
-	len = 0;
-	while (len < data->count_var + 1)
-	{
-		if ((data->names)[len])
-			free((data->names)[len]);
-		if ((data->contents)[len])
-			free((data->contents)[len]);
-		len++;
-	}
-	free(data->global);
-	free(data->contents);
-	free(data->names);
-	free(ptr);
-	free_this(cmds);
-	printf("exit\n");
-	exit(EXIT_SUCCESS);
 }
 
 int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
