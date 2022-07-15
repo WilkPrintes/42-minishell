@@ -51,6 +51,7 @@ void	command(char *envp, char *ptr, t_data_var *data, t_resources *re)
 	remake_quoted(cmd);
 	if (is_built_in(re, cmd) == 1)
 	{
+		free(built);
 		exec_built_in(cmd, ptr, data);
 		exit(0);
 	}
