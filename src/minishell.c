@@ -15,24 +15,47 @@
 int		equalexist(char *ptr);
 int		find_pipes(char *ptr);
 
-void	func_doida(char **built_in, t_data_var *data)
+void	set_original_fd(int *original_fd)
+{
+	original_fd[0] = dup(STDIN_FILENO);
+	original_fd[1] = dup(STDOUT_FILENO);
+}
+
+void	reset_original_fd(int *original_fd, int *dif_fd)
+{
+	if (dif_fd[0] != STDIN_FILENO)
+		close(dif_fd[0]);
+	if (dif_fd[1] != STDOUT_FILENO)
+		close(dif_fd[1]);
+	dup2(original_fd[0], STDIN_FILENO);
+	dup2(original_fd[1], STDOUT_FILENO);
+}
+
+char	*call_rl(void)
+{
+	char *ptr;
+
+	ptr = readline("minishell: ");
+	add_history(ptr);
+	return (ptr);
+}
+int	minishell(char **built_in, char *ptr, t_data_var *data)
 {
 	char	**cmds;
-	char	*ptr;
 	int		pid;
 	int		i_status;
 	int		status;
+	int		original_fd[2];
 
+	set_original_fd(original_fd);
 	i_status = data->i_status;
 	status = 0;
-	ptr = readline("minishell_teste: ");
 	if (ptr == NULL)
 		close_shell(NULL, ptr, data);
 	cmds = parse(ptr);
 	if (cmds == NULL)
-		return ;
+		return (0);
 	redirect(ptr, data);
-	add_history(ptr);
 	if (find_pipes(ptr) > 0)
 	{
 		data->pipes = find_pipes(ptr);
@@ -57,8 +80,10 @@ void	func_doida(char **built_in, t_data_var *data)
 			waitpid(pid, &status, 0);
 	}
 	data->contents[i_status] = ft_itoa(status);
+	reset_original_fd(original_fd, data->dif_fd);
 	free_this(cmds);
 	free(ptr);
+	return (0);
 }
 
 int	find_pipes(char *ptr)
@@ -93,28 +118,43 @@ void	handi(int signum)
 	return ;
 }
 
-int	main(int argc, char **argv, char *envp[])
+void	init_args(t_data_var *data, char *envp[])
 {
-	char				**built_in;
-	t_data_var			data;
-
-	built_in = built_in_functions();
 	signal(SIGINT, handi);
 	signal(SIGQUIT, SIG_IGN);
-	data.here_doc = -1;
-	data.count_var = 0;
-	data.names = ft_calloc(sizeof(char *), 1024);
-	data.contents = ft_calloc(sizeof(char *), 1024);
-	data.global = ft_calloc(sizeof(int), 1024);
-	data.count_var = init_vars(&data, envp);
-	data.i_status = data.count_var - 1;
+	data->here_doc = -1;
+	data->count_var = 0;
+	data->names = ft_calloc(sizeof(char *), 1024);
+	data->contents = ft_calloc(sizeof(char *), 1024);
+	data->global = ft_calloc(sizeof(int), 1024);
+	data->count_var = init_vars(data, envp);
+	data->i_status = data->count_var - 1;
+}
+
+int	main(int argc, char **argv, char *envp[])
+{
+	t_data_var			data;
+	int					status;
+	char				*ptr;
+	char				**built_in;
+
+	if (argc > 1)
+	{
+		ft_putstr_fd("Minishell doesn't take any arguments.\n", 2);
+		return (1);
+	}
+	init_args(&data, envp);
+	built_in = built_in_functions();
 	while (1)
-		func_doida(built_in, &data);
-	free_this(built_in);
-	return (0);
+	{
+		ptr = call_rl();
+		status = minishell(built_in, ptr, &data);
+	}
 	if (data.here_doc != -1)
 	{
 		close(data.here_doc);
 		unlink(".temp_file");
 	}
+	free_this(built_in);
+	return (status);
 }

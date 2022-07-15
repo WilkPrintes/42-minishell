@@ -35,10 +35,8 @@ typedef struct s_data_var{
 	int		i_status;
 	int		*global;
 	int		pipes;
-	int		fd_in;
-	int		fd_out;
+	int		dif_fd[2];
 	int		here_doc;
-	int		pipes;
 }				t_data_var;
 
 typedef struct s_data

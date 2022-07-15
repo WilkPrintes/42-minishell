@@ -88,3 +88,25 @@ void	ft_export(t_data_var *data, char **name)
 	if (index != -1)
 		data->global[index] = 1;
 }
+
+void	close_shell(char **cmds, char *ptr, t_data_var *data)
+{
+	int	len;
+
+	len = 0;
+	while (len < data->count_var + 1)
+	{
+		if ((data->names)[len])
+			free((data->names)[len]);
+		if ((data->contents)[len])
+			free((data->contents)[len]);
+		len++;
+	}
+	free(data->global);
+	free(data->contents);
+	free(data->names);
+	free(ptr);
+	free_this(cmds);
+	printf("exit\n");
+	exit(EXIT_SUCCESS);
+}
