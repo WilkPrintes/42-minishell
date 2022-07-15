@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:53:45 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 02:04:14 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 03:27:42 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	second_command(char *argv, t_data *t_pipe, t_data_var *data);
 int	pipex(char *argv[], t_data_var *data)
 {
 	t_data	t_pipe;
-	int i;
+	int		i;
 
 	i = 0;
 	t_pipe.temp_fd = STDIN_FILENO;

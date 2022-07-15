@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 02:03:58 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 03:28:36 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	command(char *envp, char *ptr, t_data_var *data)
 	int		i;
 	char	*path;
 	char	**cmd;
-	char 	**built;
+	char	**built;
 
 	i = 0;
 	built = built_in_functions();
