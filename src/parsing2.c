@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/14 20:44:54 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 01:59:13 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,41 +58,7 @@ int	have_quotes(char *ptr)
 	return (1);
 }
 
-void	fix_quotes(char *ptr)
-{
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 34 && trigger == 0)
-			trigger = 34;
-		else if (ptr[i] == 39 && trigger == 0)
-			trigger = 39;
-		else if (trigger != 0 && ptr[i] == 32)
-			ptr[i] = 7;
-		else if (ptr[i] == trigger)
-			trigger = 0;
-		i++;
-	}
-}
-
-void	refix_quotes(char *ptr)
-{
-	int	i;
-
-	i = 0;
-	while (ptr[i] != '\0')
-	{
-		if (ptr[i] == 7)
-			ptr[i] = ' ';
-		i++;
-	}
-}
-
-static void	delimiter(char *limit)
+static int	delimiter(char *limit)
 {
 	int		file;
 	char	*buffer;
@@ -102,7 +68,7 @@ static void	delimiter(char *limit)
 		write(2, "Error with delimiter\n", 21);
 	while (1)
 	{
-		write(1, "> ", 2);
+		write(2, "> ", 2);
 		buffer = get_next_line(0);
 		ft_putstr_fd(buffer, file);
 		if (ft_strncmp(limit, buffer, ft_strlen(buffer) - 1) == 0)
@@ -110,32 +76,35 @@ static void	delimiter(char *limit)
 		free(buffer);
 	}
 	free(buffer);
-	close(file);
-	unlink(".temp_file");
+	return (file);
 }
 
-static void	redirections(char **ptr)
+static void	redirections(char **ptr, t_data_var *data)
 {
 	int		i;
 	int		len;
 
 	i = 0;
+	data->fd_in = dup(STDIN_FILENO);
+	data->fd_out = dup(STDOUT_FILENO);
 	while (ptr[i] != NULL)
 	{
 		len = ft_strlen(ptr[i]);
-		if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777), 1);
-		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777), 1);
-		else if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
-			dup2(open(ptr[i + 1], O_RDONLY, 0777), 0);
+		if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
+			data->fd_in = open(ptr[i + 1], O_RDONLY, 0777);
 		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
-			delimiter(ptr[i + 1]);
+			data->here_doc = delimiter(ptr[i + 1]);
+		else if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
+			data->fd_out = open(ptr[i + 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
+			data->fd_out = open(ptr[i + 1], O_RDWR | O_CREAT | O_APPEND, 0777);
 		i++;
 	}
+	dup2(data->fd_in, STDIN_FILENO);
+	dup2(data->fd_out, STDOUT_FILENO);
 }
 
-void	redirect(char *ptr)
+void	redirect(char *ptr, t_data_var *data)
 {
 	int		i;
 	char	**hold;
@@ -150,7 +119,6 @@ void	redirect(char *ptr)
 			hold[i] = remove_quotes(hold[i]);
 		refix_quotes(hold[i++]);
 	}
-	redirections(hold);
+	redirections(hold, data);
 	free_this(hold);
 }
-

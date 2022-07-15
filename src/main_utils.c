@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/06 16:56:54 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:05:02 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	set_dir(char **cd, char *pwd)
 	char	*temp;
 	char	*color;
 	char	*pwd_temp;
-	
+
 	pwd_temp = pwd;
 	minishell = ft_strdup("\033[1;32mminishell@42\e[0m:\033[0;36m");
 	if (ft_strncmp(pwd, "/home/", 6) == 0)
@@ -80,7 +80,6 @@ void	remove_dir(char **pwd)
 	char	*temp;
 	char	*result;
 
-	// temp = ft_strdup(getenv("PWD"));
 	temp = getenv("PWD");
 	i = 0;
 	count = 0;

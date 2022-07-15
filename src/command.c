@@ -12,47 +12,11 @@
 
 #include "minishell.h"
 
-void	echo(char *ptr, t_data_var *data)
-{
-	int	len;
-	int	i;
-	int	path;
-
-	path = find_index(data, "PATH");
-	if (!data->contents[path])
-	{
-		printf("echo: command not found\n");
-		return ;
-	}
-	len = ft_strlen(ptr);
-	if (ft_strncmp(ptr, "echo -n", 7) == 0)
-		i = 8;
-	else
-		i = 5;
-	while (i < len)
-	{
-		if (ptr[i] != '$')
-		{
-			if (ptr[i] != 39 && ptr[i] != 34)
-				printf("%c", ptr[i]);
-			if (ptr[i] == 7)
-				printf(" ");
-		}
-		else if (ptr[i - 1] == 39)
-			printf("%c", ptr[i]);
-		else
-			i = i + find_content(data, ptr, i);
-		i++;
-	}
-	if (ft_strncmp(ptr + 5, "-n", 2) != 0)
-		printf("\n");
-}
-
-void	echo2(char **echo, t_data_var *data)
+void	echo(char **echo, t_data_var *data)
 {
 	int	i;
 	int	path;
-	int index;
+	int	index;
 
 	i = 0;
 	path = find_index(data, "PATH");
@@ -89,7 +53,6 @@ void	unset(char *ptr, t_data_var *data)
 		data->contents[index] = NULL;
 		data->global[index] = 0;
 	}
-
 }
 
 void	env(t_data_var *data)

@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 00:50:31 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:04:31 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	is_built_in(char **built_in, char **cmds)
 
 void	close_shell(char **cmds, char *ptr, t_data_var *data)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (len < data->count_var + 1)

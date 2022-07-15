@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/11 23:54:05 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:03:58 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*find_path(char *cmd, char *envp)
 void	command(char *envp, char *ptr)
 {
 	int		i;
-	int	j;
 	char	*path;
 	char	**cmd;
 
