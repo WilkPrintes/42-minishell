@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 03:28:36 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:06:58 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

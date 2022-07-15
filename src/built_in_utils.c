@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lucas_utils.c                                      :+:      :+:    :+:   */
+/*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 14:28:30 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:31:43 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,25 @@ char	**built_in_functions(void)
 	return (ptr);
 }
 
-int	is_built_in(char **built_in, char **cmds)
+int	is_built_in(t_resources *resources, char **cmds)
 {
 	int		i;
 	int		n_cmds;
 	char	**hold;
 
 	n_cmds = 0;
+	resources->built_in = built_in_functions();
 	while (cmds[n_cmds] != NULL)
 	{
 		i = 0;
 		hold = ft_split(cmds[n_cmds], ' ');
 		while (i < 7)
 		{
-			if (ft_strncmp(built_in[i], hold[0], ft_strlen(hold[0])) == 0)
+			if (ft_strncmp(resources->built_in[i], hold[0],
+				ft_strlen(hold[0])) == 0)
 			{
 				free_this(hold);
+				free_this(resources->built_in);
 				return (1);
 			}
 			i++;
@@ -51,6 +54,7 @@ int	is_built_in(char **built_in, char **cmds)
 		n_cmds++;
 		free_this(hold);
 	}
+	free_this(resources->built_in);
 	return (0);
 }
 
