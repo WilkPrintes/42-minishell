@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 14:57:12 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/15 15:46:27 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**parse(char *ptr)
 	}
 	fix_quotes(ptr);
 	i = 0;
-	pipe = number_of_commands(ptr);
+	pipe = number_of_commands(ptr) + 1;
 	cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{
