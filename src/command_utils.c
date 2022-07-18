@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/15 21:47:16 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/18 21:24:10 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	command(char *envp, char *ptr, t_data_var *data, t_resources *re)
 	remake_quoted(cmd);
 	if (is_built_in(re, cmd) == 1)
 	{
-		free(built);
 		exec_built_in(cmd, ptr, data);
 		exit(0);
 	}

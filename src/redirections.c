@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 22:57:57 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/18 22:21:32 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static int	delimiter(char *limit)
 	int		file;
 	char	*buffer;
 
-	file = open(".temp_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	file = open(".temp_file", O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (file < 0)
 		write(2, "Error with delimiter\n", 21);
 	while (1)
 	{
-		write(1, "> ", 2);
-		buffer = get_next_line(0);
+		buffer = readline("> ");
 		ft_putstr_fd(buffer, file);
+		ft_putstr_fd("\n", file);
 		if (ft_strncmp(limit, buffer, ft_strlen(limit)) == 0)
 			break ;
 		free(buffer);
@@ -59,7 +59,7 @@ static void	redirections(char **ptr, t_data_var *data)
 		if (ft_strncmp(ptr[i], "<", len) == 0 && ptr[i + 1] != NULL)
 			data->dif_fd[0] = open_close(data->dif_fd[0], ptr[i + 1], 1);
 		else if (ft_strncmp(ptr[i], "<<", len) == 0 && ptr[i + 1] != NULL)
-			data->here_doc = delimiter(ptr[i + 1]);
+			data->dif_fd[0] = delimiter(ptr[i + 1]);
 		else if (ft_strncmp(ptr[i], ">", len) == 0 && ptr[i + 1] != NULL)
 			data->dif_fd[1] = open_close(data->dif_fd[1], ptr[i + 1], 2);
 		else if (ft_strncmp(ptr[i], ">>", len) == 0 && ptr[i + 1] != NULL)
