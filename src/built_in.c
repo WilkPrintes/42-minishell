@@ -17,7 +17,6 @@ void	echo(char **echo, t_data_var *data)
 	int	i;
 	int	path;
 
-	i = 0;
 	path = find_index(data, "PATH");
 	if (!data->contents[path])
 	{
@@ -26,14 +25,14 @@ void	echo(char **echo, t_data_var *data)
 	}
 	remake_quoted(echo);
 	i = 1;
-	if (ft_strncmp(echo[i], "-n", 2) == 0)
-		i++;
 	while (echo[i] != NULL)
 	{
-		printf("%s", echo[i++]);
-		printf(" ");
+		print_echo(echo[i], data);
+		if (echo[i + 1] != NULL)
+			ft_putchar_fd(' ', 1);
+		i++;
 	}
-	if (ft_strncmp(echo[1], "-n", 2) != 0)
+	if (echo[1] != NULL && ft_strncmp(echo[1], "-n", 2) != 0)
 		printf("\n");
 }
 

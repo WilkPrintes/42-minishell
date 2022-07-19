@@ -98,5 +98,6 @@ void	reset_original_fd(int *original_fd, int *dif_fd);
 void	set_original_fd(int *original_fd);
 void	handle_sigint(int signum);
 void	free_error(char ***ptr, char **path);
+void	print_echo(char *str, t_data_var *data);
 
 #endif
