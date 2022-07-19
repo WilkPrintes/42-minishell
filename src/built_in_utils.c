@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 21:02:33 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:07:29 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,30 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	return (0);
 }
 
-void	free_this(char **str)
+static void	print_variable(char *str, t_data_var *data)
+{
+	int	i;
+
+	if (var_exists(data, str) != -1)
+	{
+		i = find_index(data, str);
+		if (data->contents[i])
+			ft_putstr_fd(data->contents[i], 1);
+	}
+}
+
+void	print_echo(char *str, t_data_var *data)
 {
 	int	i;
 
 	i = 0;
-	if (str == 0)
+	if (ft_strncmp(str, "-n", 2) == 0)
 		return ;
-	while (str[i])
-		free(str[i++]);
-	free(str);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' ')
+			return (print_variable(&str[i + 1], data));
+		else
+			ft_putchar_fd(str[i++], 1);
+	}
 }
