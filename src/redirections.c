@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/19 00:23:55 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/20 19:13:28 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ static int	delimiter(char *limit)
 	while (1)
 	{
 		buffer = readline("> ");
-		ft_putstr_fd(buffer, file);
-		ft_putstr_fd("\n", file);
 		if (ft_strncmp(limit, buffer, ft_strlen(limit)) == 0)
 			break ;
+		ft_putstr_fd(buffer, file);
+		ft_putstr_fd("\n", file);
 		free(buffer);
 	}
+	close(file);
 	free(buffer);
-	return (file);
+	return (open(".temp_file", O_RDONLY, 644));
 }
 
 static void	redirections(char **ptr, t_data_var *data)
