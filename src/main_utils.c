@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/07/19 22:35:33 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/20 19:21:18 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,13 @@ void	free_this(char **str)
 	while (str[i])
 		free(str[i++]);
 	free(str);
+}
+
+int	ft_isargument(int c)
+{
+	if (ft_isalnum(c) == 1 || c == 39 || c == 34 || c == 250 || c == '$'
+		|| c == '/')
+		return (1);
+	else
+		return (0);
 }

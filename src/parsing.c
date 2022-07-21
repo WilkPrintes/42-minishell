@@ -6,19 +6,11 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/19 23:46:48 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/20 19:21:03 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_isargument(int c)
-{
-	if (ft_isalnum(c) == 1 || c == 39 || c == 34 || c == 250 || c == '$')
-		return (1);
-	else
-		return (0);
-}
 
 static int	full_size(char *args, int cmd_nb)
 {

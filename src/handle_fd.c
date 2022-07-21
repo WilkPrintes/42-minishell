@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:06:02 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 21:06:37 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/20 19:24:20 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	reset_original_fd(int *original_fd, int *dif_fd)
 		close(dif_fd[0]);
 	if (dif_fd[1] != STDOUT_FILENO)
 		close(dif_fd[1]);
+	if (access(".temp_file", F_OK) == 0)
+		unlink(".temp_file");
 	dup2(original_fd[0], STDIN_FILENO);
 	dup2(original_fd[1], STDOUT_FILENO);
 }
