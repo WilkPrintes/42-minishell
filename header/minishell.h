@@ -81,7 +81,7 @@ int		exec_built_in(char **cmds, char *ptr, t_data_var *data);
 void	set_dir(char **cd, char *pwd);
 char	**parse(char *ptr);
 void	redirect(char *ptr, t_data_var *data);
-void	free_this(char **str);
+int		free_this(char **str);
 
 char	*remove_quotes(char *ptr);
 int		ft_isargument(int c);
@@ -98,6 +98,7 @@ void	reset_original_fd(int *original_fd, int *dif_fd);
 void	set_original_fd(int *original_fd);
 void	handle_sigint(int signum);
 void	free_error(char ***ptr, char **path);
-void	print_echo(char *str, t_data_var *data);
+int		print_echo(char *str, t_data_var *data);
+int		biggest(char *s1, char *s2);
 
 #endif

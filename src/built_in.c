@@ -23,15 +23,15 @@ void	echo(char **echo, t_data_var *data)
 		printf("echo: command not found\n");
 		return ;
 	}
-	remake_quoted(echo);
 	i = 1;
 	while (echo[i] != NULL)
 	{
-		print_echo(echo[i], data);
-		if (echo[i + 1] != NULL)
+		refix_quotes(echo[i]);
+		if (!print_echo(echo[i], data) && echo[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
+	remake_quoted(echo);
 	if (echo[1] != NULL && ft_strncmp(echo[1], "-n", 2) != 0)
 		printf("\n");
 }
