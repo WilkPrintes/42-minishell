@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/22 23:17:12 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:22:11 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	full_size(char *args, int cmd_nb)
 		if ((ft_isargument(args[i]) || args[i] == '-') && args[i - 1] == ' ')
 		{
 			size++;
-			while (args[i] != '\0' && args[i] != '|' && args[i] != ' ')
+			while (args[i] != '\0' && args[i] != ' ')
 			{
 				i++;
 				size++;
@@ -57,7 +57,7 @@ static void	add_args(char *cmd, char *ptr, int cmd_nb)
 		if (ft_isargument(ptr[i]) && ptr[i - 1] == ' ')
 		{
 			cmd[j++] = ' ';
-			while (ptr[i] != '\0' && ptr[i] != '|' && ptr[i] != ' ')
+			while (ptr[i] != '\0' && ptr[i] != ' ')
 				cmd[j++] = ptr[i++];
 		}
 		if (ptr[i] == '|' || ptr[i] == '\0')

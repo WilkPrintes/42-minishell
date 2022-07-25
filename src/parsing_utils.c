@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 16:55:59 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 15:45:43 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:14:10 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,20 @@ int	number_of_commands(char *ptr)
 {
 	int	i;
 	int	count;
+	int	quotes;
 
 	i = 0;
 	count = 0;
+	quotes = 0;
 	while (ptr[i] != '\0')
 	{
-		if (ptr[i] == '|')
+		if (ptr[i] == 34 || ptr[i] == 39)
+		{
+			quotes = ptr[i++];
+			while (ptr[i] != quotes)
+				i++;
+		}
+		else if (ptr[i] == '|')
 			count++;
 		i++;
 	}
