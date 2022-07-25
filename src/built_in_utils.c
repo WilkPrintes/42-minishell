@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/22 22:55:21 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:15:37 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,17 +88,29 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 
 static int	print_variable(char *str, t_data_var *data)
 {
-	int	i;
+	int		i;
+	int		j;
+	int		len;
+	char	*var;
 
+	j = 0;
+	len = 0;
+	while (str[j] != '\0' && str[j] != ' ')
+	{
+		len++;
+		j++;
+	}
 	if (str[ft_strlen(str) - 1] == 34)
 		str[ft_strlen(str) - 1] = '\0';
-	if (var_exists(data, str) != -1)
+	var = ft_substr(str, 0, len);
+	if (var_exists(data, var) != -1)
 	{
-		i = find_index(data, str);
+		i = find_index(data, var);
 		if (data->contents[i])
 			ft_putstr_fd(data->contents[i], 1);
 	}
-	return (0);
+	free(var);
+	return (j);
 }
 
 int	print_echo(char *str, t_data_var *data)
@@ -111,8 +123,8 @@ int	print_echo(char *str, t_data_var *data)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' '
-			&& str[ft_strlen(str) - 1] != 39)
-			return (print_variable(&str[i + 1], data));
+			&& str[ft_strlen(str) - 1] != 39 && str[i + 1] != 34)
+			i += print_variable(&str[i + 1], data);
 		else if ((str[i] == 39 || str[i] == 34) && quote == 0)
 			quote = str[i];
 		else if (str[i] != quote)
