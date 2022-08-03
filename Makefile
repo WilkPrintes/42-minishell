@@ -27,15 +27,17 @@ $(NAME): $(LIBFT) $(SRC)
 	@echo "\033[0;32mMinishell (>‿◠)\033[0m"
 
 $(LIBFT):
-	@make -C $(LIBFT_PATH)
+	@echo compilando libft...
+	@make -s -C $(LIBFT_PATH)
 
 fclean: clean
 	@rm -rf $(NAME)
-	@make fclean -C $(LIBFT_PATH)
+	@echo apagando libft
+	@make fclean -s -C $(LIBFT_PATH)
 	@echo "\033[0;31mMinishell deleted (ㆆ_ㆆ)\033[0m"
 
 clean:
-	@make clean -C $(LIBFT_PATH)
+	@make clean -s -C $(LIBFT_PATH)
 	@rm -rf *.o
 
 re: fclean all
