@@ -27,7 +27,7 @@ int	single_command(t_resources *re, t_data_var *data)
 			re);
 	else
 		waitpid(pid, &g_status, 0);
-	return (g_status);
+	return (data->exit);
 }
 
 int	multiple_commands(t_data_var *data, t_resources *re, int pipes)
@@ -40,7 +40,7 @@ int	multiple_commands(t_data_var *data, t_resources *re, int pipes)
 		pipex(re->cmds, data, re);
 	else
 		waitpid(pid, &g_status, 0);
-	return (g_status);
+	return (data->exit);
 }
 
 void	minishell(t_resources *re, t_data_var *data)
@@ -50,21 +50,20 @@ void	minishell(t_resources *re, t_data_var *data)
 
 	set_original_fd(original_fd);
 	i_status = data->i_status;
-	g_status = 0;
 	re->cmds = parse(re->line);
 	if (re->cmds == NULL)
 		return (free(re->line));
 	redirect(re->line, data);
 	if (number_of_commands(re->line) > 0)
-		multiple_commands(data, re, number_of_commands(re->line));
+		data->exit = multiple_commands(data, re, number_of_commands(re->line));
 	else if (is_built_in(re, re->cmds) == 1)
-		exec_built_in(re->cmds, re->line, data);
+		data->exit = exec_built_in(re->cmds, re->line, data);
 	else if (ft_strncmp(re->line, "clear", biggest("clear", re->line)) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(re->line) != -1)
-		var_func(re->line, data);
+		data->exit = var_func(re->line, data);
 	else
-		single_command(re, data);
+		data->exit = single_command(re, data);
 	free(data->contents[i_status]);
 	data->contents[i_status] = ft_itoa(g_status);
 	reset_original_fd(original_fd, data->dif_fd);
@@ -83,6 +82,7 @@ void	init_args(t_data_var *data, char *envp[])
 	data->global = ft_calloc(sizeof(int), 1024);
 	data->count_var = init_vars(data, envp);
 	data->i_status = data->count_var - 1;
+	g_status = 0;
 }
 
 int	main(int argc, char **argv, char *envp[])
@@ -102,10 +102,5 @@ int	main(int argc, char **argv, char *envp[])
 		resources.line = call_rl(&data);
 		minishell(&resources, &data);
 	}
-	if (data.here_doc != -1)
-	{
-		close(data.here_doc);
-		unlink(".temp_file");
-	}
-	return (g_status);
+	return (0);
 }

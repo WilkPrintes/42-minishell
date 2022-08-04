@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	var_func(char *ptr, t_data_var *data)
+int	var_func(char *ptr, t_data_var *data)
 {
 	int		p;
 	int		i;
@@ -38,6 +38,7 @@ void	var_func(char *ptr, t_data_var *data)
 		data->count_var++;
 	}
 	free(name);
+	return (0);
 }
 
 int	find_content(t_data_var *data, char *ptr, int i)

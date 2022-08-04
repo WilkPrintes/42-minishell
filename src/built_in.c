@@ -85,8 +85,13 @@ void	ft_export(t_data_var *data, char **name)
 void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
 {
 	int	len;
+	int	status;
 
 	len = 0;
+	if (extra[1] != NULL)
+		status = ft_atoi(extra[1]);
+	else
+		status = data->exit;
 	while (len < 1024)
 	{
 		free((data->names)[len]);
@@ -100,5 +105,5 @@ void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
 	free_this(cmds);
 	free_this(extra);
 	printf("exit\n");
-	exit(EXIT_SUCCESS);
+	exit(status);
 }

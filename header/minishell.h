@@ -39,6 +39,7 @@ typedef struct s_data_var{
 	int		pipes;
 	int		dif_fd[2];
 	int		here_doc;
+	int		exit;
 }				t_data_var;
 
 typedef struct s_data
@@ -57,7 +58,7 @@ void	error(void);
 int		pipex(char *argv[], t_data_var *data, t_resources *re);
 
 //Mudanças Wilk
-void	var_func(char *ptr, t_data_var *data);
+int		var_func(char *ptr, t_data_var *data);
 int		find_caracter(char *ptr, char caracter);
 
 void	echo(char **echo, t_data_var *data);
