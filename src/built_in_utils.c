@@ -62,9 +62,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	int		i;
 	char	teste[256];
 	char	**hold;
-	int		status;
 
-	status = 0;
 	i = -1;
 	while (cmds[++i] != NULL)
 	{
@@ -126,7 +124,7 @@ int	print_echo(char *str, t_data_var *data)
 	quote = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '$' && str[i + 1] == '?') //COLOCAR EXIT STATUS
+		if (str[i] == '$' && str[i + 1] == '?')
 		{
 			status = ft_itoa(data->exit);
 			ft_putstr_fd(status, 1);
