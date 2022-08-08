@@ -15,7 +15,14 @@
 void	echo(char **echo, t_data_var *data)
 {
 	int	i;
+	int	path;
 
+	path = find_index(data, "PATH");
+	if (!data->contents[path])
+	{
+		printf("echo: command not found\n");
+		return ;
+	}
 	i = 1;
 	while (echo[i] != NULL)
 	{
@@ -81,13 +88,28 @@ void	ft_export(t_data_var *data, char **name)
 		data->global[index] = 1;
 }
 
-int	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
+void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
 {
-	long	status;
+	int	len;
+	int	status;
 
-	status = exit_erros(extra, cmds, ptr, data);
+	len = 0;
+	if (extra[1] != NULL)
+		status = ft_atoi(extra[1]);
+	else
+		status = data->exit;
+	while (len < 1024)
+	{
+		free((data->names)[len]);
+		free((data->contents)[len]);
+		len++;
+	}
+	free(data->global);
+	free(data->contents);
+	free(data->names);
+	free(ptr);
+	free_this(cmds);
+	free_this(extra);
 	printf("exit\n");
-	if (status != 0 || status != ft_atoi(extra[1]))
-		exit_clean(extra, cmds, ptr, data);
 	exit(status);
 }

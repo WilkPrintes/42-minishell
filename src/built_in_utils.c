@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/08 03:26:45 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:08:45 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		printf("%s\n", cmds[i]);
 		hold = ft_split(cmds[i], ' ');
 		if (ft_strncmp(hold[0], "exit", biggest("exit", hold[0])) == 0)
-			status = close_shell(hold, cmds, ptr, data);
+			close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
@@ -118,14 +118,22 @@ static int	print_variable(char *str, t_data_var *data)
 
 int	print_echo(char *str, t_data_var *data)
 {
-	int	i;
-	int	quote;
+	int		i;
+	int		quote;
+	char	*status;
 
 	i = 0;
 	quote = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' '
+		if (str[i] == '$' && str[i + 1] == '?') //COLOCAR EXIT STATUS
+		{
+			status = ft_itoa(data->exit);
+			ft_putstr_fd(status, 1);
+			free(status);
+			i++;
+		}
+		else if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' '
 			&& str[ft_strlen(str) - 1] != 39 && str[i + 1] != 34)
 			i += print_variable(&str[i + 1], data);
 		else if ((str[i] == 39 || str[i] == 34) && quote == 0)
