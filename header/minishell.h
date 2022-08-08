@@ -76,7 +76,7 @@ int		init_vars(t_data_var *data, char *envp[]);
 //Mudanças lucas
 char	**built_in_functions(void);
 int		is_built_in(t_resources *resources, char **cmds);
-void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data);
+int		close_shell(char **extra, char **cmds, char *ptr, t_data_var *data);
 int		exec_built_in(char **cmds, char *ptr, t_data_var *data);
 void	set_dir(char **cd, char *pwd);
 char	**parse(char *ptr);
@@ -100,5 +100,7 @@ void	handle_sigint(int signum);
 void	free_error(char ***ptr, char **path);
 int		print_echo(char *str, t_data_var *data);
 int		biggest(char *s1, char *s2);
+void	exit_clean(char **extra, char **cmds, char *ptr, t_data_var *data);
+long	exit_erros(char **extra, char **cmds, char *ptr, t_data_var *data);
 
 #endif

@@ -15,7 +15,7 @@ INCLUDE		:=	$(foreach directory, $(HEADER_DIR), -I $(directory))
 SRC_DIR		:= ./src/
 
 SRC_FILE	:=	command_utils.c built_in_utils.c minishell.c vars.c \
-				built_in.c exec_command.c handle_fd.c\
+				built_in.c exec_command.c handle_fd.c exit_utils.c  \
 				parsing.c redirections.c parsing_utils.c pipex.c main_utils.c
 
 SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))

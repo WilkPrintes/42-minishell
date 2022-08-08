@@ -58,7 +58,7 @@ void	minishell(t_resources *re, t_data_var *data)
 	if (number_of_commands(re->line) > 0)
 		multiple_commands(data, re, number_of_commands(re->line));
 	else if (is_built_in(re, re->cmds) == 1)
-		exec_built_in(re->cmds, re->line, data);
+		g_status = exec_built_in(re->cmds, re->line, data);
 	else if (ft_strncmp(re->line, "clear", biggest("clear", re->line)) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(re->line) != -1)

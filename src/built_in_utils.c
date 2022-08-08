@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/02 14:12:21 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/08 03:26:45 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,16 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	int		i;
 	char	teste[256];
 	char	**hold;
+	int		status;
 
+	status = 0;
 	i = -1;
 	while (cmds[++i] != NULL)
 	{
+		printf("%s\n", cmds[i]);
 		hold = ft_split(cmds[i], ' ');
 		if (ft_strncmp(hold[0], "exit", biggest("exit", hold[0])) == 0)
-			close_shell(hold, cmds, ptr, data);
+			status = close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
@@ -83,7 +86,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 			env(data);
 		free_this(hold);
 	}
-	return (0);
+	return (status);
 }
 
 static int	print_variable(char *str, t_data_var *data)
@@ -117,7 +120,7 @@ int	print_echo(char *str, t_data_var *data)
 {
 	int	i;
 	int	quote;
-	
+
 	i = 0;
 	quote = 0;
 	while (str[i] != '\0')
