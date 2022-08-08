@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:03:39 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/15 21:47:39 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/08 00:43:45 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*call_rl(t_data_var *data)
 {
 	char	*ptr;
 
-	ptr = readline("minishell: ");
+	ptr = readline("\033[0;32mminishell@42sp\033[0m: $ ");
 	if (ptr == NULL)
 		close_shell(NULL, NULL, ptr, data);
 	add_history(ptr);

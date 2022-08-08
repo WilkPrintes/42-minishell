@@ -40,6 +40,8 @@ void	unset(char *ptr, t_data_var *data)
 {
 	int	index;
 
+	if (!ptr)
+		return ;
 	index = find_index(data, ptr);
 	if (index != -1)
 	{
@@ -75,8 +77,12 @@ void	ft_export(t_data_var *data, char **name)
 {
 	char	*temp;
 	int		index;
+	int		v_index;
 
 	temp = name[1];
+	v_index = find_caracter(temp, '=');
+	if (v_index != -1)
+		var_func(temp, data);
 	index = find_index(data, temp);
 	if (index != -1)
 		data->global[index] = 1;
