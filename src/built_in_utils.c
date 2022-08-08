@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/08 20:05:28 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:08:45 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		printf("%s\n", cmds[i]);
 		hold = ft_split(cmds[i], ' ');
 		if (ft_strncmp(hold[0], "exit", biggest("exit", hold[0])) == 0)
-			status = close_shell(hold, cmds, ptr, data);
+			close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
