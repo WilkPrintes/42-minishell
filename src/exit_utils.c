@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/08 19:26:10 by coder            ###   ########.fr       */
+/*   Updated: 2022/08/09 03:28:14 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,30 @@ void	exit_clean(char **extra, char **cmds, char *ptr, t_data_var *data)
 	free(ptr);
 	free_this(cmds);
 	free_this(extra);
+}
+
+int	cd(char **hold, t_data_var *data)
+{
+	int	index;
+
+	index = 0;
+	if (hold[1] && hold[2])
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
+	}
+	if (ft_strncmp(hold[1], "$", 1) == 0)
+	{
+		index = find_index(data, hold[1] + 1);
+		free(hold[1]);
+		hold[1] = ft_strdup(data->contents[index]);
+	}
+	if (chdir(hold[1]) == -1)
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(hold[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
+	}
+	return (0);
 }

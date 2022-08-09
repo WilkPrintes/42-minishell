@@ -56,13 +56,9 @@ void	command(char *envp, char *ptr, t_data_var *data, t_resources *re);
 void	free_matriz(char ***buffer);
 void	error(void);
 int		pipex(char *argv[], t_data_var *data, t_resources *re);
-
-//Mudanças Wilk
 int		var_func(char *ptr, t_data_var *data);
 int		find_caracter(char *ptr, char caracter);
-
 void	echo(char **echo, t_data_var *data);
-
 void	unset(char *ptr, t_data_var *data);
 int		var_exists(t_data_var *data, char *name);
 int		find_content(t_data_var *data, char *ptr, int i);
@@ -73,8 +69,6 @@ void	ft_export(t_data_var *data, char **name);
 void	set_dir(char **cd, char *pwd);
 void	remove_dir(char **pwd);
 int		init_vars(t_data_var *data, char *envp[]);
-
-//Mudanças lucas
 char	**built_in_functions(void);
 int		is_built_in(t_resources *resources, char **cmds);
 void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data);
@@ -103,5 +97,6 @@ int		print_echo(char *str, t_data_var *data);
 int		biggest(char *s1, char *s2);
 void	exit_clean(char **extra, char **cmds, char *ptr, t_data_var *data);
 long	exit_erros(char **extra, char **cmds, char *ptr, t_data_var *data);
+int		cd(char **hold, t_data_var *data);
 
 #endif

@@ -82,7 +82,7 @@ void	init_args(t_data_var *data, char *envp[])
 	data->global = ft_calloc(sizeof(int), 1024);
 	data->count_var = init_vars(data, envp);
 	data->i_status = data->count_var - 1;
-	g_status = 0;
+	data->exit = 0;
 }
 
 int	main(int argc, char **argv, char *envp[])

@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/08 20:08:45 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/09 02:57:49 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,13 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 	i = -1;
 	while (cmds[++i] != NULL)
 	{
-		printf("%s\n", cmds[i]);
 		hold = ft_split(cmds[i], ' ');
 		if (ft_strncmp(hold[0], "exit", biggest("exit", hold[0])) == 0)
 			close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
-			chdir(hold[1]);
+			cd(hold, data);
 		else if (ft_strncmp(hold[0], "echo", biggest("echo", hold[0])) == 0)
 			echo(hold, data);
 		else if (ft_strncmp(hold[0], "export", biggest("export", hold[0])) == 0)
@@ -84,7 +83,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 			env(data);
 		free_this(hold);
 	}
-	return (status);
+	return (data->exit);
 }
 
 static int	print_variable(char *str, t_data_var *data)

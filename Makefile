@@ -49,6 +49,6 @@ norma:
 	@norminette ./
 
 leaks:
-	@valgrind --leak-check=full --track-origins=yes --suppressions=readline.supp --trace-children=yes ./minishell
+	@valgrind --leak-check=full --track-origins=yes --suppressions=readline.supp --show-leak-kinds=all --trace-children=yes ./minishell
 
 .PHONY: all fclean re
