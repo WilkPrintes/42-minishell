@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_status;
+t_data_var			g_data;
 
 int		equalexist(char *ptr);
 int		find_pipes(char *ptr);
@@ -20,26 +20,30 @@ int		find_pipes(char *ptr);
 int	single_command(t_resources *re, t_data_var *data)
 {
 	int	pid;
+	int	status;
 
+	status = 0;
 	pid = fork();
 	if (pid == 0)
 		command(data->contents[find_index(data, "PATH")], re->cmds[0], data,
 			re);
 	else
-		waitpid(pid, &g_status, 0);
+		waitpid(pid, &status, 0);
 	return (data->exit);
 }
 
 int	multiple_commands(t_data_var *data, t_resources *re, int pipes)
 {
 	int	pid;
+	int	status;
 
+	status = 0;
 	data->pipes = pipes;
 	pid = fork();
 	if (pid == 0)
 		pipex(re->cmds, data, re);
 	else
-		waitpid(pid, &g_status, 0);
+		waitpid(pid, &status, 0);
 	return (data->exit);
 }
 
@@ -57,7 +61,7 @@ void	minishell(t_resources *re, t_data_var *data)
 	if (number_of_commands(re->line) > 0)
 		data->exit = multiple_commands(data, re, number_of_commands(re->line));
 	else if (is_built_in(re, re->cmds) == 1)
-		g_status = exec_built_in(re->cmds, re->line, data);
+		data->exit = exec_built_in(re->cmds, re->line, data);
 	else if (ft_strncmp(re->line, "clear", biggest("clear", re->line)) == 0)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(re->line) != -1)
@@ -65,42 +69,37 @@ void	minishell(t_resources *re, t_data_var *data)
 	else
 		data->exit = single_command(re, data);
 	free(data->contents[i_status]);
-	data->contents[i_status] = ft_itoa(g_status);
+	data->contents[i_status] = ft_itoa(data->exit);
 	reset_original_fd(original_fd, data->dif_fd);
 	free_this(re->cmds);
 	free(re->line);
 }
 
-void	init_args(t_data_var *data, char *envp[])
+void	handle_sigint()
 {
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
-	data->here_doc = -1;
-	data->count_var = 0;
-	data->names = ft_calloc(sizeof(char *), 1024);
-	data->contents = ft_calloc(sizeof(char *), 1024);
-	data->global = ft_calloc(sizeof(int), 1024);
-	data->count_var = init_vars(data, envp);
-	data->i_status = data->count_var - 1;
-	data->exit = 0;
+	write(STDERR_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 1);
+	rl_redisplay();
+	g_data.exit = 137;
+	return ;
 }
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_data_var			data;
 	t_resources			resources;
-	char				*ptr;
 
 	if (argc > 1)
 	{
 		ft_putstr_fd("Minishell doesn't take any arguments.\n", 2);
+		argv = NULL;
 		return (1);
 	}
-	init_args(&data, envp);
+	init_args(&g_data, envp);
 	while (1)
 	{
-		resources.line = call_rl(&data);
-		minishell(&resources, &data);
+		resources.line = call_rl(&g_data);
+		minishell(&resources, &g_data);
 	}
 	return (0);
 }

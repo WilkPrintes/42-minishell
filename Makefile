@@ -2,6 +2,8 @@ NAME		:= minishell
 
 CC			:= clang
 
+CCFLAGS		:= -Wall -Wextra -Werror
+
 LIBFT		:= ./includes/libft/libft.a
 
 LIBFT_PATH	:= ./includes/libft/
@@ -23,7 +25,7 @@ SRC			:=	$(foreach file, $(SRC_FILE), $(SRC_DIR)$(file))
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(SRC)
-	@$(CC) -g $(SRC) -o $@ $(INCLUDE) $(LIBFT_FLAGS) -lreadline
+	@$(CC) -g $(CCFLAGS) $(SRC) -o $@ $(INCLUDE) $(LIBFT_FLAGS) -lreadline
 	@echo "\033[0;32mMinishell (>‿◠)\033[0m"
 
 $(LIBFT):

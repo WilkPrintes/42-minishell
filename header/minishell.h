@@ -77,6 +77,7 @@ void	set_dir(char **cd, char *pwd);
 char	**parse(char *ptr);
 void	redirect(char *ptr, t_data_var *data);
 int		free_this(char **str);
+void	init_args(t_data_var *data, char *envp[]);
 
 char	*remove_quotes(char *ptr);
 int		ft_isargument(int c);

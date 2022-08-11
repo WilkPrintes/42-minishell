@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:03:39 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/08 00:43:45 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/11 22:22:18 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,24 @@
 char	*call_rl(t_data_var *data)
 {
 	char	*ptr;
+	int		len;
 
+	len = 0;
 	ptr = readline("\033[0;32mminishell@42sp\033[0m: $ ");
 	if (ptr == NULL)
-		close_shell(NULL, NULL, ptr, data);
+	{
+		while (len < 1024)
+		{
+			free((data->names)[len]);
+			free((data->contents)[len]);
+			len++;
+		}
+		free(data->global);
+		free(data->contents);
+		free(data->names);
+		write(2, "exit\n", 5);
+		exit (139);
+	}
 	add_history(ptr);
 	return (ptr);
 }
@@ -30,13 +44,18 @@ int	equalexist(char *ptr)
 	return (find_caracter(ptr, '='));
 }
 
-void	handle_sigint(int signum)
+void	init_args(t_data_var *data, char *envp[])
 {
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 1);
-	rl_redisplay();
-	return ;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+	data->here_doc = -1;
+	data->count_var = 0;
+	data->names = ft_calloc(sizeof(char *), 1024);
+	data->contents = ft_calloc(sizeof(char *), 1024);
+	data->global = ft_calloc(sizeof(int), 1024);
+	data->count_var = init_vars(data, envp);
+	data->i_status = data->count_var - 1;
+	data->exit = 0;
 }
 
 void	free_error(char ***ptr, char **path)
