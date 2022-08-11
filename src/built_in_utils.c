@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/09 02:57:49 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:46:38 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	print_variable(char *str, t_data_var *data)
 
 	j = 0;
 	len = 0;
-	while (str[j] != '\0' && str[j] != ' ')
+	while (str[j] != '\0' && str[j] != ' ' && str[j] != 39)
 	{
 		len++;
 		j++;

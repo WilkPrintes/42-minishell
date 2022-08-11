@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/09 03:28:14 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:53:53 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ int	cd(char **hold, t_data_var *data)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (1);
+	}
+	if (!hold[1])
+	{
+		index = find_index(data, "USER");
+		free(hold[1]);
+		hold[1] = ft_strdup(ft_strjoin("/home/", data->contents[index]));
 	}
 	if (ft_strncmp(hold[1], "$", 1) == 0)
 	{
