@@ -58,7 +58,7 @@ void	error(void);
 int		pipex(char *argv[], t_data_var *data, t_resources *re);
 int		var_func(char *ptr, t_data_var *data);
 int		find_caracter(char *ptr, char caracter);
-void	echo(char **echo, t_data_var *data);
+int		echo(char **echo, t_data_var *data);
 void	unset(char *ptr, t_data_var *data);
 int		var_exists(t_data_var *data, char *name);
 int		find_content(t_data_var *data, char *ptr, int i);

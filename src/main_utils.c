@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/08 20:10:51 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 01:55:44 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	free_this(char **str)
 int	ft_isargument(int c)
 {
 	if (ft_isalnum(c) == 1 || c == 39 || c == 34 || c == 46 || c == '$'
-		|| c == '/')
+		|| c == '/' || c == '+' || c == '-' || c == '*' || c == '!')
 		return (1);
 	else
 		return (0);

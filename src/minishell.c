@@ -29,6 +29,7 @@ int	single_command(t_resources *re, t_data_var *data)
 			re);
 	else
 		waitpid(pid, &status, 0);
+	data->exit = WEXITSTATUS(status);
 	return (data->exit);
 }
 

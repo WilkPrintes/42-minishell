@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	echo(char **echo, t_data_var *data)
+int	echo(char **echo, t_data_var *data)
 {
 	int	i;
 	int	path;
@@ -21,7 +21,7 @@ void	echo(char **echo, t_data_var *data)
 	if (!data->contents[path])
 	{
 		printf("echo: command not found\n");
-		return ;
+		return (127);
 	}
 	i = 1;
 	while (echo[i] != NULL)
@@ -34,6 +34,7 @@ void	echo(char **echo, t_data_var *data)
 	remake_quoted(echo);
 	if (echo[1] != NULL && ft_strncmp(echo[1], "-n", 2) != 0)
 		printf("\n");
+	return (0);
 }
 
 void	unset(char *ptr, t_data_var *data)

@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/11 15:46:38 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:57:35 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
 			printf("%s\n", getcwd(teste, sizeof(teste)));
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
-			cd(hold, data);
+			data->exit = cd(hold, data);
 		else if (ft_strncmp(hold[0], "echo", biggest("echo", hold[0])) == 0)
-			echo(hold, data);
+			data->exit = echo(hold, data);
 		else if (ft_strncmp(hold[0], "export", biggest("export", hold[0])) == 0)
 			ft_export(data, hold);
 		else if (ft_strncmp(hold[0], "unset", biggest("unset", hold[0])) == 0)
