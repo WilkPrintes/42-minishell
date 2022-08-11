@@ -75,8 +75,9 @@ void	minishell(t_resources *re, t_data_var *data)
 	free(re->line);
 }
 
-void	handle_sigint()
+void	handle_sigint(int signum)
 {
+	signum = 2;
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 1);

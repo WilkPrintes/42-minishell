@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/11 15:40:26 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:14:52 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,9 @@ char	*find_path(char *cmd, char *envp)
 
 void	command(char *envp, char *ptr, t_data_var *data, t_resources *re)
 {
-	int		i;
 	char	*path;
 	char	**cmd;
 
-	i = 0;
 	cmd = ft_split(ptr, ' ');
 	remake_quoted(cmd);
 	if (is_built_in(re, cmd) == 1)
