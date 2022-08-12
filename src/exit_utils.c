@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 00:12:17 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 02:10:28 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,10 @@ int	error_cd(char **hold)
 	ft_putstr_fd(hold[1], 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
 	return (1);
+}
+
+void	error(void)
+{
+	perror("Error");
+	exit (EXIT_FAILURE);
 }

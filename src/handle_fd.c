@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:06:02 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/22 21:19:58 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 02:22:15 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,22 @@ int	biggest(char *s1, char *s2)
 	else
 		size = len2;
 	return (size);
+}
+
+int	is_all_space(char *ptr)
+{
+	int	i;
+	int	spaces;
+
+	i = 0;
+	spaces = 0;
+	while (ptr[i] != '\0')
+	{
+		if (ptr[i] == ' ')
+			spaces++;
+		i++;
+	}
+	if (spaces == (int)ft_strlen(ptr))
+		return (1);
+	return (0);
 }

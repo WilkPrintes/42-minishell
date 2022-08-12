@@ -78,7 +78,6 @@ char	**parse(char *ptr);
 void	redirect(char *ptr, t_data_var *data);
 int		free_this(char **str);
 void	init_args(t_data_var *data, char *envp[]);
-
 char	*remove_quotes(char *ptr);
 int		ft_isargument(int c);
 int		move_to_cmd(char *ptr, int cmd_nb);
@@ -99,5 +98,6 @@ int		biggest(char *s1, char *s2);
 void	exit_clean(char **extra, char **cmds, char *ptr, t_data_var *data);
 long	exit_erros(char **extra, char **cmds, char *ptr, t_data_var *data);
 int		cd(char **hold, t_data_var *data);
+int		is_all_space(char *ptr);
 
 #endif

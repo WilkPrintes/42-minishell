@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/11 22:12:02 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 02:16:11 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**parse(char *ptr)
 	int		i;
 	char	**cmds;
 
-	if (ptr[0] == '\0')
+	if (ptr[0] == '\0' || is_all_space(ptr))
 		return (NULL);
 	if (have_quotes(ptr) == -1)
 	{
