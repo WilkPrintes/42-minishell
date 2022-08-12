@@ -27,7 +27,8 @@ int	echo(char **echo, t_data_var *data)
 	while (echo[i] != NULL)
 	{
 		refix_quotes(echo[i]);
-		if (!print_echo(echo[i], data) && echo[i + 1] != NULL)
+		if (ft_strncmp("-n", echo[i], 2) != 0 && !print_echo(echo[i], data)
+			&& echo[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}

@@ -87,7 +87,7 @@ void	handle_sigint(int signum)
 	return ;
 }
 
-int	main(int argc, char **argv, char *envp[])
+int	main(int argc, char **argv __attribute__((unused)), char *envp[])
 {
 	t_resources			resources;
 
