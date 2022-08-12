@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/12 03:27:51 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 22:56:14 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 		new[j++] = ptr[i++];
 	while (ptr[i - 1] != '\0' && ptr[i] != '|' && ptr[i] != 0)
 	{
-		if (ptr[i] == '-' && ft_isargument(ptr[i + 1]))
+		if (ptr[i] == '-' && ptr[i - 1] == ' ' && ft_isargument(ptr[i + 1]))
 		{
 			new[j++] = ' ';
 			while (ptr[i] != ' ' && ptr[i] != '\0' && ptr[i] != '|')
