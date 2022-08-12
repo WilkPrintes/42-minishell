@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:06:02 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/12 02:22:15 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 20:17:16 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,10 @@ int	is_all_space(char *ptr)
 	if (spaces == (int)ft_strlen(ptr))
 		return (1);
 	return (0);
+}
+
+void	error(void)
+{
+	perror("Error");
+	exit (EXIT_FAILURE);
 }

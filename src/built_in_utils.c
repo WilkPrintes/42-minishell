@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/12 00:57:35 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 20:40:07 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	is_built_in(t_resources *re, char **cmds)
 int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 {
 	int		i;
-	char	teste[256];
 	char	**hold;
 
 	i = -1;
@@ -70,7 +69,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		if (ft_strncmp(hold[0], "exit", biggest("exit", hold[0])) == 0)
 			close_shell(hold, cmds, ptr, data);
 		else if (ft_strncmp(hold[0], "pwd", biggest("pwd", hold[0])) == 0)
-			printf("%s\n", getcwd(teste, sizeof(teste)));
+			exec_pwd();
 		else if (ft_strncmp(hold[0], "cd", biggest("cd", hold[0])) == 0)
 			data->exit = cd(hold, data);
 		else if (ft_strncmp(hold[0], "echo", biggest("echo", hold[0])) == 0)
