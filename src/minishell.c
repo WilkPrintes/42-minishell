@@ -67,7 +67,7 @@ void	minishell(t_resources *re, t_data_var *data)
 		printf("\e[1;1H\e[2J");
 	else if (equalexist(re->line) != -1)
 		data->exit = var_func(re->line, data);
-	else
+	else if (re->cmds[0] != NULL)
 		data->exit = single_command(re, data);
 	free(data->contents[i_status]);
 	data->contents[i_status] = ft_itoa(data->exit);

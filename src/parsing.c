@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:25 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/12 02:16:11 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/12 03:27:51 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static char	*cpy_cmd(char *ptr, int cmd_nb)
 	int		j;
 	char	*new;
 
+	if (*ptr == '\0')
+		return (NULL);
 	i = move_to_cmd(ptr, cmd_nb);
 	j = 0;
 	new = calloc(full_size(ptr, cmd_nb), sizeof(char));
@@ -125,8 +127,6 @@ char	**parse(char *ptr)
 	i = 0;
 	ptr = ptr + go_to_command(ptr);
 	pipe = number_of_commands(ptr) + 1;
-	if (*ptr == '\0')
-		return (NULL);
 	cmds = malloc((pipe + 1) * sizeof(char *));
 	while (i != pipe)
 	{
