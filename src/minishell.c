@@ -83,7 +83,7 @@ void	handle_sigint(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 1);
 	rl_redisplay();
-	g_data.exit = 137;
+	g_data.exit = 130;
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/07/20 19:13:28 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 20:41:21 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,13 @@ void	redirect(char *ptr, t_data_var *data)
 	}
 	redirections(hold, data);
 	free_this(hold);
+}
+
+int	exec_pwd(void)
+{
+	char teste[256];
+
+	getcwd(teste, sizeof(teste));
+	printf("%s\n", teste);
+	return (0);
 }
