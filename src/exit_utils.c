@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 21:27:12 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 22:36:06 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	cd(char **hold, t_data_var *data)
 	{
 		index = find_index(data, "USER");
 		temp = ft_strjoin("/home/", data->contents[index]);
+		if (index == 0)
+			index = 1;
 	}
 	else if (ft_strncmp(hold[1], "$", 1) == 0)
 	{
