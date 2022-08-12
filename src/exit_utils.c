@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 22:36:06 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 23:17:18 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int	cd(char **hold, t_data_var *data)
 	}
 	if (chdir(temp) == -1)
 		return (error_cd(hold));
-	printf("%d\n\n", index);
 	if (index != 0)
 		free(temp);
 	return (0);

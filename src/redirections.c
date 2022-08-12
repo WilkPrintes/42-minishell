@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 18:58:24 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/12 20:41:21 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/12 23:17:34 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	redirect(char *ptr, t_data_var *data)
 
 int	exec_pwd(void)
 {
-	char teste[256];
+	char	teste[256];
 
 	getcwd(teste, sizeof(teste));
 	printf("%s\n", teste);
