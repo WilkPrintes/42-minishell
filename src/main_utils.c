@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 01:55:44 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/13 02:49:35 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,53 @@ int	find_caracter(char *ptr, char caracter)
 	return (-1);
 }
 
+int	is_env(char *temp)
+{
+	if (ft_strncmp(temp, "PATH", 4) == 0)
+		return (0);
+	if (ft_strncmp(temp, "SHELL", 5) == 0)
+		return (0);
+	if (ft_strncmp(temp, "PWD", 3) == 0)
+		return (0);
+	if (ft_strncmp(temp, "LOGNAME", 7) == 0)
+		return (0);
+	if (ft_strncmp(temp, "MOTDSHOWN", 9) == 0)
+		return (0);
+	if (ft_strncmp(temp, "HOME", 4) == 0)
+		return (0);
+	if (ft_strncmp(temp, "USER", 4) == 0)
+		return (0);
+	return (1);
+}
+
 int	init_vars(t_data_var *data, char *envp[])
 {
-	int	len;
-	int	char_p;
-	int	envp_len;
+	long	len;
+	int		char_p;
+	int		envp_len;
+	int		data_i;
 
 	len = 0;
+	data_i = 0;
 	char_p = 0;
 	while (envp[len] != NULL)
 	{
-		char_p = find_caracter(envp[len], '=');
-		envp_len = strlen(envp[len]);
-		data->names[len] = ft_substr(envp[len], 0, char_p);
-		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
-		data->global[len] = 1;
+		if (is_env(envp[len]) == 0)
+		{
+			char_p = find_caracter(envp[len], '=');
+			envp_len = strlen(envp[len]);
+			data->names[data_i] = ft_substr(envp[len], 0, char_p);
+			data->contents[data_i] = ft_substr(envp[len], char_p + 1, envp_len);
+			data->global[data_i] = 1;
+			data_i++;
+		}
 		len++;
 	}
-	data->names[len] = ft_strdup("?");
-	data->contents[len] = ft_strdup("0");
-	data->global[len] = 0;
-	len++;
-	return (len);
+	data->names[data_i] = ft_strdup("?");
+	data->contents[data_i] = ft_strdup("0");
+	data->global[data_i] = 0;
+	data_i++;
+	return (data_i);
 }
 
 void	remake_quoted(char **ptr)
