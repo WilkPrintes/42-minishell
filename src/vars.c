@@ -94,3 +94,22 @@ int	var_exists(t_data_var *data, char *name)
 	}
 	return (-1);
 }
+
+int	is_env(char *temp)
+{
+	if (ft_strncmp(temp, "PATH", 4) == 0)
+		return (0);
+	if (ft_strncmp(temp, "SHELL", 5) == 0)
+		return (0);
+	if (ft_strncmp(temp, "PWD", 3) == 0)
+		return (0);
+	if (ft_strncmp(temp, "LOGNAME", 7) == 0)
+		return (0);
+	if (ft_strncmp(temp, "MOTDSHOWN", 9) == 0)
+		return (0);
+	if (ft_strncmp(temp, "HOME", 4) == 0)
+		return (0);
+	if (ft_strncmp(temp, "USER", 4) == 0)
+		return (0);
+	return (1);
+}

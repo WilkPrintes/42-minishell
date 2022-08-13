@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 23:17:18 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/13 03:23:07 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	cd(char **hold, t_data_var *data)
 		return (1);
 	if (hold[1] == NULL)
 	{
-		index = find_index(data, "USER");
-		temp = ft_strjoin("/home/", data->contents[index]);
+		index = find_index(data, "HOME");
+		temp = ft_strdup(data->contents[index]);
 		if (index == 0)
 			index = 1;
 	}

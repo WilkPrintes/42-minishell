@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/13 02:49:35 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/13 03:28:56 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@ int	find_caracter(char *ptr, char caracter)
 		i++;
 	}
 	return (-1);
-}
-
-int	is_env(char *temp)
-{
-	if (ft_strncmp(temp, "PATH", 4) == 0)
-		return (0);
-	if (ft_strncmp(temp, "SHELL", 5) == 0)
-		return (0);
-	if (ft_strncmp(temp, "PWD", 3) == 0)
-		return (0);
-	if (ft_strncmp(temp, "LOGNAME", 7) == 0)
-		return (0);
-	if (ft_strncmp(temp, "MOTDSHOWN", 9) == 0)
-		return (0);
-	if (ft_strncmp(temp, "HOME", 4) == 0)
-		return (0);
-	if (ft_strncmp(temp, "USER", 4) == 0)
-		return (0);
-	return (1);
 }
 
 int	init_vars(t_data_var *data, char *envp[])
@@ -72,8 +53,7 @@ int	init_vars(t_data_var *data, char *envp[])
 	}
 	data->names[data_i] = ft_strdup("?");
 	data->contents[data_i] = ft_strdup("0");
-	data->global[data_i] = 0;
-	data_i++;
+	data->global[data_i++] = 0;
 	return (data_i);
 }
 
