@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:03:39 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/14 18:09:02 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/14 22:21:30 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*call_rl(t_data_var *data)
 	int		len;
 
 	len = 0;
-	ptr = readline("\033[0;32mminishell@42sp\033[0m: $ ");
+	ptr = readline("\001\033[0;32mminishell@42sp\033[0m: $ ");
 	if (ptr == NULL)
 	{
 		while (len < MAX_VAR)
