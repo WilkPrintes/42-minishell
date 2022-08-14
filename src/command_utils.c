@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 11:41:00 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/12 02:10:29 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/14 09:10:57 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	command(char *envp, char *ptr, t_data_var *data, t_resources *re)
 	char	**cmd;
 
 	cmd = ft_split(ptr, ' ');
-	remake_quoted(cmd);
+	remake_quoted(re->cmds);
 	if (is_built_in(re, cmd) == 1)
 	{
-		exec_built_in(cmd, ptr, data);
+		exec_built_in(re->cmds, ptr, data);
 		exit(0);
 	}
 	path = find_path(cmd[0], envp);
