@@ -38,17 +38,23 @@ int	echo(char **echo, t_data_var *data)
 	return (0);
 }
 
-void	unset(char *ptr, t_data_var *data)
+void	unset(char **hold, t_data_var *data)
 {
 	int	index;
+	int	i;
 
-	if (!ptr)
+	i = 1;
+	if (hold[1] == NULL)
 		return ;
-	index = find_index(data, ptr);
-	if (index != -1)
+	while (hold[i] != NULL)
 	{
-		data->contents[index] = NULL;
-		data->global[index] = 0;
+		index = find_index(data, hold[i]);
+		if (index != -1)
+		{
+			data->contents[index] = NULL;
+			data->global[index] = 0;
+		}
+		i++;
 	}
 }
 
