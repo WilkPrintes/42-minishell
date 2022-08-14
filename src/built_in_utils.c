@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:46:21 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/14 20:19:42 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/14 20:31:17 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	exec_built_in(char **cmds, char *ptr, t_data_var *data)
 		else if (ft_strncmp(hold[0], "unset", biggest("unset", hold[0])) == 0)
 			unset(hold, data);
 		else if (ft_strncmp(hold[0], "env", biggest("env", hold[0])) == 0)
-			env(data);
+			data->exit = env(data, hold);
 		free_this(hold);
 	}
 	return (data->exit);

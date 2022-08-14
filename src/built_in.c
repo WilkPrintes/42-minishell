@@ -58,7 +58,7 @@ void	unset(char **hold, t_data_var *data)
 	}
 }
 
-void	env(t_data_var *data)
+int	env(t_data_var *data, char **hold)
 {
 	int	i;
 	int	path;
@@ -68,17 +68,21 @@ void	env(t_data_var *data)
 	if (!data->contents[path])
 	{
 		printf("env: command not found\n");
-		return ;
+		return (127);
+	}
+	if (hold[1])
+	{
+		ft_putstr_fd(hold[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (127);
 	}
 	while (i < data->count_var)
 	{
 		if (data->global[i] == 1)
-		{
-			printf("%s=", data->names[i]);
-			printf("%s\n", data->contents[i]);
-		}
+			printf("%s=%s\n", data->names[i], data->contents[i]);
 		i++;
 	}
+	return (0);
 }
 
 void	ft_export(t_data_var *data, char **name)

@@ -66,7 +66,7 @@ int		var_exists(t_data_var *data, char *name);
 int		find_content(t_data_var *data, char *ptr, int i);
 int		equalexist(char *ptr);
 int		find_index(t_data_var *data, char *ptr);
-void	env(t_data_var *data);
+int		env(t_data_var *data, char **hold);
 void	ft_export(t_data_var *data, char **name);
 void	set_dir(char **cd, char *pwd);
 void	remove_dir(char **pwd);
