@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:24:38 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/13 03:28:56 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/14 18:07:04 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,22 @@ int	init_vars(t_data_var *data, char *envp[])
 	long	len;
 	int		char_p;
 	int		envp_len;
-	int		data_i;
 
 	len = 0;
-	data_i = 0;
 	char_p = 0;
 	while (envp[len] != NULL)
 	{
-		if (is_env(envp[len]) == 0)
-		{
-			char_p = find_caracter(envp[len], '=');
-			envp_len = strlen(envp[len]);
-			data->names[data_i] = ft_substr(envp[len], 0, char_p);
-			data->contents[data_i] = ft_substr(envp[len], char_p + 1, envp_len);
-			data->global[data_i] = 1;
-			data_i++;
-		}
+		char_p = find_caracter(envp[len], '=');
+		envp_len = strlen(envp[len]);
+		data->names[len] = ft_substr(envp[len], 0, char_p);
+		data->contents[len] = ft_substr(envp[len], char_p + 1, envp_len);
+		data->global[len] = 1;
 		len++;
 	}
-	data->names[data_i] = ft_strdup("?");
-	data->contents[data_i] = ft_strdup("0");
-	data->global[data_i++] = 0;
-	return (data_i);
+	data->names[len] = ft_strdup("?");
+	data->contents[len] = ft_strdup("0");
+	data->global[len++] = 0;
+	return (len);
 }
 
 void	remake_quoted(char **ptr)

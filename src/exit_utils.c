@@ -6,7 +6,7 @@
 /*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 00:39:27 by wprintes          #+#    #+#             */
-/*   Updated: 2022/08/14 17:52:07 by wprintes         ###   ########.fr       */
+/*   Updated: 2022/08/14 18:09:13 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	exit_clean(char **extra, char **cmds, char *ptr, t_data_var *data)
 	int	len;
 
 	len = 0;
-	while (len < 8000)
+	while (len < MAX_VAR)
 	{
 		free((data->names)[len]);
 		free((data->contents)[len]);

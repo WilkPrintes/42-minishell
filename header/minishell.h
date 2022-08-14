@@ -24,6 +24,8 @@
 # include <signal.h>
 # include "libft.h"
 
+# define MAX_VAR 8000
+
 typedef struct s_resources {
 	char	**cmds;
 	char	**built_in;
@@ -100,6 +102,5 @@ long	exit_erros(char **extra, char **cmds, char *ptr, t_data_var *data);
 int		cd(char **hold, t_data_var *data);
 int		is_all_space(char *ptr);
 int		exec_pwd(void);
-int		is_env(char *temp);
 
 #endif
