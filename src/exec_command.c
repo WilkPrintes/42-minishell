@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: wprintes <wprintes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:03:39 by lucferna          #+#    #+#             */
-/*   Updated: 2022/08/11 22:22:18 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/08/14 17:49:30 by wprintes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	init_args(t_data_var *data, char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	data->here_doc = -1;
 	data->count_var = 0;
-	data->names = ft_calloc(sizeof(char *), 1024);
-	data->contents = ft_calloc(sizeof(char *), 1024);
-	data->global = ft_calloc(sizeof(int), 1024);
+	data->names = ft_calloc(sizeof(char *), 8000);
+	data->contents = ft_calloc(sizeof(char *), 8000);
+	data->global = ft_calloc(sizeof(int), 8000);
 	data->count_var = init_vars(data, envp);
 	data->i_status = data->count_var - 1;
 	data->exit = 0;

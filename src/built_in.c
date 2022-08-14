@@ -81,13 +81,16 @@ void	ft_export(t_data_var *data, char **name)
 	int		index;
 	int		v_index;
 
-	temp = name[1];
-	v_index = find_caracter(temp, '=');
-	if (v_index != -1)
-		var_func(temp, data);
-	index = find_index(data, temp);
-	if (index != -1)
-		data->global[index] = 1;
+	if (name[1])
+	{
+		temp = name[1];
+		v_index = find_caracter(temp, '=');
+		if (v_index != -1)
+			var_func(temp, data);
+		index = find_index(data, temp);
+		if (index != -1)
+			data->global[index] = 1;
+	}
 }
 
 void	close_shell(char **extra, char **cmds, char *ptr, t_data_var *data)
